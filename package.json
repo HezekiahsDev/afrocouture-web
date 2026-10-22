@@ -1,6 +1,7 @@
 {
-  "name": "web",
+  "name": "afrocouture-web",
   "version": "0.1.0",
+  "description": "AfroCouture AI — Luxury African Fashion Marketplace Frontend (Next.js)",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,9 +10,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "axios": "^1.7.9",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.475.0",
     "next": "16.4.2",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "socket.io-client": "^4.8.1",
+    "tailwind-merge": "^3.0.1"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
