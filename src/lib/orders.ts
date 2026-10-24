@@ -100,7 +100,14 @@ export interface FabricInput {
 }
 
 /** A merchant's own listing (raw entity, includes unpublished ones). */
-export type MyFabric = Omit<Fabric, 'merchant'> & { merchantId: string; stock: number | null; isPublished: boolean };
+export type MyFabric = Omit<Fabric, 'merchant'> & {
+  merchantId: string;
+  stock: number | null;
+  isPublished: boolean;
+  /** Set while AfroCouture has taken the listing down; only an admin can republish it. */
+  moderatedAt?: string | null;
+  unpublishedReason?: string | null;
+};
 
 export async function listMyFabrics(): Promise<MyFabric[]> {
   return (await api.get<MyFabric[]>('/fabrics/mine')).data;

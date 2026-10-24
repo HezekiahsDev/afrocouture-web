@@ -11,6 +11,8 @@ type Rule = {
   prefix: string;
   /** Roles allowed in; 'members' = any signed-in non-admin account. */
   allow: AppRole[] | 'members';
+  /** Signed-out visitors are new people joining in this role: send them to sign up, not sign in. */
+  signupAs?: Exclude<AppRole, 'admin'>;
 };
 
 // First match wins, so more specific prefixes come first.
@@ -18,9 +20,11 @@ const RULES: Rule[] = [
   { prefix: '/admin', allow: ['admin'] },
   { prefix: '/merchant', allow: ['merchant'] },
   // Onboarding pages offer a role switch client-side (before the role is locked), so any member may open them.
-  { prefix: '/onboarding/fit-profile', allow: 'members' },
-  { prefix: '/onboarding/tailor-kyc', allow: 'members' },
-  { prefix: '/onboarding/merchant-verification', allow: 'members' },
+  { prefix: '/onboarding/fit-profile', allow: 'members', signupAs: 'customer' },
+  { prefix: '/onboarding/tailor-kyc', allow: 'members', signupAs: 'tailor' },
+  { prefix: '/onboarding/merchant-verification', allow: 'members', signupAs: 'merchant' },
+  // Starting a commission while signed out usually means a new customer.
+  { prefix: '/orders/new', allow: 'members', signupAs: 'customer' },
   { prefix: '/orders', allow: 'members' },
   { prefix: '/saved', allow: 'members' },
   { prefix: '/notifications', allow: 'members' },
@@ -50,13 +54,17 @@ export function homeFor(role: AppRole): string {
   return '/marketplace';
 }
 
-export type AccessDecision = { kind: 'allow' } | { kind: 'signin' } | { kind: 'redirect'; to: string };
+export type AccessDecision =
+  | { kind: 'allow' }
+  | { kind: 'signin' }
+  | { kind: 'signup'; role: Exclude<AppRole, 'admin'> }
+  | { kind: 'redirect'; to: string };
 
 /** The decision for `role` (null = signed out) opening `pathname`. */
 export function decideAccess(pathname: string, role: AppRole | null): AccessDecision {
   const rule = ruleFor(pathname);
   if (!rule) return { kind: 'allow' };
-  if (!role) return { kind: 'signin' };
+  if (!role) return rule.signupAs ? { kind: 'signup', role: rule.signupAs } : { kind: 'signin' };
   if (rule.allow === 'members') {
     return role === 'admin' ? { kind: 'redirect', to: adminEquivalent(pathname) } : { kind: 'allow' };
   }

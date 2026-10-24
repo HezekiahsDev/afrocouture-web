@@ -77,12 +77,16 @@ Auth (`/auth/register`, `/verify-email`, `/resend-verification`, `/login`, `/ref
 `/reset-password`, `/me`) · users (`PATCH /users/me`, `/users/me/role`) · uploads · tailors (public list/detail,
 `/tailors/me/profile`, `/tailors/me/submit`) · merchants (`/merchants/me/profile`, `/submit`) · fabrics (public list,
 categories, detail; merchant `mine`/create/update/delete) · styles · saved items · measurements (`/measurements/me`) ·
-admin verification queue and review. Full list: `afrocouture-api/README.md`.
+orders, payments & webhook, chat, AI Studio · reviews (`/orders/:id/review`, `/tailors/:id/reviews`) · notifications ·
+admin (overview, users, verifications, orders, payouts, fabrics, reviews, audit) · `/health`. Every route and who may
+call it: `afrocouture-api/docs/rbac.md`.
 
 ### Data model
 
 `users`, `otps`, `tailor_profiles`, `merchant_profiles`, `fabrics`, `styles`, `saved_items`, `customer_fit_profiles`
-(+ Phase 4–5: `orders`, `order_items`, `order_events`, `escrow_transactions`, `chat_messages`, `ai_designs`).
+(+ Phase 4–5: `orders`, `order_items`, `order_events`, `escrow_transactions`, `chat_messages`, `ai_designs`;
+Phase 6: `notifications`, `admin_audit_log`, review columns on `orders`, suspension columns on `users`, moderation
+columns on `fabrics`).
 Entities in `afrocouture-api/src/**/entities` are the source of truth.
 
 ## Roadmap
@@ -122,12 +126,17 @@ To launch: set the Vertex env on the API, set `NEXT_PUBLIC_AI_STUDIO_ENABLED=tru
 - [x] `/ai-studio`: prompt + garment/occasion/fabric/colour chips → up to 4 Imagen variations; history and saved designs; daily quota display
 - [x] "Commission this design" → order request with the design attached
 
-### Phase 6 — Hardening
+### Phase 6 — Hardening ✅ (built and tested locally; awaiting deploy)
 
-- [ ] API integration tests in the repo (the end-to-end scripts used during development move into `test/`)
-- [ ] Observability (structured logs, error alerts), backups for Postgres
-- [ ] Reviews & ratings on artisan profiles from completed orders
-- [ ] Notifications centre (in-app) in addition to email
+- [x] API integration tests in the repo (`pnpm test:e2e`: access control for every route, admin, reviews & notifications)
+- [x] Observability: JSON logs with request IDs, alerts (email / Slack-compatible webhook) for crashes and failed payouts, `/health`; daily Postgres backups with restore script and cron installer
+- [x] Reviews & ratings: rate on approval or later (60 days), artisan reply, admin hide/unhide, averages from real reviews, public artisan profile `/tailors/[id]`
+- [x] Notifications centre: navbar bell with live push, `/notifications`, mirrors every order email plus milestones, messages, payouts, reviews and verification outcomes
+- [x] RBAC: API deny-by-default (`@Public` opt-out), ownership checks, role-restricted uploads, account suspension; web proxy + signed session cookie keeps each role on its own pages (rules in `src/lib/access.ts`, API matrix in `afrocouture-api/docs/rbac.md`)
+- [x] Admin dashboard `/admin` (admins only, admins land there after sign-in): overview, verifications, orders & disputes (with read-only chat), payouts, users (suspend/reactivate), fabrics (take down), reviews, audit log, notifications
+- [x] Privacy Policy (`/privacy`) and Terms of Service (`/terms`); to be reviewed by a Nigerian lawyer
+
+Follow-ups: store KYC/CAC documents and fit photos privately (signed URLs) instead of public Cloudinary links; confirm legal entity details for the legal pages.
 
 ### Phase 7 — Mobile (Defer)
 
@@ -144,6 +153,9 @@ React Native app reusing the API; designs from the original Stitch mobile export
   `VERTEX_AI_PROJECT_ID`, `VERTEX_AI_LOCATION`, `VERTEX_IMAGEN_MODEL`, `GOOGLE_APPLICATION_CREDENTIALS_JSON`, `AI_DAILY_LIMIT`.
   Paystack dashboard: webhook URL `https://afrocouture-api.alcance.ng/payments/paystack/webhook`; Transfers enabled with
   OTP for transfers turned off (so payouts can be automatic).
+- **New env for Phase 6:** API: `LOG_FORMAT=json`, `ALERT_EMAIL` and/or `ALERT_WEBHOOK_URL`, `ALERT_THROTTLE_MINUTES`,
+  `SUPPORT_EMAIL`, `BACKUP_*`. Web (Vercel, server-only): `SESSION_SECRET` (32+ random characters, required; without it
+  nobody can open signed-in pages in production), optional `API_URL`. Server: `bash scripts/install-backup-cron.sh`.
 
 ## Verification checklist (per release)
 

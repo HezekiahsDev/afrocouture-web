@@ -22,9 +22,10 @@ export async function proxy(request: NextRequest) {
   }
   const url = request.nextUrl.clone();
   url.search = '';
-  if (decision.kind === 'signin') {
-    url.pathname = '/signin';
+  if (decision.kind === 'signin' || decision.kind === 'signup') {
+    url.pathname = decision.kind === 'signin' ? '/signin' : '/signup';
     url.searchParams.set('next', pathname + search);
+    if (decision.kind === 'signup') url.searchParams.set('role', decision.role);
   } else {
     url.pathname = decision.to;
   }

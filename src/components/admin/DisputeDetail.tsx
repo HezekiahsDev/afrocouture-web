@@ -3,12 +3,16 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, LoaderCircle, Scale } from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff, LoaderCircle, Scale } from 'lucide-react';
 import { apiErrorMessage } from '@/lib/api';
 import { ORDER_STATUS_LABEL, getAdminOrder, resolveDispute } from '@/lib/orders';
 import { cn } from '@/lib/utils';
 import type { EscrowTransactionType, Order } from '@/types';
 import { Alert, Facts, Panel, Pill, fmtDate, naira } from './ui';
+import { useAdminQueues } from './AdminShell';
+import { getOrderMessages, setReviewHidden } from '@/lib/admin';
+import { Stars } from '@/components/orders/ReviewCard';
+import type { ChatMessage } from '@/types';
 
 const TX_LABEL: Record<EscrowTransactionType, string> = {
   hold: 'Customer payment held',
@@ -17,7 +21,9 @@ const TX_LABEL: Record<EscrowTransactionType, string> = {
   refund: 'Refund to customer',
 };
 
+/** Everything about one order for an admin: money, people, timeline, conversation, review and dispute resolution. */
 export function DisputeDetail({ id }: { id: string }) {
+  const { refreshQueues } = useAdminQueues();
   const [order, setOrder] = useState<Order | null>(null);
   const [loadError, setLoadError] = useState('');
 
@@ -56,15 +62,25 @@ export function DisputeDetail({ id }: { id: string }) {
   const tailorName = order.tailor?.atelierName ?? order.tailor?.displayName ?? 'Artisan';
   return (
     <div className="flex flex-col gap-5">
-      <Link href="/admin?tab=disputes" className="inline-flex w-fit items-center gap-2 text-xs font-bold text-[#94A3B8] hover:text-[#00A3FF]">
-        <ArrowLeft size={15} aria-hidden="true" /> Back to disputes
+      <Link
+        href={order.status === 'disputed' ? '/admin/orders?status=disputed' : '/admin/orders'}
+        className="inline-flex w-fit items-center gap-2 text-xs font-bold text-[#94A3B8] hover:text-[#00A3FF]"
+      >
+        <ArrowLeft size={15} aria-hidden="true" /> {order.status === 'disputed' ? 'Back to disputes' : 'All orders'}
       </Link>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="font-mono text-xs font-bold text-[#38BDF8]">{order.reference}</p>
           <h1 className="mt-1 text-2xl font-extrabold text-[#F8FAFC]">{order.garmentType}</h1>
           <p className="mt-1 text-sm text-[#94A3B8]">
-            {order.customer.fullName ?? 'Customer'} commissioned {tailorName} · {fmtDate(order.createdAt)}
+            <Link href={`/admin/users/${order.customerId}`} className="text-[#CBD5E1] hover:text-[#38BDF8]">
+              {order.customer.fullName ?? 'Customer'}
+            </Link>{' '}
+            commissioned{' '}
+            <Link href={`/admin/users/${order.tailorUserId}`} className="text-[#CBD5E1] hover:text-[#38BDF8]">
+              {tailorName}
+            </Link>{' '}
+            · {fmtDate(order.createdAt)}
           </p>
         </div>
         <Pill tone={order.status === 'disputed' ? 'red' : order.status === 'completed' ? 'green' : 'neutral'}>
@@ -177,7 +193,17 @@ export function DisputeDetail({ id }: { id: string }) {
             )}
           </Panel>
 
-          {order.status === 'disputed' && <ResolveForm order={order} onResolved={setOrder} />}
+          {order.status === 'disputed' && (
+            <ResolveForm
+              order={order}
+              onResolved={(updated) => {
+                setOrder(updated);
+                refreshQueues();
+              }}
+            />
+          )}
+          {order.rating !== null && <ReviewModeration order={order} onChange={load} />}
+          <Conversation order={order} />
         </div>
       </div>
     </div>
@@ -327,6 +353,87 @@ function ResolveForm({ order, onResolved }: { order: Order; onResolved: (order: 
           </button>
         )}
       </form>
+    </Panel>
+  );
+}
+
+function ReviewModeration({ order, onChange }: { order: Order; onChange: () => Promise<void> }) {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const hidden = Boolean(order.reviewHiddenAt);
+  async function toggle() {
+    setBusy(true);
+    setError('');
+    try {
+      await setReviewHidden(order.id, !hidden);
+      await onChange();
+    } catch (err) {
+      setError(apiErrorMessage(err));
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <Panel title="Customer review" actions={hidden ? <Pill tone="amber">Hidden</Pill> : undefined}>
+      <div className="flex flex-col gap-2 text-sm">
+        <Stars rating={order.rating ?? 0} />
+        <p className="text-[#CBD5E1]">{order.review ? `“${order.review}”` : 'No written review.'}</p>
+        {order.reviewReply && <p className="text-xs text-[#94A3B8]">Artisan replied: “{order.reviewReply}”</p>}
+        {error && <Alert>{error}</Alert>}
+        <button type="button" className="btn-ghost mt-1 self-start px-3 py-1.5" onClick={toggle} disabled={busy}>
+          {hidden ? <Eye size={14} aria-hidden="true" /> : <EyeOff size={14} aria-hidden="true" />}
+          {busy ? 'Saving…' : hidden ? 'Show on profile' : 'Hide from profile'}
+        </button>
+      </div>
+    </Panel>
+  );
+}
+
+/** Read-only copy of the order chat, for settling disputes. */
+function Conversation({ order }: { order: Order }) {
+  const [messages, setMessages] = useState<ChatMessage[] | null>(null);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    getOrderMessages(order.id)
+      .then(setMessages)
+      .catch((err) => setError(apiErrorMessage(err, 'Could not load the conversation.')));
+  }, [order.id]);
+
+  const who = (m: ChatMessage) =>
+    m.senderId === null ? 'AfroCouture' : m.senderId === order.customerId ? (order.customer.fullName ?? 'Customer') : (order.tailor?.displayName ?? 'Artisan');
+
+  return (
+    <Panel title="Conversation" actions={<span className="text-[11px] text-[#64748B]">Read only</span>}>
+      {error && <Alert>{error}</Alert>}
+      {!messages && !error && (
+        <div className="flex justify-center py-6 text-[#94A3B8]">
+          <LoaderCircle className="animate-spin" size={20} aria-label="Loading conversation" />
+        </div>
+      )}
+      {messages && messages.length === 0 && <p className="text-sm text-[#64748B]">No messages.</p>}
+      {messages && messages.length > 0 && (
+        <ol className="flex max-h-[480px] flex-col gap-3 overflow-y-auto pr-1" data-testid="admin-chat">
+          {messages.map((m) => (
+            <li key={m.id} className={cn('text-sm', m.senderId === null && 'text-center')}>
+              {m.senderId === null ? (
+                <span className="inline-block rounded-full bg-white/[0.04] px-3 py-1 text-xs text-[#94A3B8]">{m.content}</span>
+              ) : (
+                <div className={cn('rounded-xl p-3', m.senderId === order.customerId ? 'bg-[#1E293B]' : 'bg-[#00A3FF]/10')}>
+                  <p className="mb-1 text-[11px] font-semibold text-[#94A3B8]">
+                    {who(m)} · {fmtDate(m.createdAt)}
+                  </p>
+                  {m.content && <p className="whitespace-pre-line text-[#E2E8F0]">{m.content}</p>}
+                  {m.attachmentUrl && (
+                    <a href={m.attachmentUrl} target="_blank" rel="noreferrer" className="relative mt-2 block h-32 w-32 overflow-hidden rounded-lg">
+                      <Image src={m.attachmentUrl} alt="Attachment" fill sizes="128px" className="object-cover" />
+                    </a>
+                  )}
+                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+      )}
     </Panel>
   );
 }

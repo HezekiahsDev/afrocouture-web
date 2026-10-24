@@ -5,6 +5,7 @@ import { ChevronRight, LoaderCircle, RefreshCw, Scissors, Store, X } from 'lucid
 import { apiErrorMessage } from '@/lib/api';
 import { getVerificationQueue, reviewMerchant, reviewTailor } from '@/lib/orders';
 import type { KycStatus, MerchantProfile, TailorProfile } from '@/types';
+import { useAdminQueues } from './AdminShell';
 import { Alert, Chips, DocumentPreview, Facts, Pill, fmtDate, naira } from './ui';
 
 type Applicant =
@@ -28,6 +29,7 @@ const statusOf = (a: Applicant) => (a.kind === 'tailor' ? a.profile.kycStatus : 
 const key = (a: Applicant) => `${a.kind}:${a.profile.id}`;
 
 export function VerificationsPanel() {
+  const { refreshQueues } = useAdminQueues();
   const [status, setStatus] = useState<KycStatus>('pending');
   const [kind, setKind] = useState<'all' | 'tailor' | 'merchant'>('all');
   const [items, setItems] = useState<Applicant[] | null>(null);
@@ -142,7 +144,7 @@ export function VerificationsPanel() {
             setOpen(null);
             setError('');
             setNotice(`${nameOf(a)} ${decision === 'approve' ? 'approved' : 'rejected'} — they’ve been emailed.`);
-            request.catch((err: unknown) => {
+            request.then(refreshQueues, (err: unknown) => {
               setItems((list) => (list ? [a, ...list] : list));
               setNotice('');
               setError(`Could not record the decision for ${nameOf(a)}: ${apiErrorMessage(err)}`);

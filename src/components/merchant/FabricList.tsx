@@ -124,9 +124,15 @@ export function FabricList({ savedName }: { savedName?: string }) {
                       fabric.isPublished ? 'bg-[#10B981]/15 text-[#34d399]' : 'bg-white/5 text-[#94A3B8]',
                     )}
                   >
-                    {fabric.isPublished ? 'Published' : 'Hidden'}
+                    {fabric.moderatedAt ? 'Taken down' : fabric.isPublished ? 'Published' : 'Hidden'}
                   </span>
                 </div>
+                {fabric.moderatedAt && (
+                  <p className="mt-1 text-xs text-[#ffb4ab]" data-testid="moderation-note">
+                    AfroCouture took this listing down: “{fabric.unpublishedReason}”. Fix it and contact support to have it
+                    republished.
+                  </p>
+                )}
                 <p className="mt-0.5 text-xs text-[#94A3B8]">
                   {fabric.category}
                   {fabric.stock !== null && ` · ${fabric.stock} in stock`}
@@ -158,7 +164,8 @@ export function FabricList({ savedName }: { savedName?: string }) {
                     <button
                       type="button"
                       onClick={() => togglePublished(fabric)}
-                      disabled={busyId === fabric.id}
+                      disabled={busyId === fabric.id || Boolean(fabric.moderatedAt)}
+                      title={fabric.moderatedAt ? 'Only AfroCouture can republish this listing' : undefined}
                       className="btn-ghost px-3 py-2"
                       aria-label={fabric.isPublished ? `Hide ${fabric.name}` : `Publish ${fabric.name}`}
                     >

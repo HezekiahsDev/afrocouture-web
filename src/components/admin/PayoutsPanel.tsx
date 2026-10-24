@@ -6,6 +6,7 @@ import { CircleAlert, CircleCheck, LoaderCircle, RefreshCw, RotateCcw } from 'lu
 import { apiErrorMessage } from '@/lib/api';
 import { getEscrowQueue, retryPayout } from '@/lib/orders';
 import type { EscrowQueueItem, EscrowTransactionType } from '@/types';
+import { useAdminQueues } from './AdminShell';
 import { Alert, Chips, Pill, fmtDate, naira } from './ui';
 
 const TYPE_LABEL: Record<EscrowTransactionType, string> = {
@@ -16,6 +17,7 @@ const TYPE_LABEL: Record<EscrowTransactionType, string> = {
 };
 
 export function PayoutsPanel() {
+  const { refreshQueues } = useAdminQueues();
   const [status, setStatus] = useState<'failed' | 'pending'>('failed');
   const [items, setItems] = useState<EscrowQueueItem[] | null>(null);
   const [error, setError] = useState('');
@@ -43,6 +45,7 @@ export function PayoutsPanel() {
     setNotice('');
     try {
       await retryPayout(tx.id);
+      refreshQueues();
       setNotice(`Retried ${TYPE_LABEL[tx.type].toLowerCase()} of ${naira(tx.amount)} to ${tx.payee.name ?? 'the payee'}.`);
       await load();
     } catch (err) {

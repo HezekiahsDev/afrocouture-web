@@ -181,12 +181,19 @@ export function FabricForm({ fabric }: { fabric?: MyFabric }) {
         <TierEditor tiers={f.tiers} onChange={(t) => set('tiers', t)} basePrice={basePrice} unit={f.unit} serverError={tierServerError} />
       </SectionCard>
 
-      <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4">
-        <input type="checkbox" checked={f.isPublished} onChange={(e) => set('isPublished', e.target.checked)} className="h-4 w-4 accent-[#00A3FF]" />
-        <span className="text-sm text-[#F8FAFC]">
-          Published <span className="text-xs text-[#94A3B8]">— visible in the fabric explorer and orderable</span>
-        </span>
-      </label>
+      {fabric?.moderatedAt ? (
+        <p className="rounded-2xl border border-[#ffb4ab]/30 bg-[#93000a]/15 p-4 text-sm text-[#ffdad6]">
+          AfroCouture took this listing down: “{fabric.unpublishedReason}”. You can still edit it; contact support once it&apos;s
+          fixed and we&apos;ll republish it.
+        </p>
+      ) : (
+        <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4">
+          <input type="checkbox" checked={f.isPublished} onChange={(e) => set('isPublished', e.target.checked)} className="h-4 w-4 accent-[#00A3FF]" />
+          <span className="text-sm text-[#F8FAFC]">
+            Published <span className="text-xs text-[#94A3B8]">— visible in the fabric explorer and orderable</span>
+          </span>
+        </label>
+      )}
 
       <div className="sticky bottom-4 z-20 flex flex-col gap-3 rounded-2xl border border-white/10 bg-[#0F172A]/95 p-4 shadow-[0_12px_32px_-4px_rgba(0,0,0,0.6)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
         <p className={cn('text-xs', formError ? 'text-[#ffb4ab]' : 'text-[#94A3B8]')} role={formError ? 'alert' : undefined}>

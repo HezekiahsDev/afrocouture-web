@@ -187,7 +187,7 @@ function TrendChart({ days }: { days: AdminOverview['orders']['last30d'] }) {
   const total = values.reduce((a, b) => a + b, 0);
   const fmt = (v: number) => (measure === 'gmv' ? naira(v) : `${v} order${v === 1 ? '' : 's'}`);
   const dayLabel = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('en-NG', { day: 'numeric', month: 'short' });
-  const W = 600, H = 160, gap = 2;
+  const W = 600, H = 160, gap = 4;
   const barW = W / days.length - gap;
   const shown = hover ?? null;
 
@@ -213,23 +213,32 @@ function TrendChart({ days }: { days: AdminOverview['orders']['last30d'] }) {
           ]}
         />
       </div>
-      <svg viewBox={`0 0 ${W} ${H + 18}`} className="h-auto w-full" role="img" aria-label={`${measure === 'gmv' ? 'Paid order value' : 'New orders'} per day; table below`} onMouseLeave={() => setHover(null)}>
-        <line x1="0" x2={W} y1={H} y2={H} stroke="rgba(255,255,255,0.1)" />
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="none"
+        className="h-40 w-full"
+        role="img"
+        aria-label={`${measure === 'gmv' ? 'Paid order value' : 'New orders'} per day; table below`}
+        onMouseLeave={() => setHover(null)}
+      >
+        <line x1="0" x2={W} y1={H} y2={H} stroke="rgba(255,255,255,0.1)" vectorEffect="non-scaling-stroke" />
         {days.map((d, i) => {
           const h = values[i] ? Math.max(3, (values[i] / max) * (H - 8)) : 0;
           const x = i * (barW + gap);
           return (
-            <g key={d.date} onMouseEnter={() => setHover(i)} onFocus={() => setHover(i)} tabIndex={-1}>
+            <g key={d.date} onMouseEnter={() => setHover(i)}>
               {/* Hit target taller than the bar. */}
               <rect x={x} y={0} width={barW + gap} height={H} fill="transparent" />
-              {h > 0 && <path d={`M${x},${H} v${-(h - 4)} q0,-4 4,-4 h${barW - 8} q4,0 4,4 v${h - 4} z`} fill={hover === i ? '#38BDF8' : '#00A3FF'} />}
+              {h > 0 && <rect x={x} y={H - h} width={barW} height={h} rx={3} fill={hover === i ? '#38BDF8' : '#00A3FF'} />}
               <title>{`${dayLabel(d.date)}: ${fmt(values[i])}`}</title>
             </g>
           );
         })}
-        <text x="0" y={H + 14} fill="#64748B" fontSize="10">{dayLabel(days[0]?.date ?? '')}</text>
-        <text x={W} y={H + 14} fill="#64748B" fontSize="10" textAnchor="end">{dayLabel(days[days.length - 1]?.date ?? '')}</text>
       </svg>
+      <div className="mt-1 flex justify-between text-[11px] text-[#64748B]">
+        <span>{dayLabel(days[0]?.date ?? '')}</span>
+        <span>{dayLabel(days[days.length - 1]?.date ?? '')}</span>
+      </div>
       <details className="mt-3 text-xs text-[#94A3B8]">
         <summary className="cursor-pointer select-none">Show as table</summary>
         <table className="mt-2 w-full text-left">
