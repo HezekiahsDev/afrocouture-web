@@ -8,7 +8,7 @@ import { ArrowLeft, ArrowRight, Check, Minus, Plus, Ruler, Sparkles, Trash2, X }
 import { RequireAuth } from '@/components/auth/RequireAuth';
 import { FileUpload } from '@/components/ui/FileUpload';
 import { Portrait, VerifiedBadge } from '@/components/marketplace/shared';
-import { getFabrics, getMyFitProfile, getSaved, getTailors, naira } from '@/lib/catalog';
+import { getFabrics, getMyFitProfile, getSaved, getTailors, naira, saveItem } from '@/lib/catalog';
 import { getDesign } from '@/lib/ai';
 import { createOrder } from '@/lib/orders';
 import { unitPriceFor } from '@/lib/payments';
@@ -194,8 +194,19 @@ function NewOrder({
   }
 
   const show = (key: keyof typeof errors) => (touched ? errors[key] : undefined);
-  const setQuantity = (id: string, quantity: number) =>
-    setChosen((prev) => new Map(prev).set(id, Math.min(200, Math.max(1, quantity))));
+  const setQuantity = (id: string, quantity: number) => {
+    const next = Math.min(200, Math.max(1, quantity));
+    setChosen((prev) => new Map(prev).set(id, next));
+    // Keep the saved selection in step, so the same quantity shows on /saved.
+    if (data.savedFabrics.some((item) => item.itemId === id))
+      saveItem('fabric', id, next)
+        .then((saved) =>
+          setData((prev) =>
+            prev && { ...prev, savedFabrics: prev.savedFabrics.map((item) => (item.itemId === id ? saved : item)) },
+          ),
+        )
+        .catch((err) => setError(apiErrorMessage(err, 'Could not update that quantity.')));
+  };
   const toggleFabric = (id: string) =>
     setChosen((prev) => {
       const next = new Map(prev);
@@ -224,6 +235,26 @@ function NewOrder({
           you accept their quote.
         </p>
       </header>
+
+      <ol className="grid gap-2 text-xs sm:grid-cols-4" aria-label="Steps to send your request">
+        {[
+          { label: 'Choose an artisan', done: Boolean(tailor && !tailor.isSample) },
+          { label: 'Describe the piece', done: !errors.garment && !errors.brief },
+          { label: 'Add fabric (optional)', done: selectedFabrics.length > 0 },
+          { label: 'Send the request', done: false },
+        ].map((step, index) => (
+          <li
+            key={step.label}
+            className={cn(
+              'flex items-center gap-2 rounded-xl border px-3 py-2',
+              step.done ? 'border-[#34d399]/40 text-[#34d399]' : 'border-white/10 text-[#94A3B8]',
+            )}
+          >
+            {step.done ? <Check size={14} aria-hidden="true" /> : <span className="font-bold">{index + 1}</span>}
+            {step.label}
+          </li>
+        ))}
+      </ol>
 
       {!fitReady && (
         <InlineAlert tone="info">
@@ -534,6 +565,18 @@ function NewOrder({
               <div className="flex justify-between gap-3">
                 <dt className="text-[#94A3B8]">Fabric</dt>
                 <dd className="text-right tabular-nums text-[#F8FAFC]">{selectedFabrics.length ? naira(fabricTotal) : 'None'}</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-[#94A3B8]">Workmanship</dt>
+                <dd className="text-right tabular-nums text-[#F8FAFC]">
+                  {tailor && !tailor.isSample && tailor.startingPrice !== null ? `From ${naira(tailor.startingPrice)}` : 'Quoted by artisan'}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-3 border-t border-white/10 pt-2">
+                <dt className="font-semibold text-[#F8FAFC]">Estimate so far</dt>
+                <dd className="text-right font-bold tabular-nums text-[#F8FAFC]">
+                  {naira(fabricTotal + (tailor && !tailor.isSample ? (tailor.startingPrice ?? 0) : 0))}
+                </dd>
               </div>
               <div className="flex justify-between gap-3">
                 <dt className="text-[#94A3B8]">Fit profile</dt>
