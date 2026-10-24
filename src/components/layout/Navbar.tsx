@@ -28,6 +28,7 @@ import type { SelfServiceRole, User } from "@/types";
 import { AI_STUDIO_ENABLED } from "@/lib/features";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { useUnreadNotifications } from "@/components/notifications/useNotifications";
+import { SetupBanner } from "@/components/onboarding/SetupBanner";
 
 const links = [
   { label: "Discover", href: "/marketplace" },
@@ -147,6 +148,7 @@ function NavbarContent() {
     user && isSelfService(user.role) ? ROLE_HOME[user.role] : null;
 
   return (
+    <>
     <header className="site-header">
       <div className="nav-shell">
         <Link
@@ -393,5 +395,7 @@ function NavbarContent() {
         </div>
       </div>
     </header>
+    {status === "authenticated" && user && <SetupBanner user={user} pathname={pathname} />}
+    </>
   );
 }

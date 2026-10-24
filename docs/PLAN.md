@@ -119,6 +119,7 @@ Deployed: web on Vercel, API on the VPS behind nginx/HTTPS.
 - [x] Rate limiting (Redis) on auth, uploads and AI
 
 ### Phase 5 — AI Design Studio ⏸ (built; deferred until Vertex credentials are ready)
+
 While `NEXT_PUBLIC_AI_STUDIO_ENABLED` is unset, `/ai-studio` shows "coming soon", the nav shows a "Soon" badge, and the
 Discover idea box opens a commission with the idea as the brief, where customers upload photos of the style they want.
 To launch: set the Vertex env on the API, set `NEXT_PUBLIC_AI_STUDIO_ENABLED=true` on Vercel, redeploy the web.

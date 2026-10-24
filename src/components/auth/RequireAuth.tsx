@@ -7,6 +7,7 @@ import { LoaderCircle, ShieldAlert } from 'lucide-react';
 import { useAuth } from './AuthProvider';
 import { apiErrorMessage } from '@/lib/api';
 import { decideAccess } from '@/lib/access';
+import { hasKnownAccount } from '@/lib/session-client';
 import type { SelfServiceRole } from '@/types';
 
 const ROLE_LABEL: Record<SelfServiceRole, string> = {
@@ -55,7 +56,8 @@ export function RequireAuth({ role, children }: { role?: SelfServiceRole | 'admi
     // Read the location here rather than with usePathname(), which would block
     // prerendering on dynamic routes that use this gate.
     const params = new URLSearchParams({ next: window.location.pathname + window.location.search });
-    if (signedOutReason === 'expired') {
+    // Expired sessions and returning visitors sign in; only new people are sent to sign up.
+    if (signedOutReason === 'expired' || hasKnownAccount()) {
       router.replace(`/signin?${params}`);
       return;
     }

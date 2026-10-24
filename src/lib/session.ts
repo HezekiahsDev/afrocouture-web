@@ -7,6 +7,11 @@
 import type { AppRole } from './access';
 
 export const SESSION_COOKIE = 'ac_session';
+/**
+ * Not secret: set once this browser has created or signed in to an account, so signed-out
+ * visits to setup pages offer "sign in" (to pick up where they left off) instead of "sign up".
+ */
+export const KNOWN_ACCOUNT_COOKIE = 'ac_known';
 /** Matches the API's refresh-token lifetime; re-issued on every refresh, so it slides. */
 export const SESSION_MAX_AGE = 7 * 24 * 60 * 60;
 

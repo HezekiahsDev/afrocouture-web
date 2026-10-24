@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { decideAccess, ruleFor } from '@/lib/access';
-import { SESSION_COOKIE, verifySession } from '@/lib/session';
+import { KNOWN_ACCOUNT_COOKIE, SESSION_COOKIE, verifySession } from '@/lib/session';
 
 /**
  * Role-based access before anything renders: protected pages are only served to roles
@@ -12,7 +12,7 @@ export async function proxy(request: NextRequest) {
   if (!ruleFor(pathname)) return NextResponse.next();
 
   const session = await verifySession(request.cookies.get(SESSION_COOKIE)?.value);
-  const decision = decideAccess(pathname, session?.role ?? null);
+  const decision = decideAccess(pathname, session?.role ?? null, request.cookies.has(KNOWN_ACCOUNT_COOKIE));
 
   if (decision.kind === 'allow') {
     const res = NextResponse.next();

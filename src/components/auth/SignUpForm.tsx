@@ -3,19 +3,23 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Eye, EyeOff, LoaderCircle, Scissors, ShoppingBag, Sparkles } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, LoaderCircle } from 'lucide-react';
 import { AuthField, AuthShell, FormAlert } from './AuthShell';
 import { useAuth } from './AuthProvider';
 import { register, ROLE_HOME, safeNext } from '@/lib/auth';
-import { landingFor } from '@/lib/access';
-import { apiErrorMessage } from '@/lib/api';
+import { landingAfterAuth } from '@/lib/access';
+import { apiErrorCode, apiErrorMessage } from '@/lib/api';
+import { rememberAccount } from '@/lib/session-client';
 import type { SelfServiceRole } from '@/types';
 
-const ROLES: { id: SelfServiceRole; label: string; icon: typeof ShoppingBag }[] = [
-  { id: 'customer', label: 'Customer', icon: ShoppingBag },
-  { id: 'tailor', label: 'Artisan', icon: Scissors },
-  { id: 'merchant', label: 'Merchant', icon: Sparkles },
-];
+/** What they'll set up after creating the account, when they came from a "join as…" button. */
+const NEXT_STEP: Record<SelfServiceRole, string> = {
+  customer: 'Next, you can add your measurements — or skip and start exploring.',
+  tailor: 'Next, you’ll set up your artisan profile. Customers see it once our team has verified it.',
+  merchant: 'Next, you’ll add your business details. Your fabrics go live once our team has verified you.',
+};
+const isRole = (value: string | undefined): value is SelfServiceRole =>
+  value === 'customer' || value === 'tailor' || value === 'merchant';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -66,20 +70,20 @@ export function PasswordInput({
 export default function SignUpForm({ initialRole, next }: { initialRole?: string; next?: string }) {
   const router = useRouter();
   const { status, user } = useAuth();
-  const [role, setRole] = useState<SelfServiceRole>(
-    ROLES.some((r) => r.id === initialRole) ? (initialRole as SelfServiceRole) : 'customer',
-  );
+  // Optional intent from a "join as…" link; otherwise they choose a path after verifying.
+  const intent = isRole(initialRole) ? initialRole : undefined;
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [existing, setExisting] = useState('');
 
   // Already signed in: there is nothing to sign up for.
   useEffect(() => {
     if (status === 'authenticated' && user) {
-      router.replace(landingFor(user.role, next, ROLE_HOME[user.role as SelfServiceRole]));
+      router.replace(landingAfterAuth(user, next, ROLE_HOME[user.role as SelfServiceRole]));
     }
   }, [status, user, next, router]);
 
@@ -94,6 +98,7 @@ export default function SignUpForm({ initialRole, next }: { initialRole?: string
     event.preventDefault();
     setTouched(true);
     setError('');
+    setExisting('');
     if (Object.values(errors).some(Boolean)) return;
 
     setSubmitting(true);
@@ -102,17 +107,30 @@ export default function SignUpForm({ initialRole, next }: { initialRole?: string
         email: email.trim(),
         password,
         fullName: fullName.trim(),
-        role,
+        role: intent,
       });
-      const params = new URLSearchParams({ email: registered, next: safeNext(next, ROLE_HOME[role]) });
+      rememberAccount();
+      const params = new URLSearchParams({ email: registered, next: safeNext(next, intent ? ROLE_HOME[intent] : '/onboarding') });
       router.push(`/verify-email?${params}`);
     } catch (err) {
-      setError(apiErrorMessage(err));
+      if (apiErrorCode(err) === 'ACCOUNT_EXISTS') {
+        rememberAccount();
+        setExisting(email.trim().toLowerCase());
+      } else {
+        setError(apiErrorMessage(err));
+      }
       setSubmitting(false);
     }
   }
 
-  const signInHref = `/signin${next ? `?next=${encodeURIComponent(next)}` : ''}`;
+  const signInQuery = (withEmail?: string) => {
+    const params = new URLSearchParams();
+    if (next) params.set('next', next);
+    if (withEmail) params.set('email', withEmail);
+    const qs = params.toString();
+    return `/signin${qs ? `?${qs}` : ''}`;
+  };
+  const signInHref = signInQuery();
 
   return (
     <AuthShell
@@ -122,7 +140,11 @@ export default function SignUpForm({ initialRole, next }: { initialRole?: string
           Join the <span className="text-[#00A3FF]">atelier.</span>
         </>
       }
-      subtitle="We'll email you a 6-digit code to confirm it's really you."
+      subtitle={
+        intent
+          ? `Just your account first. ${NEXT_STEP[intent]}`
+          : 'Just your account first. We’ll email you a 6-digit code, then you choose how you’ll use AfroCouture.'
+      }
       footer={
         <>
           Already have an account?{' '}
@@ -133,28 +155,6 @@ export default function SignUpForm({ initialRole, next }: { initialRole?: string
       }
     >
       <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
-        <fieldset className="flex flex-col gap-1.5">
-          <legend className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">I am joining as</legend>
-          <div className="grid grid-cols-3 gap-2">
-            {ROLES.map(({ id, label, icon: Icon }) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setRole(id)}
-                aria-pressed={role === id}
-                className={`flex flex-col items-center gap-1.5 rounded-xl border px-2 py-3 text-xs font-semibold transition ${
-                  role === id
-                    ? 'border-[#00A3FF] bg-[#00A3FF]/10 text-[#F8FAFC] shadow-[0_0_20px_-6px_rgba(0,163,255,0.5)]'
-                    : 'border-white/10 bg-[#0F172A]/60 text-[#94A3B8] hover:border-white/20'
-                }`}
-              >
-                <Icon size={18} className={role === id ? 'text-[#00A3FF]' : ''} aria-hidden="true" />
-                {label}
-              </button>
-            ))}
-          </div>
-        </fieldset>
-
         <AuthField label="Full name" error={show('fullName')}>
           {(props) => (
             <input
@@ -195,6 +195,20 @@ export default function SignUpForm({ initialRole, next }: { initialRole?: string
           )}
         </AuthField>
 
+        {existing && (
+          <FormAlert tone="info">
+            <p className="font-semibold text-[#F8FAFC]">You already have an account with this email.</p>
+            <p className="mt-1">Sign in to pick up where you left off — your progress is saved.</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Link href={signInQuery(existing)} className="btn-primary px-4 py-2">
+                Sign in <ArrowRight size={15} aria-hidden="true" />
+              </Link>
+              <Link href={`/forgot-password?${new URLSearchParams({ email: existing })}`} className="btn-ghost px-4 py-2">
+                Forgot password?
+              </Link>
+            </div>
+          </FormAlert>
+        )}
         {error && <FormAlert>{error}</FormAlert>}
 
         <button type="submit" className="btn-primary w-full justify-center py-3.5" disabled={submitting}>

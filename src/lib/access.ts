@@ -60,16 +60,34 @@ export type AccessDecision =
   | { kind: 'signup'; role: Exclude<AppRole, 'admin'> }
   | { kind: 'redirect'; to: string };
 
-/** The decision for `role` (null = signed out) opening `pathname`. */
-export function decideAccess(pathname: string, role: AppRole | null): AccessDecision {
+/**
+ * The decision for `role` (null = signed out) opening `pathname`. `knownAccount`: this
+ * browser has signed in before, so a returning visitor is asked to sign in, not sign up.
+ */
+export function decideAccess(pathname: string, role: AppRole | null, knownAccount = false): AccessDecision {
   const rule = ruleFor(pathname);
   if (!rule) return { kind: 'allow' };
-  if (!role) return rule.signupAs ? { kind: 'signup', role: rule.signupAs } : { kind: 'signin' };
+  if (!role) return rule.signupAs && !knownAccount ? { kind: 'signup', role: rule.signupAs } : { kind: 'signin' };
   if (rule.allow === 'members') {
     return role === 'admin' ? { kind: 'redirect', to: adminEquivalent(pathname) } : { kind: 'allow' };
   }
   if (rule.allow.includes(role)) return { kind: 'allow' };
   return { kind: 'redirect', to: role === 'admin' ? adminEquivalent(pathname) : '/marketplace' };
+}
+
+/**
+ * Where to go after signing in or verifying: an account that never chose how it will use
+ * AfroCouture goes back to that step (unless it was heading somewhere specific), so an
+ * abandoned sign-up resumes where it stopped.
+ */
+export function landingAfterAuth(
+  user: { role: AppRole; pathChosenAt?: string | null },
+  next: string | null | undefined,
+  home?: string,
+): string {
+  const heading = next?.split(/[?#]/)[0];
+  if (user.role !== 'admin' && !user.pathChosenAt && (!heading || heading.startsWith('/onboarding'))) return '/onboarding';
+  return landingFor(user.role, next, home);
 }
 
 /**

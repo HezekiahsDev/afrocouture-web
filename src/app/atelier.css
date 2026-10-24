@@ -2944,6 +2944,48 @@ section[aria-labelledby="saved-artisans"] .mk-saved-row {
   background: rgba(0, 163, 255, 0.2);
 }
 
+/* ── Account setup banner (under the navbar) ── */
+.mk-setup-banner {
+  border-bottom: 1px solid rgba(0, 163, 255, 0.25);
+  background: rgba(0, 163, 255, 0.08);
+}
+.mk-setup-inner {
+  width: min(100% - 80px, 1376px);
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  color: #cfe5ff;
+  font-size: 13px;
+}
+.mk-setup-inner svg {
+  flex: none;
+  color: var(--accent-soft);
+}
+.mk-setup-inner p {
+  flex: 1;
+  min-width: 0;
+}
+.mk-setup-inner a {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.mk-setup-inner a:hover {
+  color: var(--accent-soft);
+}
+@media (max-width: 800px) {
+  .mk-setup-inner {
+    width: calc(100% - 32px);
+    flex-wrap: wrap;
+  }
+}
+
 /* ── Notifications (bell dropdown + /notifications page) ── */
 .mk-notif-menu {
   position: absolute;

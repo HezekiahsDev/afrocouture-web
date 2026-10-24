@@ -8,7 +8,7 @@ import { AuthShell, FormAlert } from './AuthShell';
 import { CodeInput } from './CodeInput';
 import { useAuth } from './AuthProvider';
 import { resendVerification, ROLE_HOME, verifyEmail } from '@/lib/auth';
-import { landingFor } from '@/lib/access';
+import { landingAfterAuth } from '@/lib/access';
 import { apiErrorMessage } from '@/lib/api';
 import type { SelfServiceRole } from '@/types';
 
@@ -47,7 +47,7 @@ export default function VerifyEmailForm({ email, next }: { email?: string; next?
     try {
       const session = await verifyEmail(email!, value);
       await signIn(session);
-      router.replace(landingFor(session.user.role, next, ROLE_HOME[session.user.role as SelfServiceRole]));
+      router.replace(landingAfterAuth(session.user, next, ROLE_HOME[session.user.role as SelfServiceRole]));
     } catch (err) {
       setError(apiErrorMessage(err, 'That code did not work. Check it and try again.'));
       setCode('');

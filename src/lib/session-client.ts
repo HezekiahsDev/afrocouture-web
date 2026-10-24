@@ -1,5 +1,15 @@
 import { TOKEN_KEYS } from './api';
 import type { AppRole } from './access';
+import { KNOWN_ACCOUNT_COOKIE } from './session';
+
+/** Remember (for a year) that this browser has an account, so returning visitors are asked to sign in. */
+export function rememberAccount() {
+  document.cookie = `${KNOWN_ACCOUNT_COOKIE}=1; Path=/; Max-Age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+}
+
+export function hasKnownAccount(): boolean {
+  return document.cookie.split('; ').some((c) => c === `${KNOWN_ACCOUNT_COOKIE}=1`);
+}
 
 /**
  * Keeps the server-side session cookie (see lib/session.ts) in step with the tokens in

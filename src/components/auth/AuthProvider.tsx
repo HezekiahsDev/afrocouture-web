@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { apiErrorCode, SESSION_EXPIRED_EVENT, TOKENS_REFRESHED_EVENT } from '@/lib/api';
 import * as auth from '@/lib/auth';
-import { clearSessionCookie, syncSessionCookie } from '@/lib/session-client';
+import { clearSessionCookie, rememberAccount, syncSessionCookie } from '@/lib/session-client';
 import { bindChatSocketUser } from '@/lib/socket';
 import type { AuthSession, SelfServiceRole, User } from '@/types';
 
@@ -80,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signedOutReason,
       signIn: async (session) => {
         auth.saveTokens(session);
+        rememberAccount();
         await syncSessionCookie();
         setUser(session.user);
         setStatus('authenticated');

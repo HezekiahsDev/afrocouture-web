@@ -9,7 +9,7 @@ import { PasswordInput } from './SignUpForm';
 import { useAuth } from './AuthProvider';
 import { login, resendVerification } from '@/lib/auth';
 import { apiErrorCode, apiErrorMessage } from '@/lib/api';
-import { landingFor } from '@/lib/access';
+import { landingAfterAuth } from '@/lib/access';
 
 export default function SignInForm({ next, email: initialEmail, reason }: { next?: string; email?: string; reason?: string }) {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function SignInForm({ next, email: initialEmail, reason }: { next
 
   useEffect(() => {
     if (status === 'authenticated' && user && !submitting) {
-      router.replace(landingFor(user.role, next));
+      router.replace(landingAfterAuth(user, next));
     }
   }, [status, user, next, router, submitting]);
 
@@ -38,7 +38,7 @@ export default function SignInForm({ next, email: initialEmail, reason }: { next
     try {
       const session = await login(email.trim(), password);
       await signIn(session);
-      router.replace(landingFor(session.user.role, next));
+      router.replace(landingAfterAuth(session.user, next));
     } catch (err) {
       if (apiErrorCode(err) === 'EMAIL_NOT_VERIFIED') {
         // Send a fresh code (ignore the "wait a minute" throttle — a recent code still works).

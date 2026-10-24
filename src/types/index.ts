@@ -18,6 +18,8 @@ export interface User {
   role: UserRole;
   status: string;
   emailVerified: boolean;
+  /** Null until they choose how they'll use AfroCouture (shop, make or sell). */
+  pathChosenAt?: string | null;
   createdAt: string;
 }
 

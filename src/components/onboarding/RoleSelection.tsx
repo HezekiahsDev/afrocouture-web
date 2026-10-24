@@ -30,9 +30,9 @@ const roles = [
     benefits: [
       "Discover artisans",
       "Explore the textile edit",
-      "Build your fit profile",
+      "Add measurements when you commission",
     ],
-    cta: "Continue as a customer",
+    cta: "Start exploring",
   },
   {
     id: "tailor" as Role,
@@ -83,13 +83,15 @@ export default function RoleSelection({ idea }: { idea?: string }) {
 
   async function continueJourney() {
     if (idea) sessionStorage.setItem("afrocouture-style-idea", idea);
-    const home = ROLE_HOME[selected];
+    // Customers can start browsing straight away; measurements are asked for when they commission.
+    const home = selected === "customer" ? "/marketplace" : ROLE_HOME[selected];
     if (status !== "authenticated" || !user) {
       router.push(`/signup?${new URLSearchParams({ role: selected, next: home })}`);
       return;
     }
     setError("");
-    if (user.role !== selected) {
+    // Also records the choice when it matches their current role, so sign-in stops asking.
+    if (user.role !== selected || !user.pathChosenAt) {
       setPending(true);
       try {
         await setRole(selected);
@@ -107,13 +109,24 @@ export default function RoleSelection({ idea }: { idea?: string }) {
         <ArrowLeft size={16} /> Back to discover
       </Link>
       <div className="join-intro">
-        <span className="section-kicker">YOUR JOURNEY STARTS HERE</span>
+        <span className="section-kicker">
+          {status === "authenticated" && user ? "YOUR ACCOUNT IS READY" : "YOUR JOURNEY STARTS HERE"}
+        </span>
         <h1>
-          There is room for <em>your story.</em>
+          {status === "authenticated" && user ? (
+            <>
+              Welcome{user.fullName ? `, ${user.fullName.split(" ")[0]}` : ""}. <em>How will you use AfroCouture?</em>
+            </>
+          ) : (
+            <>
+              There is room for <em>your story.</em>
+            </>
+          )}
         </h1>
         <p>
-          Every piece starts with a person. Tell us where you fit in the
-          atelier.
+          {status === "authenticated" && user
+            ? "Pick a path to finish setting up. Artisans and fabric merchants are verified by our team before customers can see them."
+            : "Every piece starts with a person. Tell us where you fit in the atelier — you’ll create your account first, then set up the rest."}
         </p>
       </div>
       {idea && (
@@ -176,7 +189,7 @@ export default function RoleSelection({ idea }: { idea?: string }) {
             disabled={pending || status === "loading"}
             aria-busy={pending}
           >
-            {pending ? "Switching your account…" : chosen.cta}
+            {pending ? "Setting up your account…" : chosen.cta}
             {pending ? (
               <LoaderCircle size={19} className="animate-spin" />
             ) : (
@@ -190,7 +203,7 @@ export default function RoleSelection({ idea }: { idea?: string }) {
           )}
           <p className="join-note">
             {status === "authenticated" ? (
-              "You can switch roles later from your account."
+              "You can change this until you submit a profile for review or place an order."
             ) : (
               <>
                 Already have an account?{" "}
