@@ -1,33 +1,42 @@
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import MarketplaceHero from '@/components/marketplace/MarketplaceHero';
-import QuickActionGrid from '@/components/marketplace/QuickActionGrid';
-import AIPromptBar from '@/components/marketplace/AIPromptBar';
-import StyleCarousel from '@/components/marketplace/StyleCarousel';
-import FeaturedTailors from '@/components/marketplace/FeaturedTailors';
-import TrendingFabrics from '@/components/marketplace/TrendingFabrics';
-import EscrowGuaranteeStrip from '@/components/marketplace/EscrowGuaranteeStrip';
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import MarketplaceExperience from "@/components/marketplace/MarketplaceExperience";
 
 export const metadata: Metadata = {
-  title: 'Marketplace — AfroCouture AI',
-  description: 'Browse verified African tailors, explore premium fabrics, and generate bespoke outfits with AI.',
+  title: "Discover | AfroCouture",
+  description:
+    "Discover African couture, artisan makers, and beautiful textiles.",
 };
 
-export default function MarketplacePage() {
+async function MarketplaceContent({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
+  return <MarketplaceExperience key={q ?? ""} initialQuery={q ?? ""} />;
+}
+
+export default function MarketplacePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
   return (
-    <div style={{ minHeight: '100vh', background: '#090D16' }}>
-      <Navbar />
-      <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '1.5rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-        <MarketplaceHero />
-        <QuickActionGrid />
-        <AIPromptBar />
-        <StyleCarousel />
-        <FeaturedTailors />
-        <TrendingFabrics />
-        <EscrowGuaranteeStrip />
-      </main>
-      <Footer />
-    </div>
+      <div className="marketplace-site">
+        <Navbar />
+        <main>
+          <Suspense
+            fallback={
+              <div className="page-shell" style={{ minHeight: "70vh" }} />
+            }
+          >
+            <MarketplaceContent searchParams={searchParams} />
+          </Suspense>
+        </main>
+        <Footer />
+      </div>
   );
 }

@@ -1,0 +1,78 @@
+/**
+ * Who may open which page. Shared by the proxy (server, before any HTML is sent) and the
+ * client guards, so the two never disagree. The API enforces the same rules on every
+ * request (see afrocouture-api/docs/rbac.md); these checks keep people off pages whose
+ * data they could never load, and send admins to their dashboard.
+ */
+export type AppRole = 'customer' | 'tailor' | 'merchant' | 'admin';
+
+type Rule = {
+  /** Path prefix, matched on whole segments ("/orders" matches "/orders/x", not "/ordersx"). */
+  prefix: string;
+  /** Roles allowed in; 'members' = any signed-in non-admin account. */
+  allow: AppRole[] | 'members';
+};
+
+// First match wins, so more specific prefixes come first.
+const RULES: Rule[] = [
+  { prefix: '/admin', allow: ['admin'] },
+  { prefix: '/merchant', allow: ['merchant'] },
+  // Onboarding pages offer a role switch client-side (before the role is locked), so any member may open them.
+  { prefix: '/onboarding/fit-profile', allow: 'members' },
+  { prefix: '/onboarding/tailor-kyc', allow: 'members' },
+  { prefix: '/onboarding/merchant-verification', allow: 'members' },
+  { prefix: '/orders', allow: 'members' },
+  { prefix: '/saved', allow: 'members' },
+  { prefix: '/notifications', allow: 'members' },
+];
+
+const matches = (pathname: string, prefix: string) => pathname === prefix || pathname.startsWith(`${prefix}/`);
+
+export function ruleFor(pathname: string): Rule | null {
+  return RULES.find((rule) => matches(pathname, rule.prefix)) ?? null;
+}
+
+/** Where an admin goes instead of a members-only page. */
+function adminEquivalent(pathname: string): string {
+  const order = pathname.match(/^\/orders\/([0-9a-f-]{36})$/i);
+  if (order) return `/admin/orders/${order[1]}`;
+  if (matches(pathname, '/orders')) return '/admin/orders';
+  if (matches(pathname, '/notifications')) return '/admin/notifications';
+  if (matches(pathname, '/merchant')) return '/admin/fabrics';
+  return '/admin';
+}
+
+/** Landing page after signing in. */
+export function homeFor(role: AppRole): string {
+  if (role === 'admin') return '/admin';
+  if (role === 'tailor') return '/onboarding/tailor-kyc';
+  if (role === 'merchant') return '/onboarding/merchant-verification';
+  return '/marketplace';
+}
+
+export type AccessDecision = { kind: 'allow' } | { kind: 'signin' } | { kind: 'redirect'; to: string };
+
+/** The decision for `role` (null = signed out) opening `pathname`. */
+export function decideAccess(pathname: string, role: AppRole | null): AccessDecision {
+  const rule = ruleFor(pathname);
+  if (!rule) return { kind: 'allow' };
+  if (!role) return { kind: 'signin' };
+  if (rule.allow === 'members') {
+    return role === 'admin' ? { kind: 'redirect', to: adminEquivalent(pathname) } : { kind: 'allow' };
+  }
+  if (rule.allow.includes(role)) return { kind: 'allow' };
+  return { kind: 'redirect', to: role === 'admin' ? adminEquivalent(pathname) : '/marketplace' };
+}
+
+/**
+ * Where to go after signing in: `next` when this role may open it, otherwise their home.
+ * Admins always land in the dashboard unless `next` is an admin page.
+ */
+export function landingFor(role: AppRole, next: string | null | undefined, home = homeFor(role)): string {
+  if (role === 'admin') home = '/admin';
+  const safe = next && next.startsWith('/') && !next.startsWith('//') ? next : null;
+  if (!safe) return home;
+  const path = safe.split(/[?#]/)[0];
+  if (role === 'admin' && !matches(path, '/admin')) return '/admin';
+  return decideAccess(path, role).kind === 'allow' ? safe : home;
+}

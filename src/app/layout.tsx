@@ -1,19 +1,20 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Inter } from 'next/font/google';
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
-
-const jakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-jakarta',
-  display: 'swap',
-});
+import './atelier.css';
+import { AuthProvider } from '@/components/auth/AuthProvider';
+import { SavedProvider } from '@/components/marketplace/shared';
 
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-inter',
   display: 'swap',
+  variable: '--font-inter',
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jakarta',
 });
 
 export const metadata: Metadata = {
@@ -34,9 +35,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${jakartaSans.variable} ${inter.variable}`}>
-      <body className="bg-ambient">
-        <div className="relative z-10">{children}</div>
+    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+      <body className="bg-ambient font-sans">
+        <AuthProvider>
+          <SavedProvider>
+            <div className="relative z-10">{children}</div>
+          </SavedProvider>
+        </AuthProvider>
       </body>
     </html>
   );
