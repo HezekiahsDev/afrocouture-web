@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { LogOut, Sparkles } from 'lucide-react';
 import { Icon } from '@/components/ui/Icon';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { SUPPORT } from '@/lib/support';
 
 interface PortalHeaderProps {
   /** Small caption under the wordmark, e.g. "Customer fit profile" */
@@ -25,8 +26,6 @@ const ROLE_LABEL: Record<string, string> = {
   merchant: 'Merchant',
   admin: 'Admin',
 };
-
-const supportEmail = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
 
 function initials(name: string | null | undefined, email: string): string {
   const source = name?.trim() || email;
@@ -157,9 +156,12 @@ export function PortalHeader({ portal, current, links = defaultLinks }: PortalHe
             <Icon name="switch_account" className="text-[16px]" />
             <span>Switch role</span>
           </Link>
-          {supportEmail && (
+          {SUPPORT.whatsappUrl && (
             <a
-              href={`mailto:${supportEmail}`}
+              href={SUPPORT.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Support on WhatsApp"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0F172A] border border-white/[0.12] text-[#94A3B8] hover:border-[#00A3FF]/40 hover:text-[#F8FAFC] transition-all text-xs whitespace-nowrap"
             >
               <Icon name="support_agent" className="text-[16px]" />

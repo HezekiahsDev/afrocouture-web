@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import LegalPage, { ContactLink, type LegalSection } from "@/components/legal/LegalPage";
+import LegalPage, { CommunityLink, ContactLink, type LegalSection } from "@/components/legal/LegalPage";
 import { LEGAL } from "@/lib/legal";
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ const sections: LegalSection[] = [
         <li>You must be at least 18 and able to enter a binding contract.</li>
         <li>Each account belongs to one person or business. Give accurate information and keep it up to date.</li>
         <li>
-          Keep your password private. You are responsible for activity on your account. Tell us straight away at{" "}
+          Keep your password private. You are responsible for activity on your account. Tell us straight away on{" "}
           <ContactLink /> if you think someone else has used it.
         </li>
         <li>We confirm your email address with a one-time code before your account becomes active.</li>
@@ -287,7 +287,7 @@ const sections: LegalSection[] = [
           reference, the artisan uses it only as inspiration for your order.
         </li>
         <li>
-          If you think content on AfroCouture infringes your rights, email <ContactLink /> and we will look into it.
+          If you think content on AfroCouture infringes your rights, message us on <ContactLink /> and we will look into it.
         </li>
       </ul>
     ),
@@ -310,7 +310,7 @@ const sections: LegalSection[] = [
     body: (
       <ul>
         <li>
-          You can close your account at any time by emailing <ContactLink />. Orders already paid must be completed
+          You can close your account at any time by messaging us on <ContactLink />. Orders already paid must be completed
           or settled first.
         </li>
         <li>
@@ -379,6 +379,7 @@ const sections: LegalSection[] = [
     body: (
       <p>
         Questions about these terms: <ContactLink />.
+        <CommunityLink />
       </p>
     ),
   },

@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { LEGAL } from '@/lib/legal';
+import { SUPPORT } from '@/lib/support';
 
 export interface LegalSection {
   id: string;
@@ -73,7 +74,27 @@ export default function LegalPage({
   );
 }
 
-/** mailto link to the support address. */
+/** WhatsApp link to support. */
 export function ContactLink() {
-  return <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a>;
+  if (!SUPPORT.whatsappUrl) return <>AfroCouture support</>;
+  return (
+    <a href={SUPPORT.whatsappUrl} target="_blank" rel="noopener noreferrer">
+      WhatsApp {SUPPORT.whatsappDisplay}
+    </a>
+  );
+}
+
+/** "You can also join our WhatsApp community." when a group link is configured. */
+export function CommunityLink() {
+  if (!SUPPORT.groupUrl) return null;
+  return (
+    <>
+      {' '}
+      You can also join our{' '}
+      <a href={SUPPORT.groupUrl} target="_blank" rel="noopener noreferrer">
+        WhatsApp community
+      </a>
+      .
+    </>
+  );
 }

@@ -2,7 +2,6 @@
 export const LEGAL = {
   operator: 'AfroCouture',
   brand: 'AfroCouture AI',
-  contactEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'support@afrocouture.ai',
   country: 'Nigeria',
   lastUpdated: '24 October 2026',
   /** Days after delivery before an order completes on its own (AUTO_APPROVE_DAYS on the API). */

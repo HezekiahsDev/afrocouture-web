@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { SUPPORT } from "@/lib/support";
 
 export default function Footer() {
   return (
@@ -25,6 +26,11 @@ export default function Footer() {
         <div>
           <Link href="/fabric-explorer">Fabrics</Link>
           <Link href="/tailors">Artisans</Link>
+          {SUPPORT.whatsappUrl && (
+            <a href={SUPPORT.whatsappUrl} target="_blank" rel="noopener noreferrer">
+              Support
+            </a>
+          )}
           <Link href="/terms">Terms</Link>
           <Link href="/privacy">Privacy</Link>
         </div>

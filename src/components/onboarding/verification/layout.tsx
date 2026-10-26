@@ -14,9 +14,8 @@ import {
   Send,
 } from 'lucide-react';
 import { PortalHeader } from '@/components/onboarding/PortalHeader';
+import { SUPPORT } from '@/lib/support';
 import type { KycStatus } from '@/types';
-
-const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL;
 
 export function VerificationShell({ portal, current, children }: { portal: string; current: string; children: ReactNode }) {
   return (
@@ -29,9 +28,9 @@ export function VerificationShell({ portal, current, children }: { portal: strin
       <footer className="border-t border-white/[0.06] bg-[#0A0E17]/95 py-6">
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 px-4 text-xs text-[#64748B] sm:flex-row sm:px-6 lg:px-10">
           <span>© 2026 AfroCouture AI</span>
-          {SUPPORT_EMAIL && (
-            <a href={`mailto:${SUPPORT_EMAIL}`} className="hover:text-[#F8FAFC]">
-              Questions? {SUPPORT_EMAIL}
+          {SUPPORT.whatsappUrl && (
+            <a href={SUPPORT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[#F8FAFC]">
+              Questions? WhatsApp {SUPPORT.whatsappDisplay}
             </a>
           )}
         </div>
@@ -106,7 +105,7 @@ export function StatusBanner({ status, reviewNote, submittedAt, subject, approve
           <h2 className="text-base font-bold text-[#F8FAFC]">Your {subject} is verified</h2>
           <p className="mt-1 text-sm leading-relaxed text-[#CBD5E1]">
             You&apos;re live on AfroCouture. Identity and payout details are locked after verification
-            {SUPPORT_EMAIL ? ` — email ${SUPPORT_EMAIL} if they need to change` : ''}.
+            {SUPPORT.whatsappUrl ? ` — message support on WhatsApp (${SUPPORT.whatsappDisplay}) if they need to change` : ''}.
           </p>
         </div>
         {approvedLink && (

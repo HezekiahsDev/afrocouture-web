@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import LegalPage, { ContactLink, type LegalSection } from "@/components/legal/LegalPage";
+import LegalPage, { CommunityLink, ContactLink, type LegalSection } from "@/components/legal/LegalPage";
 import { LEGAL } from "@/lib/legal";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ const sections: LegalSection[] = [
         </p>
         <p>
           This policy applies to our website and the services behind it. It is written to meet the Nigeria Data
-          Protection Act 2023 (NDPA). For any privacy question or request, email <ContactLink />.
+          Protection Act 2023 (NDPA). For any privacy question or request, message us on <ContactLink />.
         </p>
       </>
     ),
@@ -295,8 +295,9 @@ const sections: LegalSection[] = [
           </li>
         </ul>
         <p>
-          To use any of these rights, or to close your account and delete your data, email <ContactLink /> from
-          your account’s email address. We will reply within 30 days.
+          To use any of these rights, or to close your account and delete your data, message us on <ContactLink />{" "}
+          with your account’s email address. We will confirm the request is yours before acting on it, and reply
+          within 30 days.
         </p>
       </>
     ),
@@ -321,7 +322,8 @@ const sections: LegalSection[] = [
     title: "Contact us",
     body: (
       <p>
-        Questions or requests about your privacy: <ContactLink />. You can also read our{" "}
+        Questions or requests about your privacy: <ContactLink />.
+        <CommunityLink /> You can also read our{" "}
         <Link href="/terms">Terms of Service</Link>.
       </p>
     ),
