@@ -171,48 +171,110 @@
   color: #ffffff;
 }
 
-/* Language picker */
+/* Language picker: a labelled button on wide screens, a globe beside the
+   menu toggle on phones. Both open the same menu. */
 .lang-switcher {
+  position: relative;
+  flex: none;
+}
+.lang-switcher-icon {
+  display: none;
+}
+.lang-trigger {
+  height: 38px;
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  height: 38px;
-  padding: 0 9px;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  color: #6b655c;
-  background: rgba(255, 255, 255, 0.035);
-  flex: none;
-}
-.lang-switcher select {
-  appearance: none;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: #ffffff;
+  padding: 0 10px;
+  border: 1px solid rgba(245, 240, 232, 0.18);
+  border-radius: 0.75rem;
+  background: rgba(245, 240, 232, 0.04);
+  color: rgba(245, 240, 232, 0.78);
   font: 600 11px var(--font-inter), sans-serif;
   letter-spacing: 0.04em;
   cursor: pointer;
-  padding: 0 2px;
+  transition: 0.2s;
 }
-.lang-switcher select:focus-visible {
+.lang-trigger:hover,
+.lang-trigger[aria-expanded="true"] {
+  border-color: rgba(184, 115, 78, 0.7);
+  color: #f5f0e8;
+}
+.lang-trigger:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline-offset: 2px;
 }
-.lang-switcher option {
-  color: #171717;
-  background: #ffffff;
+.lang-trigger[aria-expanded="true"] .lang-chevron {
+  transform: rotate(180deg);
 }
-.lang-switcher-light {
-  border-color: rgba(23, 23, 23, 0.12);
-  background: #ffffff;
+.lang-chevron {
+  transition: transform 0.2s;
 }
-.lang-switcher-light select {
-  color: #171717;
+.lang-switcher-icon .lang-trigger {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  justify-content: center;
 }
-.lang-switcher-mobile {
-  display: none;
+.lang-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 50;
+  min-width: 210px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(184, 115, 78, 0.25);
+  box-shadow: 0 18px 40px -16px rgba(23, 23, 23, 0.28);
+}
+.lang-menu-title {
+  padding: 8px 10px 6px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lang-menu button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 0.6rem;
+  background: none;
+  color: var(--ink);
+  font: 500 14px var(--font-inter), sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+.lang-menu button span {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.lang-menu button small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+.lang-menu button:hover,
+.lang-menu button:focus-visible {
+  background: rgba(184, 115, 78, 0.1);
+  outline: none;
+}
+.lang-menu button[aria-checked="true"] {
+  color: var(--accent-soft);
+  font-weight: 600;
+}
+.lang-menu button svg {
+  color: var(--accent);
+  flex: none;
 }
 
 .menu-toggle,
@@ -1079,10 +1141,10 @@
   .site-nav.is-open {
     display: flex;
   }
-  .nav-actions .lang-switcher {
+  .lang-switcher-full {
     display: none;
   }
-  .lang-switcher-mobile {
+  .lang-switcher-icon {
     display: block;
   }
   .site-nav > a {
