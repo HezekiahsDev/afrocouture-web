@@ -184,9 +184,6 @@ function NavbarContent() {
               <ArrowUpRight size={18} />
             </button>
           </form>
-          <div className="lang-switcher-mobile">
-            <LanguageSwitcher tone="light" />
-          </div>
           {status === "authenticated" && user ? (
             <div className="mk-mobile-account">
               <div className="mk-account-id">
@@ -258,7 +255,7 @@ function NavbarContent() {
               onChange={(event) => setQuery(event.target.value)}
             />
           </form>
-          <LanguageSwitcher tone="dark" />
+          <LanguageSwitcher />
           {status === "authenticated" && user ? (
             <>
               <NotificationBell
@@ -376,6 +373,7 @@ function NavbarContent() {
               </Link>
             </>
           )}
+          <LanguageSwitcher variant="icon" />
           <button
             type="button"
             className="menu-toggle"
