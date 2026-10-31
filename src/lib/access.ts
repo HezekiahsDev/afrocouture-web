@@ -28,6 +28,8 @@ const RULES: Rule[] = [
   { prefix: '/orders', allow: 'members' },
   { prefix: '/saved', allow: 'members' },
   { prefix: '/notifications', allow: 'members' },
+  // Each member answers the testing survey for their own role; admins read results instead.
+  { prefix: '/survey', allow: 'members' },
 ];
 
 const matches = (pathname: string, prefix: string) => pathname === prefix || pathname.startsWith(`${prefix}/`);
@@ -43,6 +45,7 @@ function adminEquivalent(pathname: string): string {
   if (matches(pathname, '/orders')) return '/admin/orders';
   if (matches(pathname, '/notifications')) return '/admin/notifications';
   if (matches(pathname, '/merchant')) return '/admin/fabrics';
+  if (matches(pathname, '/survey')) return '/admin/surveys';
   return '/admin';
 }
 

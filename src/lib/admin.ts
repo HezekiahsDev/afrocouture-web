@@ -10,6 +10,7 @@ import type {
   AuditEntry,
   Paged,
 } from '@/types/admin';
+import type { AdminSurveyResponse, AdminSurveyResponseRow, AdminSurveyResults, AdminSurveyRow } from '@/types/survey';
 import type { OrderStatus, UserRole } from '@/types';
 
 // Verification queue, order detail, dispute resolution and payout retries live in lib/orders.ts.
@@ -61,4 +62,36 @@ export async function setReviewHidden(orderId: string, hidden: boolean) {
 
 export async function listAudit(params: { action?: string; targetType?: string; targetId?: string; before?: string; limit?: number }) {
   return (await api.get<{ items: AuditEntry[]; hasMore: boolean }>('/admin/audit', { params })).data;
+}
+
+// ── Surveys ──
+
+export async function listSurveys() {
+  return (await api.get<AdminSurveyRow[]>('/admin/surveys')).data;
+}
+
+export async function getSurveyResults(surveyId: string) {
+  return (await api.get<AdminSurveyResults>(`/admin/surveys/${encodeURIComponent(surveyId)}`)).data;
+}
+
+export async function listSurveyResponses(surveyId: string, params: { status?: 'completed' | 'in_progress'; page?: number; limit?: number }) {
+  return (await api.get<Paged<AdminSurveyResponseRow>>(`/admin/surveys/${encodeURIComponent(surveyId)}/responses`, { params })).data;
+}
+
+export async function getSurveyResponse(id: string) {
+  return (await api.get<AdminSurveyResponse>(`/admin/surveys/responses/${id}`)).data;
+}
+
+/** Downloads a CSV export. It needs the bearer token, so it goes through the API client, not a plain link. */
+export async function downloadSurveyCsv(surveyId: string) {
+  const res = await api.get<Blob>(`/admin/surveys/${encodeURIComponent(surveyId)}/export.csv`, { responseType: 'blob' });
+  const name = /filename="([^"]+)"/.exec(String(res.headers['content-disposition'] ?? ''))?.[1] ?? `${surveyId}.csv`;
+  const url = URL.createObjectURL(res.data);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
