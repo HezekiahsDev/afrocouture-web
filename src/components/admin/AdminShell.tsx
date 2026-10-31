@@ -9,6 +9,7 @@ import {
   BadgeCheck,
   Banknote,
   Bell,
+  ClipboardList,
   LayoutDashboard,
   Layers,
   LogOut,
@@ -76,6 +77,7 @@ const NAV: { heading: string; items: NavItem[] }[] = [
       { label: 'Users', href: '/admin/users', icon: Users },
       { label: 'Fabrics', href: '/admin/fabrics', icon: Layers },
       { label: 'Reviews', href: '/admin/reviews', icon: Star },
+      { label: 'Surveys', href: '/admin/surveys', icon: ClipboardList },
     ],
   },
   {

@@ -18,6 +18,7 @@ const ACTIONS = [
   { value: 'user.reactivate', label: 'Reactivations' },
   { value: 'review.hide', label: 'Hidden reviews' },
   { value: 'fabric.unpublish', label: 'Unpublished fabrics' },
+  { value: 'survey.export', label: 'Survey exports' },
 ];
 
 /** Where an audited target can be opened in the dashboard. */
@@ -32,6 +33,8 @@ function targetHref(e: AuditEntry): string | null {
       return `/admin/fabrics?q=${encodeURIComponent(String(e.details?.name ?? ''))}`;
     case 'escrow_transaction':
       return '/admin/payouts';
+    case 'survey':
+      return `/admin/surveys/${e.targetId}`;
     default:
       return null;
   }
