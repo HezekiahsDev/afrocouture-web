@@ -14,6 +14,8 @@ import {
   Star,
   Wallet,
 } from 'lucide-react';
+import { useI18n } from '@/i18n/I18nProvider';
+import type { Dictionary } from '@/i18n/dictionaries';
 import type { AppNotification } from '@/types';
 
 const ICONS: [prefix: string, icon: LucideIcon][] = [
@@ -31,16 +33,24 @@ const ICONS: [prefix: string, icon: LucideIcon][] = [
 
 export const iconFor = (type: string): LucideIcon => ICONS.find(([prefix]) => type.startsWith(prefix))?.[1] ?? Bell;
 
-export function timeAgo(iso: string, now = Date.now()): string {
+export function timeAgo(
+  iso: string,
+  copy: Dictionary['notifications'],
+  locale: string,
+  now = Date.now(),
+): string {
   const seconds = Math.max(0, Math.round((now - new Date(iso).getTime()) / 1000));
-  if (seconds < 60) return 'Just now';
+  if (seconds < 60) return copy.justNow;
   const minutes = Math.round(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 60) return copy.minutesAgo(minutes);
   const hours = Math.round(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
+  if (hours < 24) return copy.hoursAgo(hours);
   const days = Math.round(hours / 24);
-  if (days < 7) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString('en-NG', { day: 'numeric', month: 'short' });
+  if (days < 7) return copy.daysAgo(days);
+  return new Date(iso).toLocaleDateString(locale === 'ha' ? 'ha-NG' : 'en-NG', {
+    day: 'numeric',
+    month: 'short',
+  });
 }
 
 /** One notification row, shared by the bell dropdown and the notifications page. */
@@ -53,6 +63,7 @@ export function NotificationItem({
   onOpen: (n: AppNotification) => void;
   compact?: boolean;
 }) {
+  const { locale, t } = useI18n();
   const unread = !notification.readAt;
   return (
     <button
@@ -66,11 +77,11 @@ export function NotificationItem({
       <span className="mk-notif-text">
         <strong>{notification.title}</strong>
         {notification.body && <span>{notification.body}</span>}
-        <small>{timeAgo(notification.createdAt)}</small>
+        <small>{timeAgo(notification.createdAt, t.notifications, locale)}</small>
       </span>
       {unread && (
         <span className="mk-notif-dot">
-          <span className="sr-only">Unread</span>
+          <span className="sr-only">{t.notifications.unreadLabel}</span>
         </span>
       )}
     </button>

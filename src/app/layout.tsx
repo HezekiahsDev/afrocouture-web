@@ -4,15 +4,20 @@ import './globals.css';
 import './atelier.css';
 import { AuthProvider } from '@/components/auth/AuthProvider';
 import { SavedProvider } from '@/components/marketplace/shared';
+import { I18nProvider } from '@/i18n/I18nProvider';
+import { LOCALES, LOCALE_COOKIE } from '@/i18n/config';
 
+// latin-ext carries the hooked letters Hausa uses (ɓ, ɗ, ƙ) and Yoruba's ṣ;
+// vietnamese carries the dotted vowels (ẹ, ọ, ị, ụ) and combining tone marks
+// Yoruba and Igbo use.
 const inter = Inter({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext', 'vietnamese'],
   display: 'swap',
   variable: '--font-inter',
 });
 
 const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext', 'vietnamese'],
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
   display: 'swap',
@@ -68,13 +73,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${cormorant.variable}`}
+    >
       <body className="bg-ambient font-sans">
-        <AuthProvider>
-          <SavedProvider>
-            <div className="relative z-10">{children}</div>
-          </SavedProvider>
-        </AuthProvider>
+        {/* Apply the stored language before paint so <html lang> is correct for
+            assistive tech even before the client provider hydrates. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var m=document.cookie.match(/(?:^|; )${LOCALE_COOKIE}=([^;]*)/);if(m){var l=decodeURIComponent(m[1]);if(${JSON.stringify(LOCALES)}.indexOf(l)!==-1){document.documentElement.lang=l;document.documentElement.dataset.locale=l;}}}catch(e){}`,
+          }}
+        />
+        <I18nProvider>
+          <AuthProvider>
+            <SavedProvider>
+              <div className="relative z-10">{children}</div>
+            </SavedProvider>
+          </AuthProvider>
+        </I18nProvider>
       </body>
     </html>
   );

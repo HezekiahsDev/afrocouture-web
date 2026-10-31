@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight, Clock, PencilLine, Sparkles } from 'lucide-react';
 import { getMyMerchantProfile, getMyTailorProfile } from '@/lib/catalog';
 import { ROLE_HOME } from '@/lib/auth';
+import { useI18n } from '@/i18n/I18nProvider';
 import type { KycStatus, User } from '@/types';
 
 type Step =
@@ -17,6 +18,7 @@ type Step =
  * accounts and customers who chose their path never see it.
  */
 export function SetupBanner({ user, pathname }: { user: User; pathname: string }) {
+  const { t } = useI18n();
   const [step, setStep] = useState<Step | null>(null);
 
   useEffect(() => {
@@ -53,28 +55,28 @@ export function SetupBanner({ user, pathname }: { user: User; pathname: string }
     step.kind === 'choose'
       ? {
           icon: Sparkles,
-          text: 'Finish setting up: tell us whether you’re here to shop, make or sell fabric.',
-          cta: 'Choose your path',
+          text: t.setup.choose,
+          cta: t.setup.chooseCta,
           href: '/onboarding',
         }
       : step.kind === 'start'
         ? {
             icon: PencilLine,
-            text: `Finish your ${step.who} profile. Customers can see you once our team has verified it.`,
-            cta: 'Continue setup',
+            text: t.setup.start(step.who),
+            cta: t.setup.startCta,
             href: step.href,
           }
         : step.kind === 'pending'
           ? {
               icon: Clock,
-              text: `Your ${step.who} profile is with our team for review. We’ll email you as soon as you’re live.`,
-              cta: 'View profile',
+              text: t.setup.pending(step.who),
+              cta: t.setup.pendingCta,
               href: step.href,
             }
           : {
               icon: PencilLine,
-              text: `Your ${step.who} profile needs a few changes before it can go live${step.note ? `: “${step.note}”` : '.'}`,
-              cta: 'Make changes',
+              text: t.setup.changes(step.who, step.note ?? null),
+              cta: t.setup.changesCta,
               href: step.href,
             };
   const Icon = content.icon;

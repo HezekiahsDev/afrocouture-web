@@ -29,13 +29,8 @@ import { AI_STUDIO_ENABLED } from "@/lib/features";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { useUnreadNotifications } from "@/components/notifications/useNotifications";
 import { SetupBanner } from "@/components/onboarding/SetupBanner";
-
-const links = [
-  { label: "Discover", href: "/marketplace" },
-  { label: "Fabrics", href: "/fabric-explorer" },
-  { label: "Artisans", href: "/tailors" },
-  { label: "AI Studio", href: "/ai-studio", soon: !AI_STUDIO_ENABLED },
-];
+import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
+import { useI18n } from "@/i18n/I18nProvider";
 
 /** Orders waiting on this person, across the roles they can act in. */
 function useOrdersNeedingAction(user: User | null, pathname: string): number {
@@ -57,19 +52,6 @@ function useOrdersNeedingAction(user: User | null, pathname: string): number {
   }, [user, pathname]);
   return user ? count : 0;
 }
-
-const PROFILE_LINK: Record<SelfServiceRole, string> = {
-  customer: "My fit profile",
-  tailor: "My artisan profile",
-  merchant: "My merchant profile",
-};
-
-const ROLE_LABEL: Record<User["role"], string> = {
-  customer: "Customer",
-  tailor: "Artisan",
-  merchant: "Merchant",
-  admin: "Admin",
-};
 
 const isSelfService = (role: User["role"]): role is SelfServiceRole =>
   role in ROLE_HOME;
@@ -96,8 +78,17 @@ export default function Navbar() {
 function NavbarContent() {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useI18n();
   const { user, status, signOut } = useAuth();
   const saved = useSavedItems();
+  const links = [
+    { label: t.nav.discover, href: "/marketplace" },
+    { label: t.nav.fabrics, href: "/fabric-explorer" },
+    { label: t.nav.artisans, href: "/tailors" },
+    { label: t.nav.aiStudio, href: "/ai-studio", soon: !AI_STUDIO_ENABLED },
+  ];
+  const PROFILE_LINK: Record<SelfServiceRole, string> = t.nav.profile;
+  const ROLE_LABEL: Record<User["role"], string> = t.nav.roles;
   const [menuOpen, setMenuOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -154,7 +145,7 @@ function NavbarContent() {
         <Link
           href="/marketplace"
           className="brand"
-          aria-label="IPILE — home"
+          aria-label={t.nav.home}
         >
           <Image
             src="/img/logo.png"
@@ -167,7 +158,7 @@ function NavbarContent() {
         </Link>
         <nav
           className={`site-nav ${menuOpen ? "is-open" : ""}`}
-          aria-label="Main navigation"
+          aria-label={t.nav.mainNavigation}
         >
           {links.map((link) => (
             <Link
@@ -178,21 +169,24 @@ function NavbarContent() {
               aria-current={pathname.startsWith(link.href) ? "page" : undefined}
             >
               {link.label}
-              {link.soon && <span className="mk-nav-soon">Soon</span>}
+              {link.soon && <span className="mk-nav-soon">{t.nav.soon}</span>}
             </Link>
           ))}
           <form className="mobile-search" role="search" onSubmit={search}>
             <Search size={17} />
             <input
-              aria-label="Search styles, fabrics, or artisans"
-              placeholder="Search the atelier"
+              aria-label={t.nav.searchLabel}
+              placeholder={t.nav.searchPlaceholder}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
-            <button aria-label="Submit search" type="submit">
+            <button aria-label={t.nav.submitSearch} type="submit">
               <ArrowUpRight size={18} />
             </button>
           </form>
+          <div className="lang-switcher-mobile">
+            <LanguageSwitcher tone="light" />
+          </div>
           {status === "authenticated" && user ? (
             <div className="mk-mobile-account">
               <div className="mk-account-id">
@@ -200,7 +194,7 @@ function NavbarContent() {
                   {initials(user)}
                 </span>
                 <span>
-                  <strong>{user.fullName ?? "Your account"}</strong>
+                  <strong>{user.fullName ?? t.nav.yourAccount}</strong>
                   <small>
                     {user.email} · {ROLE_LABEL[user.role]}
                   </small>
@@ -212,43 +206,43 @@ function NavbarContent() {
                 </Link>
               )}
               <Link href={user.role === "admin" ? "/admin/notifications" : "/notifications"} onClick={closeAll}>
-                <Bell size={16} /> Notifications
-                {notifications.unread > 0 && ` (${notifications.unread} unread)`}
+                <Bell size={16} /> {t.nav.notifications}
+                {notifications.unread > 0 && ` (${t.nav.unread(notifications.unread)})`}
               </Link>
               {user.role !== "admin" && (
                 <>
                   <Link href="/orders" onClick={closeAll}>
-                    <ReceiptText size={16} /> Orders
-                    {ordersCount > 0 && ` (${ordersCount} to do)`}
+                    <ReceiptText size={16} /> {t.nav.orders}
+                    {ordersCount > 0 && ` (${t.nav.toDo(ordersCount)})`}
                   </Link>
                   <Link href="/saved" onClick={closeAll}>
-                    <Bookmark size={16} /> Your selection
+                    <Bookmark size={16} /> {t.nav.selection}
                     {savedCount > 0 && ` (${savedCount})`}
                   </Link>
                 </>
               )}
               {user.role === "merchant" && (
                 <Link href="/merchant/fabrics" onClick={closeAll}>
-                  <Layers size={16} /> My fabrics
+                  <Layers size={16} /> {t.nav.myFabrics}
                 </Link>
               )}
               {user.role === "admin" && (
                 <Link href="/admin" onClick={closeAll}>
-                  <ShieldCheck size={16} /> Admin dashboard
+                  <ShieldCheck size={16} /> {t.nav.adminDashboard}
                 </Link>
               )}
               <button type="button" onClick={handleSignOut}>
-                <LogOut size={16} /> Sign out
+                <LogOut size={16} /> {t.nav.signOut}
               </button>
             </div>
           ) : (
             status === "anonymous" && (
               <div className="mk-mobile-account">
                 <Link href={`/signin?next=${encodeURIComponent(pathname)}`} onClick={closeAll}>
-                  <UserRound size={16} /> Sign in
+                  <UserRound size={16} /> {t.nav.signIn}
                 </Link>
                 <Link href="/onboarding" className="mobile-join" onClick={closeAll}>
-                  Join the atelier <ArrowUpRight size={16} />
+                  {t.nav.joinAtelier} <ArrowUpRight size={16} />
                 </Link>
               </div>
             )
@@ -258,12 +252,13 @@ function NavbarContent() {
           <form className="nav-search" role="search" onSubmit={search}>
             <Search size={16} aria-hidden="true" />
             <input
-              aria-label="Search styles, fabrics, or artisans"
-              placeholder="Search the atelier"
+              aria-label={t.nav.searchLabel}
+              placeholder={t.nav.searchPlaceholder}
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
           </form>
+          <LanguageSwitcher tone="dark" />
           {status === "authenticated" && user ? (
             <>
               <NotificationBell
@@ -274,14 +269,14 @@ function NavbarContent() {
               />
               {user.role === "admin" ? (
                 <Link href="/admin" className="mk-nav-admin">
-                  <ShieldCheck size={16} aria-hidden="true" /> Admin dashboard
+                  <ShieldCheck size={16} aria-hidden="true" /> {t.nav.adminDashboard}
                 </Link>
               ) : (
               <>
               <Link
                 href="/orders"
                 className={`mk-nav-saved ${pathname.startsWith("/orders") ? "active" : ""}`}
-                aria-label={`Orders${ordersCount ? `, ${ordersCount} need${ordersCount === 1 ? "s" : ""} your attention` : ""}`}
+                aria-label={ordersCount ? t.nav.ordersAttention(ordersCount) : t.nav.orders}
               >
                 <ReceiptText size={18} />
                 {ordersCount > 0 && <span className="mk-nav-count">{ordersCount}</span>}
@@ -289,7 +284,7 @@ function NavbarContent() {
               <Link
                 href="/saved"
                 className={`mk-nav-saved ${pathname === "/saved" ? "active" : ""}`}
-                aria-label={`Your selection, ${savedCount} saved item${savedCount === 1 ? "" : "s"}`}
+                aria-label={t.nav.selectionLabel(savedCount)}
               >
                 <Bookmark size={18} />
                 {savedCount > 0 && (
@@ -309,13 +304,13 @@ function NavbarContent() {
                   <span className="mk-account-avatar" aria-hidden="true">
                     {initials(user)}
                   </span>
-                  <span className="sr-only">Account menu</span>
+                  <span className="sr-only">{t.nav.accountMenu}</span>
                   <ChevronDown size={15} aria-hidden="true" />
                 </button>
                 {accountOpen && (
                   <div className="mk-account-menu" role="menu">
                     <div className="mk-account-id">
-                      <strong>{user.fullName ?? "Your account"}</strong>
+                      <strong>{user.fullName ?? t.nav.yourAccount}</strong>
                       <small>{user.email}</small>
                       <span className="mk-role-pill">{ROLE_LABEL[user.role]}</span>
                     </div>
@@ -332,13 +327,13 @@ function NavbarContent() {
                     {user.role !== "admin" && (
                       <>
                         <Link href="/orders" role="menuitem" onClick={closeAll}>
-                          <ReceiptText size={16} /> Orders
+                          <ReceiptText size={16} /> {t.nav.orders}
                           {ordersCount > 0 && (
                             <span className="mk-menu-count">{ordersCount}</span>
                           )}
                         </Link>
                         <Link href="/saved" role="menuitem" onClick={closeAll}>
-                          <Bookmark size={16} /> Your selection
+                          <Bookmark size={16} /> {t.nav.selection}
                           {savedCount > 0 && (
                             <span className="mk-menu-count">{savedCount}</span>
                           )}
@@ -347,12 +342,12 @@ function NavbarContent() {
                     )}
                     {user.role === "merchant" && (
                       <Link href="/merchant/fabrics" role="menuitem" onClick={closeAll}>
-                        <Layers size={16} /> My fabrics
+                        <Layers size={16} /> {t.nav.myFabrics}
                       </Link>
                     )}
                     {user.role === "admin" && (
                       <Link href="/admin" role="menuitem" onClick={closeAll}>
-                        <ShieldCheck size={16} /> Admin dashboard
+                        <ShieldCheck size={16} /> {t.nav.adminDashboard}
                       </Link>
                     )}
                     <button
@@ -360,7 +355,7 @@ function NavbarContent() {
                       role="menuitem"
                       onClick={handleSignOut}
                     >
-                      <LogOut size={16} /> Sign out
+                      <LogOut size={16} /> {t.nav.signOut}
                     </button>
                   </div>
                 )}
@@ -373,18 +368,18 @@ function NavbarContent() {
                   href={`/signin?next=${encodeURIComponent(pathname)}`}
                   className="mk-nav-signin"
                 >
-                  Sign in
+                  {t.nav.signIn}
                 </Link>
               )}
               <Link href="/onboarding" className="nav-join">
-                Join the atelier <ArrowUpRight size={15} />
+                {t.nav.joinAtelier} <ArrowUpRight size={15} />
               </Link>
             </>
           )}
           <button
             type="button"
             className="menu-toggle"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(!menuOpen)}
           >

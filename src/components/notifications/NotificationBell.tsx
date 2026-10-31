@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Bell, CheckCheck } from 'lucide-react';
 import { getNotifications, markNotificationsRead } from '@/lib/notifications';
+import { useI18n } from '@/i18n/I18nProvider';
 import type { AppNotification } from '@/types';
 import { NotificationItem } from './NotificationItem';
 
@@ -21,6 +22,8 @@ export function NotificationBell({
   allHref?: string;
 }) {
   const router = useRouter();
+  const { t } = useI18n();
+  const copy = t.notifications;
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<AppNotification[] | null>(null);
   const [error, setError] = useState(false);
@@ -81,35 +84,35 @@ export function NotificationBell({
         className={`mk-nav-saved ${active || open ? 'active' : ''}`}
         aria-haspopup="dialog"
         aria-expanded={open}
-        aria-label={`Notifications${unread ? `, ${unread} unread` : ''}`}
+        aria-label={copy.label(unread)}
         onClick={() => setOpen((o) => !o)}
       >
         <Bell size={18} />
         {unread > 0 && <span className="mk-nav-count">{unread > 99 ? '99+' : unread}</span>}
       </button>
       {open && (
-        <div className="mk-notif-menu" role="dialog" aria-label="Notifications">
+        <div className="mk-notif-menu" role="dialog" aria-label={copy.title}>
           <div className="mk-notif-head">
-            <strong>Notifications</strong>
+            <strong>{copy.title}</strong>
             {unread > 0 && (
               <button type="button" onClick={markAll}>
-                <CheckCheck size={15} aria-hidden="true" /> Mark all read
+                <CheckCheck size={15} aria-hidden="true" /> {copy.markAllRead}
               </button>
             )}
           </div>
           <div className="mk-notif-list">
             {error ? (
-              <p className="mk-notif-empty">Couldn&apos;t load notifications. Try again in a moment.</p>
+              <p className="mk-notif-empty">{copy.error}</p>
             ) : items === null ? (
-              <p className="mk-notif-empty" role="status">Loading…</p>
+              <p className="mk-notif-empty" role="status">{copy.loading}</p>
             ) : items.length === 0 ? (
-              <p className="mk-notif-empty">You&apos;re all caught up. Order updates and messages will appear here.</p>
+              <p className="mk-notif-empty">{copy.empty}</p>
             ) : (
               items.map((n) => <NotificationItem key={n.id} notification={n} onOpen={openItem} compact />)
             )}
           </div>
           <Link href={allHref} className="mk-notif-all" onClick={() => setOpen(false)}>
-            See all notifications
+            {copy.seeAll}
           </Link>
         </div>
       )}

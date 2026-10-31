@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { getFabrics, getStyles, getTailors, naira } from "@/lib/catalog";
 import { AI_STUDIO_ENABLED } from "@/lib/features";
+import { useI18n } from "@/i18n/I18nProvider";
 import {
   CoverImage,
   EmptyState,
@@ -36,6 +37,7 @@ import {
   useSavedItems,
 } from "./shared";
 
+// Sentinel values for the filter state; only their labels are translated.
 const ALL_CITIES = "All cities";
 const ALL_FABRICS = "All";
 
@@ -47,6 +49,8 @@ export default function MarketplaceExperience({
   const query = initialQuery.trim();
   const term = query.toLowerCase();
   const router = useRouter();
+  const { t } = useI18n();
+  const c = t.marketplace;
   const saved = useSavedItems();
   const [fabricType, setFabricType] = useState(ALL_FABRICS);
   const [city, setCity] = useState(ALL_CITIES);
@@ -85,30 +89,27 @@ export default function MarketplaceExperience({
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy">
           <div className="eyebrow">
-            <span className="eyebrow-rule" /> CONTEMPORARY AFRICAN LUXURY
+            <span className="eyebrow-rule" /> {c.heroEyebrow}
           </div>
           <h1 id="hero-title">
-            Your vision,
+            {c.heroTitleLead}
             <br />
-            <em>thoughtfully made.</em>
+            <em>{c.heroTitleEmphasis}</em>
           </h1>
-          <p>
-            Discover skilled makers, explore fabrics, and bring your next outfit
-            to life.
-          </p>
+          <p>{c.heroBody}</p>
           <div className="hero-actions">
             <Link href="/onboarding" className="action-primary">
-              Start your design <ArrowUpRight size={19} />
+              {c.startDesign} <ArrowUpRight size={19} />
             </Link>
             <Link href="#explore" className="action-text">
-              Explore the atelier <ArrowRight size={18} />
+              {c.exploreAtelier} <ArrowRight size={18} />
             </Link>
           </div>
           <div className="hero-footnote">
             <span className="hero-footnote-icon">
               <ShieldCheck size={18} />
             </span>{" "}
-            Every artisan and merchant is reviewed before they go live.
+            {c.heroTrust}
           </div>
         </div>
         <div className="hero-visual">
@@ -123,53 +124,54 @@ export default function MarketplaceExperience({
           />
           <div className="hero-image-tint" />
           <div className="hero-image-label">
-            <span>01 / THE NEW ATELIER</span>
-            <strong>Craft meets imagination.</strong>
+            <span>{c.heroLabelKicker}</span>
+            <strong>{c.heroLabelTitle}</strong>
             <ArrowUpRight size={19} />
           </div>
-          <div className="hero-vertical">IPILE · CRAFTED AROUND YOU</div>
+          <div className="hero-vertical">{c.heroVertical}</div>
         </div>
         <a
           href="#explore"
           className="hero-scroll"
-          aria-label="Scroll to explore"
+          aria-label={c.scrollToExplore}
         >
           <ArrowDown size={17} />
         </a>
       </section>
 
-      <div className="value-strip" aria-label="How IPILE works">
+      <div className="value-strip" aria-label={c.valueStripLabel}>
         <span>
-          <Scissors size={18} /> Skilled artisans
+          <Scissors size={18} /> {c.valueArtisans}
         </span>
         <i />
         <span>
-          <Sparkles size={18} /> A style that is yours
+          <Sparkles size={18} /> {c.valueStyle}
         </span>
         <i />
         <span>
-          <ShieldCheck size={18} /> Made around you
+          <ShieldCheck size={18} /> {c.valueMadeAroundYou}
         </span>
       </div>
 
       {query && (
         <div className="page-shell mk-results-bar" role="status">
           <div>
-            <span className="section-kicker">SEARCH</span>
+            <span className="section-kicker">{c.resultsKicker}</span>
             <h2>
-              Results for <em>“{query}”</em>
+              {c.resultsFor} <em>“{query}”</em>
             </h2>
             {resultsReady && (
               <p>
-                {allTailors.length} artisan{allTailors.length === 1 ? "" : "s"}{" "}
-                · {allFabrics.length} fabric{allFabrics.length === 1 ? "" : "s"}{" "}
-                · {visibleStyles.length} style
-                {visibleStyles.length === 1 ? "" : "s"}
+                {c.resultsSummary(
+                  allTailors.length,
+                  allFabrics.length,
+                  visibleStyles.length,
+                )}
               </p>
             )}
           </div>
           <Link href="/marketplace" className="mk-clear-search">
-            <X size={15} /> Clear search
+            <X size={15} /> {c.clearSearch}
           </Link>
         </div>
       )}
@@ -181,11 +183,12 @@ export default function MarketplaceExperience({
         >
           <div className="section-heading">
             <div>
-              <span className="section-kicker">01 / THE POSSIBILITIES</span>
+              <span className="section-kicker">{c.possibilitiesKicker}</span>
               <h2>
-                Start with what <em>inspires you.</em>
+                {c.possibilitiesTitleLead}{" "}
+                <em>{c.possibilitiesTitleEmphasis}</em>
               </h2>
-              <p>Every great piece begins somewhere. Find your next one here.</p>
+              <p>{c.possibilitiesBody}</p>
             </div>
           </div>
           <div className="path-grid">
@@ -198,10 +201,10 @@ export default function MarketplaceExperience({
                 <span className="path-icon">
                   <Scissors size={24} />
                 </span>
-                <h3>Find an artisan</h3>
-                <p>Work one on one with a maker who understands your vision.</p>
+                <h3>{c.findArtisan}</h3>
+                <p>{c.findArtisanBody}</p>
                 <span className="path-link">
-                  Explore artisans <ArrowRight size={17} />
+                  {c.exploreArtisans} <ArrowRight size={17} />
                 </span>
               </div>
             </Link>
@@ -214,12 +217,10 @@ export default function MarketplaceExperience({
                 <span className="path-icon">
                   <SwatchBook size={24} />
                 </span>
-                <h3>Discover fabric</h3>
-                <p>
-                  Find texture, color, and heritage in every beautiful weave.
-                </p>
+                <h3>{c.discoverFabric}</h3>
+                <p>{c.discoverFabricBody}</p>
                 <span className="path-link">
-                  Explore fabrics <ArrowRight size={17} />
+                  {c.exploreFabrics} <ArrowRight size={17} />
                 </span>
               </div>
             </Link>
@@ -232,12 +233,10 @@ export default function MarketplaceExperience({
                 <span className="path-icon">
                   <WandSparkles size={24} />
                 </span>
-                <h3>Create your own</h3>
-                <p>
-                  Begin your bespoke journey with an idea, then make it real.
-                </p>
+                <h3>{c.createOwn}</h3>
+                <p>{c.createOwnBody}</p>
                 <span className="path-link">
-                  Get started <ArrowRight size={17} />
+                  {c.getStarted} <ArrowRight size={17} />
                 </span>
               </div>
             </Link>
@@ -251,17 +250,17 @@ export default function MarketplaceExperience({
       >
         <div className="section-heading split">
           <div>
-            <span className="section-kicker">02 / STYLE NOTES</span>
+            <span className="section-kicker">{c.stylesKicker}</span>
             <h2>
-              Wear the <em>occasion.</em>
+              {c.stylesTitleLead} <em>{c.stylesTitleEmphasis}</em>
             </h2>
-            <p>Considered silhouettes for every chapter of your life.</p>
+            <p>{c.stylesBody}</p>
           </div>
           {visibleStyles.length > 3 && (
             <div className="rail-controls">
               <button
                 type="button"
-                aria-label="Previous styles"
+                aria-label={c.previousStyles}
                 onClick={() =>
                   styleRail.current?.scrollBy({
                     left: -300,
@@ -273,7 +272,7 @@ export default function MarketplaceExperience({
               </button>
               <button
                 type="button"
-                aria-label="Next styles"
+                aria-label={c.nextStyles}
                 onClick={() =>
                   styleRail.current?.scrollBy({ left: 300, behavior: "smooth" })
                 }
@@ -295,7 +294,7 @@ export default function MarketplaceExperience({
                   href={`/onboarding?idea=${encodeURIComponent(item.name)}`}
                   className="style-card"
                   key={item.id}
-                  aria-label={`Start a ${item.name} piece`}
+                  aria-label={c.startPiece(item.name)}
                 >
                   <div className="style-image">
                     <Image
@@ -316,18 +315,20 @@ export default function MarketplaceExperience({
                     <span>{item.category}</span>
                     <h3>{item.name}</h3>
                     {item.startingPrice !== null && (
-                      <p>From {naira(item.startingPrice)}</p>
+                      <p>{c.fromPrice(naira(item.startingPrice))}</p>
                     )}
                   </div>
                 </Link>
               ))
             ) : (
               <EmptyState
-                title={query ? `No styles match “${query}”` : "No styles yet"}
+                title={
+                  query ? c.noStylesFor(query) : c.noStylesYet
+                }
                 body={
                   query
-                    ? "Try a broader word like “kaftan” or “wedding”."
-                    : "New silhouettes are on their way. Explore fabrics in the meantime."
+                    ? c.noStylesForBody
+                    : c.noStylesYetBody
                 }
               />
             )}
@@ -347,18 +348,15 @@ export default function MarketplaceExperience({
             />
           </div>
           <div className="atelier-banner-copy">
-            <span className="section-kicker">THE ART OF MAKING</span>
+            <span className="section-kicker">{c.makingKicker}</span>
             <h2>
-              Made by hands.
+              {c.makingTitleLead}
               <br />
-              <em>Made for you.</em>
+              <em>{c.makingTitleEmphasis}</em>
             </h2>
-            <p>
-              Behind every stitch is a person, a place, and a story. Discover
-              the artisans turning your ideas into pieces to keep.
-            </p>
+            <p>{c.makingBody}</p>
             <Link href="/tailors" className="action-primary">
-              Meet the makers <ArrowUpRight size={18} />
+              {c.meetMakers} <ArrowUpRight size={18} />
             </Link>
           </div>
         </section>
@@ -370,28 +368,21 @@ export default function MarketplaceExperience({
       >
         <div className="section-heading split">
           <div>
-            <span className="section-kicker">
-              03 / PEOPLE BEHIND THE PIECES
-            </span>
+            <span className="section-kicker">{c.artisansKicker}</span>
             <h2>
-              Meet your <em>maker.</em>
+              {c.artisansTitleLead} <em>{c.artisansTitleEmphasis}</em>
             </h2>
-            <p>
-              Independent artisans with a point of view and a love for their
-              craft.
-            </p>
+            <p>{c.artisansBody}</p>
           </div>
           <Link href="/tailors" className="section-link">
-            View all artisans <ArrowUpRight size={18} />
+            {c.viewAllArtisans} <ArrowUpRight size={18} />
           </Link>
         </div>
         {visibleTailors.some((item) => item.isSample) && (
-          <p className="preview-note">
-            Illustrative artisan profiles and sample pricing for this preview.
-          </p>
+          <p className="preview-note">{c.artisansPreviewNote}</p>
         )}
         {cities.length > 1 && (
-          <div className="filter-row" aria-label="Filter artisans by city">
+          <div className="filter-row" aria-label={c.filterArtisans}>
             {[ALL_CITIES, ...cities].map((value) => (
               <button
                 type="button"
@@ -400,7 +391,7 @@ export default function MarketplaceExperience({
                 className={city === value ? "selected" : ""}
                 onClick={() => setCity(value)}
               >
-                {value}
+                {value === ALL_CITIES ? c.allCities : value}
               </button>
             ))}
           </div>
@@ -414,13 +405,14 @@ export default function MarketplaceExperience({
             ) : visibleTailors.length ? (
               visibleTailors.slice(0, 6).map((item) => {
                 const isSaved = saved.isSaved("tailor", item.id);
-                const name = item.displayName ?? item.atelierName ?? "Artisan";
+                const name =
+                  item.displayName ?? item.atelierName ?? c.artisanFallback;
                 return (
                   <article className="artisan-card" key={item.id}>
                     <Link
                       href={`/tailors/${item.id}`}
                       className="artisan-image"
-                      aria-label={`View ${name}'s profile`}
+                      aria-label={c.viewProfile(name)}
                     >
                       <CoverImage
                         src={item.coverImageUrl ?? item.portraitUrl}
@@ -446,7 +438,9 @@ export default function MarketplaceExperience({
                         </div>
                         <button
                           type="button"
-                          aria-label={`${isSaved ? "Remove" : "Save"} ${name}`}
+                          aria-label={
+                            isSaved ? c.removeProfile(name) : c.saveProfile(name)
+                          }
                           aria-pressed={isSaved}
                           onClick={() => void saved.toggle("tailor", item.id)}
                           className={`save-button ${isSaved ? "saved" : ""}`}
@@ -457,7 +451,7 @@ export default function MarketplaceExperience({
                           />
                         </button>
                       </div>
-                      {item.verified && <VerifiedBadge label="Verified artisan" />}
+                      {item.verified && <VerifiedBadge label={c.verifiedArtisan} />}
                       <p>{item.craft}</p>
                       <div className="artisan-bottom">
                         <span>
@@ -465,19 +459,17 @@ export default function MarketplaceExperience({
                           {item.city ?? "Nigeria"}
                         </span>
                         {item.startingPrice !== null && (
-                          <strong>From {naira(item.startingPrice)}</strong>
+                          <strong>{c.fromPrice(naira(item.startingPrice))}</strong>
                         )}
                       </div>
                       {item.isSample ? (
-                        <p className="oc-sample-note">
-                          Sample profile — not taking commissions
-                        </p>
+                        <p className="oc-sample-note">{c.sampleProfile}</p>
                       ) : (
                         <Link
                           href={`/orders/new?tailorId=${item.id}`}
                           className="oc-commission-link"
                         >
-                          Request a commission <ArrowRight size={15} />
+                          {c.requestCommission} <ArrowRight size={15} />
                         </Link>
                       )}
                     </div>
@@ -487,16 +479,16 @@ export default function MarketplaceExperience({
             ) : (
               <EmptyState
                 title={
-                  query ? `No artisans match “${query}”` : "No artisans here yet"
+                  query ? c.noArtisansFor(query) : c.noArtisansYet
                 }
                 body={
                   city !== ALL_CITIES
-                    ? `No artisans in ${city} match. Try another city.`
-                    : "Verified artisans appear here as soon as they're approved."
+                    ? c.noArtisansInCity(city)
+                    : c.noArtisansYetBody
                 }
                 action={
                   <Link href="/tailors" className="mk-state-action">
-                    Browse all artisans <ArrowRight size={15} />
+                    {c.browseAllArtisans} <ArrowRight size={15} />
                   </Link>
                 }
               />
@@ -508,24 +500,21 @@ export default function MarketplaceExperience({
       <section className="section-block page-shell fabric-section" id="fabrics">
         <div className="section-heading split">
           <div>
-            <span className="section-kicker">04 / THE TEXTILE EDIT</span>
+            <span className="section-kicker">{c.fabricsKicker}</span>
             <h2>
-              Start with the <em>material.</em>
+              {c.fabricsTitleLead} <em>{c.fabricsTitleEmphasis}</em>
             </h2>
-            <p>Beautiful fabrics chosen for the stories they help tell.</p>
+            <p>{c.fabricsBody}</p>
           </div>
           <Link href="/fabric-explorer" className="section-link">
-            Explore all fabrics <ArrowUpRight size={18} />
+            {c.exploreAllFabrics} <ArrowUpRight size={18} />
           </Link>
         </div>
         {visibleFabrics.some((item) => item.isSample) && (
-          <p className="preview-note">
-            Sample listings and pricing. Availability is confirmed by each
-            merchant.
-          </p>
+          <p className="preview-note">{c.fabricsPreviewNote}</p>
         )}
         {categories.length > 1 && (
-          <div className="filter-row" aria-label="Filter fabrics by type">
+          <div className="filter-row" aria-label={c.filterFabrics}>
             {[ALL_FABRICS, ...categories].map((value) => (
               <button
                 type="button"
@@ -534,7 +523,7 @@ export default function MarketplaceExperience({
                 className={fabricType === value ? "selected" : ""}
                 onClick={() => setFabricType(value)}
               >
-                {value}
+                {value === ALL_FABRICS ? c.allFabrics : value}
               </button>
             ))}
           </div>
@@ -555,7 +544,7 @@ export default function MarketplaceExperience({
                   <div className="fabric-image">
                     <Image
                       src={item.imageUrl}
-                      alt={`${item.name} textile`}
+                      alt={c.textileAlt(item.name)}
                       fill
                       sizes="(max-width: 600px) 100vw, 25vw"
                       className="cover-image"
@@ -573,7 +562,7 @@ export default function MarketplaceExperience({
                     <span>
                       {item.merchant.businessName}
                       {item.merchant.verified && (
-                        <BadgeInline />
+                        <BadgeInline label={c.verifiedMerchant} />
                       )}
                     </span>
                     <strong>
@@ -585,12 +574,12 @@ export default function MarketplaceExperience({
             ) : (
               <EmptyState
                 title={
-                  query ? `No fabrics match “${query}”` : "No fabrics listed yet"
+                  query ? c.noFabricsFor(query) : c.noFabricsYet
                 }
-                body="Verified merchants add new textiles regularly."
+                body={c.noFabricsYetBody}
                 action={
                   <Link href="/fabric-explorer" className="mk-state-action">
-                    Open the fabric explorer <ArrowRight size={15} />
+                    {c.openFabricExplorer} <ArrowRight size={15} />
                   </Link>
                 }
               />
@@ -604,15 +593,11 @@ export default function MarketplaceExperience({
           <Sparkles size={30} />
         </div>
         <div className="prompt-copy">
-          <span className="section-kicker">YOUR NEXT IDEA STARTS HERE</span>
+          <span className="section-kicker">{c.promptKicker}</span>
           <h2>
-            What would you <em>create?</em>
+            {c.promptTitleLead} <em>{c.promptTitleEmphasis}</em>
           </h2>
-          <p>
-            {AI_STUDIO_ENABLED
-              ? "Describe the piece you have in mind. AI Studio turns it into design previews you can take to an artisan as a commission."
-              : "Describe the piece you have in mind and add photos of the style you love. A verified artisan quotes to make it for you."}
-          </p>
+          <p>{AI_STUDIO_ENABLED ? c.promptBodyAi : c.promptBody}</p>
         </div>
         <form
           onSubmit={(event) => {
@@ -627,17 +612,19 @@ export default function MarketplaceExperience({
           className="prompt-form"
         >
           <label htmlFor="style-idea" className="sr-only">
-            Describe your style idea
+            {c.promptLabel}
           </label>
           <input
             id="style-idea"
             value={prompt}
             maxLength={300}
             onChange={(event) => setPrompt(event.target.value)}
-            placeholder="A midnight blue kaftan with gold embroidery…"
+            placeholder={c.promptPlaceholder}
           />
           <button
-            aria-label={AI_STUDIO_ENABLED ? "Design this idea in AI Studio" : "Commission this idea"}
+            aria-label={
+              AI_STUDIO_ENABLED ? c.designInAiStudio : c.commissionThisIdea
+            }
             type="submit"
             disabled={!prompt.trim()}
           >
@@ -645,25 +632,23 @@ export default function MarketplaceExperience({
           </button>
         </form>
         <div className="prompt-suggestions">
-          Try an idea:{" "}
-          {["Modern agbada", "Wedding guest look", "Everyday Ankara"].map(
-            (idea) => (
-              <button type="button" key={idea} onClick={() => setPrompt(idea)}>
-                {idea}
-              </button>
-            ),
-          )}
+          {c.tryIdea}{" "}
+          {c.ideas.map((idea) => (
+            <button type="button" key={idea} onClick={() => setPrompt(idea)}>
+              {idea}
+            </button>
+          ))}
         </div>
       </section>
       <div className="trust-note page-shell">
         <span>
-          <Check size={17} /> Artisans reviewed before they go live
+          <Check size={17} /> {c.trustReviewed}
         </span>
         <span>
-          <Check size={17} /> Starting prices shown up front
+          <Check size={17} /> {c.trustPrices}
         </span>
         <span>
-          <Check size={17} /> Measurements saved once in your fit profile
+          <Check size={17} /> {c.trustMeasurements}
         </span>
       </div>
     </>
@@ -671,10 +656,10 @@ export default function MarketplaceExperience({
 }
 
 /** Compact check mark after a verified merchant's name. */
-function BadgeInline() {
+function BadgeInline({ label }: { label: string }) {
   return (
-    <span className="mk-verified-dot" title="Verified merchant">
-      <ShieldCheck size={12} aria-label="Verified merchant" />
+    <span className="mk-verified-dot" title={label}>
+      <ShieldCheck size={12} aria-label={label} />
     </span>
   );
 }

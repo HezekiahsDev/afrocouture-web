@@ -18,6 +18,13 @@ customer, maker, merchant, and admin front end for a bespoke African fashion mar
   `public/img/logo-ink-trim.png` (ink variant for light surfaces)
 - Full design guidance: [`docs/DESIGN.md`](docs/DESIGN.md)
 
+## Languages
+
+English, Hausa, Yoruba and Igbo are supported. The language picker lives in the navbar and
+the choice is stored in the `NEXT_LOCALE` cookie. Copy lives in
+`src/i18n/dictionaries/`; see [`docs/I18N.md`](docs/I18N.md) to add strings or
+another language.
+
 ## Quick Start
 
 ### 1. Environment Configuration
