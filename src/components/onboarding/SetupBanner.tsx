@@ -17,9 +17,23 @@ type Step =
  * artisan/merchant profile, wait for review, or fix what review asked for. Approved
  * accounts and customers who chose their path never see it.
  */
-export function SetupBanner({ user, pathname }: { user: User; pathname: string }) {
+export function SetupBanner({
+  user,
+  pathname,
+  onShownChange,
+}: {
+  user: User;
+  pathname: string;
+  /** Tells the navbar whether the banner is on screen, so other prompts don't stack under it. */
+  onShownChange?: (shown: boolean) => void;
+}) {
   const { t } = useI18n();
   const [step, setStep] = useState<Step | null>(null);
+  const shown = Boolean(step) && !pathname.startsWith('/onboarding');
+
+  useEffect(() => {
+    onShownChange?.(shown);
+  }, [shown, onShownChange]);
 
   useEffect(() => {
     let cancelled = false;
@@ -49,7 +63,7 @@ export function SetupBanner({ user, pathname }: { user: User; pathname: string }
   }, [user.id, user.role, user.pathChosenAt]);
 
   // The setup pages show their own status.
-  if (!step || pathname.startsWith('/onboarding')) return null;
+  if (!step || !shown) return null;
 
   const content =
     step.kind === 'choose'

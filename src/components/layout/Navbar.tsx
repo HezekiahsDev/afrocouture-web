@@ -9,6 +9,7 @@ import {
   Bell,
   Bookmark,
   ChevronDown,
+  ClipboardList,
   Layers,
   LogOut,
   Menu,
@@ -29,6 +30,7 @@ import { AI_STUDIO_ENABLED } from "@/lib/features";
 import { NotificationBell } from "@/components/notifications/NotificationBell";
 import { useUnreadNotifications } from "@/components/notifications/useNotifications";
 import { SetupBanner } from "@/components/onboarding/SetupBanner";
+import { SurveyPrompt } from "@/components/survey/SurveyPrompt";
 import LanguageSwitcher from "@/components/layout/LanguageSwitcher";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -90,6 +92,7 @@ function NavbarContent() {
   const PROFILE_LINK: Record<SelfServiceRole, string> = t.nav.profile;
   const ROLE_LABEL: Record<User["role"], string> = t.nav.roles;
   const [menuOpen, setMenuOpen] = useState(false);
+  const [setupShown, setSetupShown] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const [query, setQuery] = useState("");
   const accountRef = useRef<HTMLDivElement>(null);
@@ -216,6 +219,9 @@ function NavbarContent() {
                     <Bookmark size={16} /> {t.nav.selection}
                     {savedCount > 0 && ` (${savedCount})`}
                   </Link>
+                  <Link href="/survey" onClick={closeAll}>
+                    <ClipboardList size={16} /> {t.nav.survey}
+                  </Link>
                 </>
               )}
               {user.role === "merchant" && (
@@ -335,6 +341,9 @@ function NavbarContent() {
                             <span className="mk-menu-count">{savedCount}</span>
                           )}
                         </Link>
+                        <Link href="/survey" role="menuitem" onClick={closeAll}>
+                          <ClipboardList size={16} /> {t.nav.survey}
+                        </Link>
                       </>
                     )}
                     {user.role === "merchant" && (
@@ -386,7 +395,12 @@ function NavbarContent() {
         </div>
       </div>
     </header>
-    {status === "authenticated" && user && <SetupBanner user={user} pathname={pathname} />}
+    {status === "authenticated" && user && (
+      <>
+        <SetupBanner user={user} pathname={pathname} onShownChange={setSetupShown} />
+        <SurveyPrompt user={user} pathname={pathname} hidden={setupShown} />
+      </>
+    )}
     </>
   );
 }
