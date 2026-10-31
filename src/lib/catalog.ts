@@ -35,6 +35,10 @@ export async function getFabrics(params: { category?: string; q?: string } = {})
   return (await api.get<Fabric[]>('/fabrics', { params })).data;
 }
 
+export async function getFabric(id: string): Promise<Fabric> {
+  return (await api.get<Fabric>(`/fabrics/${id}`)).data;
+}
+
 export async function getFabricCategories(): Promise<string[]> {
   return (await api.get<string[]>('/fabrics/categories')).data;
 }

@@ -1476,6 +1476,7 @@
 .detail-body {
   padding: 28px;
 }
+.detail-body h1,
 .detail-body h2 {
   font: 700 42px var(--font-jakarta), sans-serif;
   letter-spacing: -0.05em;
@@ -1773,6 +1774,7 @@
   .detail-body {
     padding: 23px;
   }
+  .detail-body h1,
   .detail-body h2 {
     font-size: 36px;
   }
@@ -2113,6 +2115,7 @@
 .prompt-copy h2 {
   font-size: clamp(22px, 2.2vw, 30px);
 }
+.detail-body h1,
 .detail-body h2 {
   font-size: 26px;
   letter-spacing: -0.01em;
@@ -3921,73 +3924,34 @@ section[aria-labelledby="saved-artisans"] .mk-saved-row {
 
 
 
-/* Fabric detail sheet: below 1100px the detail panel would land under the
-   whole grid, so tapping a fabric opens it as a bottom sheet instead. */
-.fabric-sheet {
-  width: 100%;
-  max-width: 640px;
-  max-height: 92dvh;
-  margin: auto auto 0;
-  padding: 0;
-  border: 0;
-  border-radius: 1.5rem 1.5rem 0 0;
-  background: #ffffff;
-  color: var(--ink);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  animation: fabric-sheet-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.fabric-sheet::backdrop {
-  background: rgba(23, 23, 23, 0.45);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-}
-.fabric-sheet .fabric-detail {
-  position: static;
-  display: block;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
-}
-.fabric-sheet .detail-image {
-  min-height: 0;
-  height: 280px;
-}
-.fabric-sheet .detail-body {
-  padding-bottom: calc(28px + env(safe-area-inset-bottom));
-}
-.fabric-sheet-close {
-  position: sticky;
-  top: 14px;
-  z-index: 2;
-  float: right;
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  margin: 14px 14px -54px 0;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--ink);
-  box-shadow: 0 4px 14px -6px rgba(23, 23, 23, 0.4);
-}
-.fabric-sheet-close:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-body:has(.fabric-sheet[open]) {
-  overflow: hidden;
-}
-@keyframes fabric-sheet-in {
-  from {
-    transform: translateY(100%);
-  }
-}
+/* Fabric page: below 1100px the explorer's detail panel would land under the
+   whole grid, so tapping a fabric opens /fabric-explorer/[id] instead. */
 @media (max-width: 1100px) {
+  .catalog-layout > .fabric-detail,
   .catalog-layout > .mk-skeleton-detail {
     display: none;
+  }
+}
+.fabric-page .fabric-detail {
+  position: static;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin-top: 28px;
+}
+.fabric-page .detail-image {
+  height: 100%;
+  min-height: 560px;
+}
+.fabric-page .mk-skeleton-detail {
+  margin-top: 28px;
+}
+@media (max-width: 700px) {
+  .fabric-page .fabric-detail {
+    display: block;
+    margin-top: 20px;
+  }
+  .fabric-page .detail-image {
+    min-height: 0;
+    height: 340px;
   }
 }

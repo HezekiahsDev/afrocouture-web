@@ -537,7 +537,7 @@ export default function MarketplaceExperience({
             ) : visibleFabrics.length ? (
               visibleFabrics.slice(0, 8).map((item) => (
                 <Link
-                  href={`/fabric-explorer?fabric=${item.id}`}
+                  href={`/fabric-explorer/${item.id}`}
                   className="fabric-card"
                   key={item.id}
                 >

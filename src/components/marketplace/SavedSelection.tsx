@@ -207,7 +207,7 @@ function Selection() {
                 return (
                   <li key={item.id} className="mk-saved-row">
                     <Link
-                      href={`/fabric-explorer?fabric=${fabric.id}`}
+                      href={`/fabric-explorer/${fabric.id}`}
                       className="mk-saved-thumb"
                     >
                       <Image
@@ -220,7 +220,7 @@ function Selection() {
                     </Link>
                     <div className="mk-saved-copy">
                       <small>{fabric.category}</small>
-                      <Link href={`/fabric-explorer?fabric=${fabric.id}`}>
+                      <Link href={`/fabric-explorer/${fabric.id}`}>
                         <strong>{fabric.name}</strong>
                       </Link>
                       <span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -16,7 +16,6 @@ import {
   Plus,
   Ruler,
   ShieldCheck,
-  X,
 } from "lucide-react";
 import { getFabrics, naira } from "@/lib/catalog";
 import { unitPriceFor } from "@/lib/payments";
@@ -34,26 +33,16 @@ import {
 const ALL = "All";
 const MAX_QTY = 200;
 
-/** Matches the breakpoint in atelier.css where the detail panel stops sitting beside the grid. */
-const SHEET_QUERY = "(max-width: 1100px)";
+/**
+ * Matches the breakpoint in atelier.css where the detail panel stops sitting
+ * beside the grid. Below it, a fabric opens on its own page instead.
+ */
+const PAGE_QUERY = "(max-width: 1100px)";
 
 const unitLabel = (unit: Fabric["unit"], qty: number) =>
   `${unit}${qty === 1 ? "" : "s"}`;
 
-const isNarrow = () => window.matchMedia(SHEET_QUERY).matches;
-
-/** True while the detail panel should open as a sheet instead of beside the grid. */
-function useSheetLayout() {
-  return useSyncExternalStore(
-    (onChange) => {
-      const media = window.matchMedia(SHEET_QUERY);
-      media.addEventListener("change", onChange);
-      return () => media.removeEventListener("change", onChange);
-    },
-    isNarrow,
-    () => false,
-  );
-}
+const opensAsPage = () => window.matchMedia(PAGE_QUERY).matches;
 
 export default function FabricExplorer({
   initialFabric,
@@ -140,24 +129,31 @@ function Explorer({
   const saved = useSavedItems();
   const [selectedId, setSelectedId] = useState(initialId ?? fabrics[0].id);
   const [filter, setFilter] = useState(ALL);
-  const sheetLayout = useSheetLayout();
-  // Explorer only mounts on the client once fabrics load, so reading the
-  // viewport here is safe. A deep link to a fabric opens its sheet on mobile.
-  const [sheetOpen, setSheetOpen] = useState(
-    () => Boolean(initialId) && isNarrow(),
-  );
   const selected = fabrics.find((item) => item.id === selectedId) ?? fabrics[0];
   const categories = uniqueValues(fabrics.map((item) => item.category));
   const filtered = fabrics.filter(
     (item) => filter === ALL || item.category === filter,
   );
 
-  function choose(id: string) {
+  // Coming back from a fabric's page on a phone: return to where they were.
+  useEffect(() => {
+    if (initialId && opensAsPage()) {
+      document
+        .getElementById(`fabric-${initialId}`)
+        ?.scrollIntoView({ block: "center" });
+    }
+    // Only on arrival; later selections update the URL but should not scroll.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function choose(event: MouseEvent<HTMLAnchorElement>, id: string) {
     setSelectedId(id);
-    setSheetOpen(sheetLayout);
     // A shallow URL update: router.replace would re-render the page, whose
     // `fabric`-keyed explorer would then remount and refetch the catalogue.
+    // On phones this also marks the fabric to return to from its page.
     window.history.replaceState(null, "", `/fabric-explorer?fabric=${id}`);
+    // Wide screens show the detail beside the grid; narrow ones follow the link.
+    if (!opensAsPage()) event.preventDefault();
   }
 
   return (
@@ -189,11 +185,12 @@ function Explorer({
         )}
         <div className="catalog-grid">
           {filtered.map((item) => (
-            <button
-              type="button"
+            <Link
+              href={`/fabric-explorer/${item.id}`}
+              id={`fabric-${item.id}`}
               className={`catalog-item ${selected.id === item.id ? "active" : ""}`}
-              aria-pressed={selected.id === item.id}
-              onClick={() => choose(item.id)}
+              aria-current={selected.id === item.id ? "true" : undefined}
+              onClick={(event) => choose(event, item.id)}
               key={item.id}
             >
               <span className="catalog-item-image">
@@ -225,7 +222,7 @@ function Explorer({
               ) : (
                 <ArrowUpRight className="catalog-item-arrow" size={17} />
               )}
-            </button>
+            </Link>
           ))}
         </div>
         <div className="catalog-guidance">
@@ -239,78 +236,10 @@ function Explorer({
           </div>
         </div>
       </div>
-      {/* Keyed so the yardage resets when another fabric is chosen. */}
-      {sheetLayout ? (
-        sheetOpen && (
-          <FabricSheet
-            key={selected.id}
-            fabric={selected}
-            onClose={() => setSheetOpen(false)}
-          />
-        )
-      ) : (
-        <FabricDetail key={selected.id} fabric={selected} />
-      )}
+      {/* Keyed so the yardage resets when another fabric is chosen. Hidden
+          below the page breakpoint, where fabrics open on their own page. */}
+      <FabricDetail key={selected.id} fabric={selected} />
     </div>
-  );
-}
-
-/**
- * On narrower screens the detail panel would land below the whole grid, so it
- * opens as a bottom sheet over the list instead. The native modal dialog gives
- * focus trapping, Escape to close, and an inert page behind it.
- *
- * Opening the sheet adds a history entry, so the phone's back button closes
- * the sheet rather than leaving the page.
- */
-function FabricSheet({
-  fabric,
-  onClose,
-}: {
-  fabric: Fabric;
-  onClose: () => void;
-}) {
-  const ref = useRef<HTMLDialogElement>(null);
-
-  useEffect(() => {
-    const dialog = ref.current;
-    if (dialog && !dialog.open) dialog.showModal();
-    // Already set when returning to this entry, e.g. back from /saved.
-    if (!window.history.state?.fabricSheet) {
-      window.history.pushState({ fabricSheet: true }, "");
-    }
-    const onPopState = (event: PopStateEvent) => {
-      if (!event.state?.fabricSheet) ref.current?.close();
-    };
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, []);
-
-  return (
-    <dialog
-      ref={ref}
-      className="fabric-sheet"
-      aria-label={`${fabric.name} details`}
-      onClose={() => {
-        // Closed with ✕, Escape or the backdrop: drop the sheet's history entry.
-        if (window.history.state?.fabricSheet) window.history.back();
-        onClose();
-      }}
-      onClick={(event) => {
-        // A click on the dialog itself (not its content) is a click on the backdrop.
-        if (event.target === event.currentTarget) event.currentTarget.close();
-      }}
-    >
-      <button
-        type="button"
-        className="fabric-sheet-close"
-        aria-label="Close fabric details"
-        onClick={() => ref.current?.close()}
-      >
-        <X size={18} />
-      </button>
-      <FabricDetail fabric={fabric} />
-    </dialog>
   );
 }
 
@@ -367,7 +296,14 @@ function PriceTiers({ fabric, qty }: { fabric: Fabric; qty: number }) {
   );
 }
 
-function FabricDetail({ fabric }: { fabric: Fabric }) {
+/** The detail panel beside the explorer grid, or the body of a fabric's own page (`standalone`). */
+export function FabricDetail({
+  fabric,
+  standalone = false,
+}: {
+  fabric: Fabric;
+  standalone?: boolean;
+}) {
   const saved = useSavedItems();
   const savedQty = saved.quantityOf("fabric", fabric.id);
   // Until the person picks an amount, follow the saved quantity (which may load later).
@@ -389,8 +325,10 @@ function FabricDetail({ fabric }: { fabric: Fabric }) {
     setJustSaved(ok);
   }
 
+  const Panel = standalone ? "article" : "aside";
+
   return (
-    <aside className="fabric-detail" aria-label={`${fabric.name} details`}>
+    <Panel className="fabric-detail" aria-label={`${fabric.name} details`}>
       <div className="detail-image">
         <Image
           src={fabric.imageUrl}
@@ -398,6 +336,7 @@ function FabricDetail({ fabric }: { fabric: Fabric }) {
           fill
           sizes="(max-width: 900px) 100vw, 600px"
           className="cover-image"
+          preload={standalone}
         />
         <span>{fabric.category.toUpperCase()}</span>
       </div>
@@ -405,7 +344,7 @@ function FabricDetail({ fabric }: { fabric: Fabric }) {
         <span className="section-kicker">
           THE TEXTILE{fabric.origin && ` / ${fabric.origin.toUpperCase()}`}
         </span>
-        <h2>{fabric.name}</h2>
+        {standalone ? <h1>{fabric.name}</h1> : <h2>{fabric.name}</h2>}
         {fabric.description && (
           <p className="detail-description">{fabric.description}</p>
         )}
@@ -537,6 +476,6 @@ function FabricDetail({ fabric }: { fabric: Fabric }) {
           </span>
         </div>
       </div>
-    </aside>
+    </Panel>
   );
 }
