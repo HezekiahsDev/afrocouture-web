@@ -42,5 +42,6 @@ export const config = {
     '/orders/:path*',
     '/saved',
     '/notifications',
+    '/survey',
   ],
 };

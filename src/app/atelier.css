@@ -3102,6 +3102,28 @@ section[aria-labelledby="saved-artisans"] .mk-saved-row {
   }
 }
 
+/* Survey prompt: the setup banner's look, plus a close button. */
+.mk-survey-dismiss {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-left: 4px;
+  border: 0;
+  border-radius: 9999px;
+  background: none;
+  color: #5c3b29;
+  cursor: pointer;
+}
+.mk-survey-dismiss:hover {
+  background: rgba(184, 115, 78, 0.14);
+}
+.mk-survey-dismiss:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 /* ── Notifications (bell dropdown + /notifications page) ── */
 .mk-notif-menu {
   position: absolute;
