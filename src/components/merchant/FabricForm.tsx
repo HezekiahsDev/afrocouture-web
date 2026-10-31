@@ -123,12 +123,12 @@ export function FabricForm({ fabric }: { fabric?: MyFabric }) {
 
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
-      <Link href="/merchant/fabrics" className="inline-flex w-fit items-center gap-2 text-xs font-bold text-[#94A3B8] hover:text-[#00A3FF]">
+      <Link href="/merchant/fabrics" className="inline-flex w-fit items-center gap-2 text-xs font-bold text-[#6B655C] hover:text-[#B8734E]">
         <ArrowLeft size={15} aria-hidden="true" /> Back to your fabrics
       </Link>
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-[#38BDF8]">{fabric ? 'Edit listing' : 'New listing'}</p>
-        <h1 className="mt-1 text-2xl font-extrabold text-[#F8FAFC] sm:text-3xl">{fabric ? fabric.name : 'List a fabric'}</h1>
+        <p className="text-[11px] font-bold uppercase tracking-wider text-[#8F5637]">{fabric ? 'Edit listing' : 'New listing'}</p>
+        <h1 className="mt-1 text-2xl font-extrabold text-[#171717] sm:text-3xl">{fabric ? fabric.name : 'List a fabric'}</h1>
       </div>
 
       <SectionCard number="01" title="The fabric" description="What customers see in the fabric explorer.">
@@ -149,7 +149,7 @@ export function FabricForm({ fabric }: { fabric?: MyFabric }) {
         <div className="sm:col-span-2">
           <FileUpload label="Photo" purpose="fabric" value={f.imageUrl || null} onChange={(url) => set('imageUrl', url ?? '')} required hint="A close, well-lit photo that shows the pattern and texture." />
           {errors.imageUrl && (
-            <p className="mt-1.5 text-xs text-[#ffb4ab]" role="alert" data-field-error="true">
+            <p className="mt-1.5 text-xs text-[#9B2C24]" role="alert" data-field-error="true">
               {errors.imageUrl}
             </p>
           )}
@@ -158,7 +158,7 @@ export function FabricForm({ fabric }: { fabric?: MyFabric }) {
 
       <SectionCard number="02" title="Price & stock">
         <fieldset className="flex flex-col gap-1.5 sm:col-span-2">
-          <legend className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">Sold by the</legend>
+          <legend className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">Sold by the</legend>
           <div className="flex gap-2">
             {(['yard', 'bundle'] as const).map((unit) => (
               <button
@@ -168,7 +168,7 @@ export function FabricForm({ fabric }: { fabric?: MyFabric }) {
                 onClick={() => set('unit', unit)}
                 className={cn(
                   'rounded-full border px-4 py-1.5 text-xs font-semibold capitalize',
-                  f.unit === unit ? 'border-[#00A3FF] bg-[#00A3FF]/15 text-[#38BDF8]' : 'border-white/10 text-[#94A3B8] hover:border-white/20',
+                  f.unit === unit ? 'border-[#B8734E] bg-[#B8734E]/15 text-[#7A4429]' : 'border-[#171717]/12 text-[#6B655C] hover:border-[#B8734E]/40',
                 )}
               >
                 {unit}
@@ -182,21 +182,21 @@ export function FabricForm({ fabric }: { fabric?: MyFabric }) {
       </SectionCard>
 
       {fabric?.moderatedAt ? (
-        <p className="rounded-2xl border border-[#ffb4ab]/30 bg-[#93000a]/15 p-4 text-sm text-[#ffdad6]">
-          AfroCouture took this listing down: “{fabric.unpublishedReason}”. You can still edit it; contact support once it&apos;s
+        <p className="rounded-2xl border border-[#9B2C24]/30 bg-[#F6E3E0]/15 p-4 text-sm text-[#7A1F1A]">
+          IPILE took this listing down: “{fabric.unpublishedReason}”. You can still edit it; contact support once it&apos;s
           fixed and we&apos;ll republish it.
         </p>
       ) : (
-        <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4">
-          <input type="checkbox" checked={f.isPublished} onChange={(e) => set('isPublished', e.target.checked)} className="h-4 w-4 accent-[#00A3FF]" />
-          <span className="text-sm text-[#F8FAFC]">
-            Published <span className="text-xs text-[#94A3B8]">— visible in the fabric explorer and orderable</span>
+        <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-4">
+          <input type="checkbox" checked={f.isPublished} onChange={(e) => set('isPublished', e.target.checked)} className="h-4 w-4 accent-[#B8734E]" />
+          <span className="text-sm text-[#171717]">
+            Published <span className="text-xs text-[#6B655C]">— visible in the fabric explorer and orderable</span>
           </span>
         </label>
       )}
 
-      <div className="sticky bottom-4 z-20 flex flex-col gap-3 rounded-2xl border border-white/10 bg-[#0F172A]/95 p-4 shadow-[0_12px_32px_-4px_rgba(0,0,0,0.6)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
-        <p className={cn('text-xs', formError ? 'text-[#ffb4ab]' : 'text-[#94A3B8]')} role={formError ? 'alert' : undefined}>
+      <div className="sticky bottom-4 z-20 flex flex-col gap-3 rounded-2xl border border-[#171717]/12 bg-[#FFFFFF]/95 p-4 shadow-[0_12px_32px_-4px_rgba(23,23,23,0.14)] backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
+        <p className={cn('text-xs', formError ? 'text-[#9B2C24]' : 'text-[#6B655C]')} role={formError ? 'alert' : undefined}>
           {formError || (fabric ? 'Changes go live as soon as you save.' : 'You can edit or unpublish it at any time.')}
         </p>
         <button type="submit" className="btn-primary justify-center" disabled={saving}>

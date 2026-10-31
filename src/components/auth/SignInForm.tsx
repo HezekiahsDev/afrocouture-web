@@ -60,14 +60,14 @@ export default function SignInForm({ next, email: initialEmail, reason }: { next
       kicker="Welcome back"
       title={
         <>
-          Sign in to <span className="text-[#00A3FF]">AfroCouture.</span>
+          Sign in to <span className="text-[#B8734E]">IPILE.</span>
         </>
       }
       subtitle="Pick up where you left off — your fit profile, saved artisans and fabric selection."
       footer={
         <>
           New here?{' '}
-          <Link href={`/signup${query}`} className="font-semibold text-[#38BDF8] hover:underline">
+          <Link href={`/signup${query}`} className="font-semibold text-[#8F5637] hover:underline">
             Create an account
           </Link>
         </>
@@ -94,7 +94,7 @@ export default function SignInForm({ next, email: initialEmail, reason }: { next
           action={
             <Link
               href={`/forgot-password${email ? `?email=${encodeURIComponent(email.trim())}` : ''}`}
-              className="normal-case tracking-normal text-[#38BDF8] hover:underline"
+              className="normal-case tracking-normal text-[#8F5637] hover:underline"
             >
               Forgot password?
             </Link>
@@ -106,7 +106,7 @@ export default function SignInForm({ next, email: initialEmail, reason }: { next
         </AuthField>
 
         {suspended && !error && (
-          <FormAlert>Your account has been suspended. If you think this is a mistake, contact AfroCouture support.</FormAlert>
+          <FormAlert>Your account has been suspended. If you think this is a mistake, contact IPILE support.</FormAlert>
         )}
         {error && <FormAlert>{error}</FormAlert>}
 

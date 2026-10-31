@@ -4,8 +4,8 @@ import Navbar from "@/components/layout/Navbar";
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Reset your password | AfroCouture",
-  description: "Reset the password for your AfroCouture account.",
+  title: "Reset your password | IPILE",
+  description: "Reset the password for your IPILE account.",
 };
 
 type Params = { email?: string };

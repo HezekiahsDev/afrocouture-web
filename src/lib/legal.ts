@@ -1,7 +1,7 @@
 /** Operator details shown on the Privacy Policy and Terms of Service. */
 export const LEGAL = {
-  operator: 'AfroCouture',
-  brand: 'AfroCouture AI',
+  operator: 'IPILE',
+  brand: 'IPILE',
   country: 'Nigeria',
   lastUpdated: '24 October 2026',
   /** Days after delivery before an order completes on its own (AUTO_APPROVE_DAYS on the API). */

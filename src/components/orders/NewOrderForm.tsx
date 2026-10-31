@@ -147,7 +147,7 @@ function NewOrder({
   }
   if (!data || !chosen) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center text-[#94A3B8]" role="status">
+      <div className="flex min-h-[50vh] items-center justify-center text-[#6B655C]" role="status">
         <Spinner label="Loading" />
       </div>
     );
@@ -226,11 +226,11 @@ function NewOrder({
         <ArrowLeft size={16} /> {useSaved ? 'Back to your selection' : 'Back to artisans'}
       </Link>
       <header>
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#38BDF8]">New commission</p>
-        <h1 className="text-[30px] font-extrabold leading-[38px] text-[#F8FAFC] sm:text-[40px] sm:leading-[48px]">
+        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#8F5637]">New commission</p>
+        <h1 className="text-[30px] font-extrabold leading-[38px] text-[#171717] sm:text-[40px] sm:leading-[48px]">
           Request a piece
         </h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#94A3B8]">
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-[#6B655C]">
           Tell the artisan what you want. They&apos;ll reply with a price and a delivery date — you only pay once
           you accept their quote.
         </p>
@@ -247,7 +247,7 @@ function NewOrder({
             key={step.label}
             className={cn(
               'flex items-center gap-2 rounded-xl border px-3 py-2',
-              step.done ? 'border-[#34d399]/40 text-[#34d399]' : 'border-white/10 text-[#94A3B8]',
+              step.done ? 'border-[#2F6B4F]/40 text-[#2F6B4F]' : 'border-[#171717]/12 text-[#6B655C]',
             )}
           >
             {step.done ? <Check size={14} aria-hidden="true" /> : <span className="font-bold">{index + 1}</span>}
@@ -278,7 +278,7 @@ function NewOrder({
         <div className="flex min-w-0 flex-col gap-6">
           {/* Artisan */}
           <section className={card} aria-labelledby="artisan-heading">
-            <h2 id="artisan-heading" className="mb-4 text-lg font-bold text-[#F8FAFC]">
+            <h2 id="artisan-heading" className="mb-4 text-lg font-bold text-[#171717]">
               1. Your artisan
             </h2>
             {tailor && !tailor.isSample ? (
@@ -287,9 +287,9 @@ function NewOrder({
                   <Portrait src={tailor.portraitUrl} name={tailor.displayName} size={52} />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs text-[#38BDF8]">{tailor.atelierName}</p>
-                  <p className="font-semibold text-[#F8FAFC]">{tailor.displayName ?? tailor.atelierName}</p>
-                  <p className="flex flex-wrap items-center gap-2 text-xs text-[#94A3B8]">
+                  <p className="text-xs text-[#8F5637]">{tailor.atelierName}</p>
+                  <p className="font-semibold text-[#171717]">{tailor.displayName ?? tailor.atelierName}</p>
+                  <p className="flex flex-wrap items-center gap-2 text-xs text-[#6B655C]">
                     {tailor.city}
                     {tailor.startingPrice !== null && <span>· From {naira(tailor.startingPrice)}</span>}
                     {tailor.verified && <VerifiedBadge label="Verified artisan" />}
@@ -323,18 +323,18 @@ function NewOrder({
                         className={cn(
                           'flex items-center gap-3 rounded-xl border p-3 text-left transition',
                           tailorId === t.id
-                            ? 'border-[#00A3FF] bg-[#00A3FF]/10'
-                            : 'border-white/10 bg-[#0F172A]/60 hover:border-white/20',
+                            ? 'border-[#B8734E] bg-[#B8734E]/10'
+                            : 'border-[#171717]/12 bg-[#FFFFFF]/60 hover:border-[#B8734E]/40',
                         )}
                       >
                         <span className="overflow-hidden rounded-full">
                           <Portrait src={t.portraitUrl} name={t.displayName} size={40} />
                         </span>
                         <span className="min-w-0">
-                          <span className="block truncate text-sm font-semibold text-[#F8FAFC]">
+                          <span className="block truncate text-sm font-semibold text-[#171717]">
                             {t.displayName ?? t.atelierName}
                           </span>
-                          <span className="block truncate text-xs text-[#94A3B8]">
+                          <span className="block truncate text-xs text-[#6B655C]">
                             {t.craft ?? t.city}
                             {t.startingPrice !== null && ` · from ${naira(t.startingPrice)}`}
                           </span>
@@ -343,19 +343,19 @@ function NewOrder({
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-[#94A3B8]">
+                  <p className="text-sm text-[#6B655C]">
                     No verified artisans are taking commissions yet. Sample profiles on the marketplace are
                     illustrative only. Check back soon.
                   </p>
                 )}
-                {show('tailor') && !tailor && <p className="mt-2 text-xs text-[#ffb4ab]">{show('tailor')}</p>}
+                {show('tailor') && !tailor && <p className="mt-2 text-xs text-[#9B2C24]">{show('tailor')}</p>}
               </>
             )}
           </section>
 
           {/* The piece */}
           <section className={cn(card, 'flex flex-col gap-5')} aria-labelledby="piece-heading">
-            <h2 id="piece-heading" className="text-lg font-bold text-[#F8FAFC]">
+            <h2 id="piece-heading" className="text-lg font-bold text-[#171717]">
               2. The piece
             </h2>
             <fieldset className="flex flex-col gap-2">
@@ -370,8 +370,8 @@ function NewOrder({
                     className={cn(
                       'rounded-full border px-3.5 py-1.5 text-xs font-semibold transition',
                       garmentType === g
-                        ? 'border-[#00A3FF] bg-[#00A3FF] text-[#090D16]'
-                        : 'border-white/10 text-[#94A3B8] hover:border-white/25 hover:text-[#F8FAFC]',
+                        ? 'border-[#B8734E] bg-[#9E5B37] text-[#FFFDF8]'
+                        : 'border-[#171717]/12 text-[#6B655C] hover:border-[#B8734E]/50 hover:text-[#171717]',
                     )}
                   >
                     {g}
@@ -388,7 +388,7 @@ function NewOrder({
                   aria-label="Describe the garment type"
                 />
               )}
-              {show('garment') && <p className="text-xs text-[#ffb4ab]">{show('garment')}</p>}
+              {show('garment') && <p className="text-xs text-[#9B2C24]">{show('garment')}</p>}
             </fieldset>
 
             <label className="flex flex-col gap-1.5">
@@ -401,8 +401,8 @@ function NewOrder({
                 placeholder="The occasion, the fit you like, colours, embroidery, sleeve and neckline details, anything you don't want…"
                 aria-invalid={Boolean(show('brief'))}
               />
-              <span className="flex justify-between text-[11px] text-[#64748B]">
-                <span className={show('brief') ? 'text-[#ffb4ab]' : ''}>
+              <span className="flex justify-between text-[11px] text-[#6B655C]">
+                <span className={show('brief') ? 'text-[#9B2C24]' : ''}>
                   {show('brief') ?? 'The more detail, the more accurate the quote.'}
                 </span>
                 <span>{brief.trim().length}/2000</span>
@@ -418,14 +418,14 @@ function NewOrder({
                 min={tomorrow}
                 onChange={(e) => setDesiredDate(e.target.value)}
               />
-              {show('date') && <span className="text-xs text-[#ffb4ab]">{show('date')}</span>}
+              {show('date') && <span className="text-xs text-[#9B2C24]">{show('date')}</span>}
             </label>
 
             <div className="flex flex-col gap-2">
               <span className={labelClass}>Reference images (optional)</span>
               {data.design && (
-                <div className="flex items-center gap-3 rounded-xl border border-[#00A3FF]/25 bg-[#00A3FF]/5 p-3">
-                  <span className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-[#1E293B]">
+                <div className="flex items-center gap-3 rounded-xl border border-[#B8734E]/25 bg-[#B8734E]/5 p-3">
+                  <span className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-[#FFFFFF]">
                     <Image
                       src={data.design.imageUrls[data.design.selectedIndex] ?? data.design.imageUrls[0]}
                       alt="Your AI Studio design"
@@ -434,8 +434,8 @@ function NewOrder({
                       className="object-cover"
                     />
                   </span>
-                  <span className="text-sm text-[#cfe5ff]">
-                    <Sparkles size={14} className="mr-1 inline text-[#22D3EE]" aria-hidden="true" />
+                  <span className="text-sm text-[#5C3B29]">
+                    <Sparkles size={14} className="mr-1 inline text-[#1F2A42]" aria-hidden="true" />
                     Your AI Studio design is attached for the artisan.
                   </span>
                 </div>
@@ -443,12 +443,12 @@ function NewOrder({
               {references.length > 0 && (
                 <ul className="flex flex-wrap gap-2">
                   {references.map((url) => (
-                    <li key={url} className="relative h-20 w-20 overflow-hidden rounded-lg bg-[#1E293B]">
+                    <li key={url} className="relative h-20 w-20 overflow-hidden rounded-lg bg-[#FFFFFF]">
                       <Image src={url} alt="Reference" fill sizes="80px" className="object-cover" />
                       <button
                         type="button"
                         onClick={() => setReferences((prev) => prev.filter((u) => u !== url))}
-                        className="absolute right-1 top-1 rounded-full bg-[#090D16]/80 p-1 text-[#F8FAFC]"
+                        className="absolute right-1 top-1 rounded-full bg-[#F5F0E8]/80 p-1 text-[#171717]"
                         aria-label="Remove reference image"
                       >
                         <X size={12} />
@@ -472,10 +472,10 @@ function NewOrder({
 
           {/* Fabrics */}
           <section className={card} aria-labelledby="fabric-heading">
-            <h2 id="fabric-heading" className="text-lg font-bold text-[#F8FAFC]">
+            <h2 id="fabric-heading" className="text-lg font-bold text-[#171717]">
               3. Fabric
             </h2>
-            <p className="mb-4 mt-1 text-sm text-[#94A3B8]">
+            <p className="mb-4 mt-1 text-sm text-[#6B655C]">
               Buy fabric from your selection with this order (up to {MAX_FABRICS} fabrics) — the merchant ships it to your
               artisan. Or skip this and agree fabric with the artisan.
             </p>
@@ -491,15 +491,15 @@ function NewOrder({
                       key={fabric.id}
                       className={cn(
                         'flex flex-wrap items-center gap-3 rounded-xl border p-3',
-                        included ? 'border-[#00A3FF]/50 bg-[#00A3FF]/5' : 'border-white/10',
+                        included ? 'border-[#B8734E]/50 bg-[#B8734E]/5' : 'border-[#171717]/12',
                       )}
                     >
-                      <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#1E293B]">
+                      <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#FFFFFF]">
                         <Image src={fabric.imageUrl} alt="" fill sizes="56px" className="object-cover" />
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-semibold text-[#F8FAFC]">{fabric.name}</span>
-                        <span className="block text-xs text-[#94A3B8]">
+                        <span className="block truncate text-sm font-semibold text-[#171717]">{fabric.name}</span>
+                        <span className="block text-xs text-[#6B655C]">
                           {blocked
                             ? 'Sample listing — not for sale'
                             : `${naira(unit)} / ${fabric.unit}${unit < fabric.price ? ' · bulk price' : ''} · ${fabric.merchant.businessName}`}
@@ -521,7 +521,7 @@ function NewOrder({
                         disabled={blocked || (!included && chosen.size >= MAX_FABRICS)}
                         onClick={() => toggleFabric(fabric.id)}
                         aria-pressed={included}
-                        className={included ? ghostButton : cn(ghostButton, 'border-[#00A3FF]/40')}
+                        className={included ? ghostButton : cn(ghostButton, 'border-[#B8734E]/40')}
                       >
                         {included ? (
                           <>
@@ -538,7 +538,7 @@ function NewOrder({
                 })}
               </ul>
             ) : (
-              <p className="text-sm text-[#94A3B8]">
+              <p className="text-sm text-[#6B655C]">
                 You haven&apos;t saved any fabrics.{' '}
                 <Link href="/fabric-explorer" className="mk-inline-link">
                   Explore fabrics
@@ -552,35 +552,35 @@ function NewOrder({
         {/* Summary */}
         <aside className="lg:sticky lg:top-[104px] lg:self-start">
           <div className={cn(card, 'flex flex-col gap-4')}>
-            <h2 className="text-lg font-bold text-[#F8FAFC]">Summary</h2>
+            <h2 className="text-lg font-bold text-[#171717]">Summary</h2>
             <dl className="flex flex-col gap-2 text-sm">
               <div className="flex justify-between gap-3">
-                <dt className="text-[#94A3B8]">Artisan</dt>
-                <dd className="text-right text-[#F8FAFC]">{tailor && !tailor.isSample ? (tailor.displayName ?? tailor.atelierName) : '—'}</dd>
+                <dt className="text-[#6B655C]">Artisan</dt>
+                <dd className="text-right text-[#171717]">{tailor && !tailor.isSample ? (tailor.displayName ?? tailor.atelierName) : '—'}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#94A3B8]">Piece</dt>
-                <dd className="text-right text-[#F8FAFC]">{garment || '—'}</dd>
+                <dt className="text-[#6B655C]">Piece</dt>
+                <dd className="text-right text-[#171717]">{garment || '—'}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#94A3B8]">Fabric</dt>
-                <dd className="text-right tabular-nums text-[#F8FAFC]">{selectedFabrics.length ? naira(fabricTotal) : 'None'}</dd>
+                <dt className="text-[#6B655C]">Fabric</dt>
+                <dd className="text-right tabular-nums text-[#171717]">{selectedFabrics.length ? naira(fabricTotal) : 'None'}</dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#94A3B8]">Workmanship</dt>
-                <dd className="text-right tabular-nums text-[#F8FAFC]">
+                <dt className="text-[#6B655C]">Workmanship</dt>
+                <dd className="text-right tabular-nums text-[#171717]">
                   {tailor && !tailor.isSample && tailor.startingPrice !== null ? `From ${naira(tailor.startingPrice)}` : 'Quoted by artisan'}
                 </dd>
               </div>
-              <div className="flex justify-between gap-3 border-t border-white/10 pt-2">
-                <dt className="font-semibold text-[#F8FAFC]">Estimate so far</dt>
-                <dd className="text-right font-bold tabular-nums text-[#F8FAFC]">
+              <div className="flex justify-between gap-3 border-t border-[#171717]/12 pt-2">
+                <dt className="font-semibold text-[#171717]">Estimate so far</dt>
+                <dd className="text-right font-bold tabular-nums text-[#171717]">
                   {naira(fabricTotal + (tailor && !tailor.isSample ? (tailor.startingPrice ?? 0) : 0))}
                 </dd>
               </div>
               <div className="flex justify-between gap-3">
-                <dt className="text-[#94A3B8]">Fit profile</dt>
-                <dd className={cn('flex items-center gap-1 text-right', fitReady ? 'text-[#34d399]' : 'text-[#fcd34d]')}>
+                <dt className="text-[#6B655C]">Fit profile</dt>
+                <dd className={cn('flex items-center gap-1 text-right', fitReady ? 'text-[#2F6B4F]' : 'text-[#8A6A1F]')}>
                   {fitReady ? (
                     <>
                       <Check size={14} aria-hidden="true" /> Attached
@@ -591,12 +591,12 @@ function NewOrder({
                 </dd>
               </div>
             </dl>
-            <p className="text-xs leading-5 text-[#64748B]">
+            <p className="text-xs leading-5 text-[#6B655C]">
               No payment now. The artisan adds their workmanship price and delivery fee in a quote; your payment is
-              held by AfroCouture until you approve the finished piece.
+              held by IPILE until you approve the finished piece.
             </p>
             {error && <InlineAlert>{error}</InlineAlert>}
-            {blocker && (touched || !fitReady) && <p className="text-xs leading-5 text-[#fcd34d]">{blocker}</p>}
+            {blocker && (touched || !fitReady) && <p className="text-xs leading-5 text-[#8A6A1F]">{blocker}</p>}
             <button type="submit" className={primaryButton} disabled={submitting || !fitReady}>
               {submitting ? (
                 <>

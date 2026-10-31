@@ -70,9 +70,9 @@ export function FabricList({ savedName }: { savedName?: string }) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-[#38BDF8]">{merchant.businessName}</p>
-          <h1 className="mt-1 text-2xl font-extrabold text-[#F8FAFC] sm:text-3xl">Your fabrics</h1>
-          <p className="mt-1 text-sm text-[#94A3B8]">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-[#8F5637]">{merchant.businessName}</p>
+          <h1 className="mt-1 text-2xl font-extrabold text-[#171717] sm:text-3xl">Your fabrics</h1>
+          <p className="mt-1 text-sm text-[#6B655C]">
             {fabrics.length
               ? `${fabrics.filter((f) => f.isPublished).length} of ${fabrics.length} published`
               : 'List your first fabric to appear in the fabric explorer.'}
@@ -84,20 +84,20 @@ export function FabricList({ savedName }: { savedName?: string }) {
       </div>
 
       {savedName && (
-        <p className="flex items-center gap-2 rounded-xl border border-[#10B981]/30 bg-[#10B981]/10 px-4 py-3 text-sm text-[#a7f3d0]" role="status">
+        <p className="flex items-center gap-2 rounded-xl border border-[#2F6B4F]/30 bg-[#2F6B4F]/10 px-4 py-3 text-sm text-[#2F6B4F]" role="status">
           <CircleCheck size={16} aria-hidden="true" /> Saved “{savedName}”.
         </p>
       )}
       {error && (
-        <p className="rounded-xl border border-[#ffb4ab]/30 bg-[#93000a]/20 px-4 py-3 text-sm text-[#ffdad6]" role="alert">
+        <p className="rounded-xl border border-[#9B2C24]/30 bg-[#F6E3E0]/20 px-4 py-3 text-sm text-[#7A1F1A]" role="alert">
           {error}
         </p>
       )}
 
       {fabrics.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-white/15 px-6 py-14 text-center">
-          <p className="text-base font-semibold text-[#F8FAFC]">No fabrics yet</p>
-          <p className="max-w-sm text-sm text-[#94A3B8]">
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-[#171717]/15 px-6 py-14 text-center">
+          <p className="text-base font-semibold text-[#171717]">No fabrics yet</p>
+          <p className="max-w-sm text-sm text-[#6B655C]">
             Add a photo, a price per yard or bundle, and optional price breaks for bigger orders.
           </p>
           <Link href="/merchant/fabrics/new" className="btn-primary mt-2">
@@ -110,34 +110,34 @@ export function FabricList({ savedName }: { savedName?: string }) {
             <li
               key={fabric.id}
               data-testid="my-fabric"
-              className="grid grid-cols-[72px_minmax(0,1fr)] gap-4 rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-3 sm:grid-cols-[88px_minmax(0,1fr)_auto] sm:items-center"
+              className="grid grid-cols-[72px_minmax(0,1fr)] gap-4 rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-3 sm:grid-cols-[88px_minmax(0,1fr)_auto] sm:items-center"
             >
-              <span className="relative h-[72px] w-[72px] overflow-hidden rounded-xl bg-[#1E293B] sm:h-[88px] sm:w-[88px]">
+              <span className="relative h-[72px] w-[72px] overflow-hidden rounded-xl bg-[#FFFFFF] sm:h-[88px] sm:w-[88px]">
                 <Image src={fabric.imageUrl} alt="" fill sizes="88px" className="object-cover" />
               </span>
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="truncate text-base font-bold text-[#F8FAFC]">{fabric.name}</h2>
+                  <h2 className="truncate text-base font-bold text-[#171717]">{fabric.name}</h2>
                   <span
                     className={cn(
                       'rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider',
-                      fabric.isPublished ? 'bg-[#10B981]/15 text-[#34d399]' : 'bg-white/5 text-[#94A3B8]',
+                      fabric.isPublished ? 'bg-[#2F6B4F]/15 text-[#2F6B4F]' : 'bg-[#171717]/5 text-[#6B655C]',
                     )}
                   >
                     {fabric.moderatedAt ? 'Taken down' : fabric.isPublished ? 'Published' : 'Hidden'}
                   </span>
                 </div>
                 {fabric.moderatedAt && (
-                  <p className="mt-1 text-xs text-[#ffb4ab]" data-testid="moderation-note">
-                    AfroCouture took this listing down: “{fabric.unpublishedReason}”. Fix it and contact support to have it
+                  <p className="mt-1 text-xs text-[#9B2C24]" data-testid="moderation-note">
+                    IPILE took this listing down: “{fabric.unpublishedReason}”. Fix it and contact support to have it
                     republished.
                   </p>
                 )}
-                <p className="mt-0.5 text-xs text-[#94A3B8]">
+                <p className="mt-0.5 text-xs text-[#6B655C]">
                   {fabric.category}
                   {fabric.stock !== null && ` · ${fabric.stock} in stock`}
                 </p>
-                <p className="mt-1.5 text-xs text-[#CBD5E1]" data-testid="tier-summary">
+                <p className="mt-1.5 text-xs text-[#4B453E]" data-testid="tier-summary">
                   {fabric.priceTiers.length
                     ? tierSummary(fabric.price, fabric.priceTiers, fabric.unit)
                     : `${naira(fabric.price)} per ${fabric.unit}`}
@@ -146,12 +146,12 @@ export function FabricList({ savedName }: { savedName?: string }) {
               <div className="col-span-2 flex flex-wrap gap-2 sm:col-span-1 sm:justify-end">
                 {confirmId === fabric.id ? (
                   <>
-                    <span className="self-center text-xs text-[#ffdad6]">Delete this listing?</span>
+                    <span className="self-center text-xs text-[#7A1F1A]">Delete this listing?</span>
                     <button
                       type="button"
                       onClick={() => remove(fabric)}
                       disabled={busyId === fabric.id}
-                      className="rounded-xl bg-[#93000a] px-3 py-2 text-xs font-semibold text-[#ffdad6] hover:brightness-110"
+                      className="rounded-xl bg-[#F6E3E0] px-3 py-2 text-xs font-semibold text-[#7A1F1A] hover:brightness-110"
                     >
                       {busyId === fabric.id ? 'Deleting…' : 'Delete'}
                     </button>
@@ -165,7 +165,7 @@ export function FabricList({ savedName }: { savedName?: string }) {
                       type="button"
                       onClick={() => togglePublished(fabric)}
                       disabled={busyId === fabric.id || Boolean(fabric.moderatedAt)}
-                      title={fabric.moderatedAt ? 'Only AfroCouture can republish this listing' : undefined}
+                      title={fabric.moderatedAt ? 'Only IPILE can republish this listing' : undefined}
                       className="btn-ghost px-3 py-2"
                       aria-label={fabric.isPublished ? `Hide ${fabric.name}` : `Publish ${fabric.name}`}
                     >
@@ -184,7 +184,7 @@ export function FabricList({ savedName }: { savedName?: string }) {
                     <button
                       type="button"
                       onClick={() => setConfirmId(fabric.id)}
-                      className="btn-ghost px-3 py-2 hover:!border-[#ffb4ab]/50"
+                      className="btn-ghost px-3 py-2 hover:!border-[#9B2C24]/50"
                       aria-label={`Delete ${fabric.name}`}
                     >
                       <Trash2 size={14} aria-hidden="true" />

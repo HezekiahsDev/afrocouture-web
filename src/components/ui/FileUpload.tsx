@@ -71,9 +71,9 @@ export function FileUpload({
 
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
-      <label htmlFor={inputId} className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">
+      <label htmlFor={inputId} className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">
         {label}
-        {required && <span className="text-[#00A3FF]"> *</span>}
+        {required && <span className="text-[#B8734E]"> *</span>}
       </label>
 
       <input
@@ -87,23 +87,23 @@ export function FileUpload({
       />
 
       {value && !uploading ? (
-        <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#0F172A]/80 p-2.5">
+        <div className="flex items-center gap-3 rounded-xl border border-[#171717]/12 bg-[#FFFFFF]/80 p-2.5">
           {isPdf(value) ? (
-            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-[#1E293B] text-[#00A3FF]">
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-[#FFFFFF] text-[#B8734E]">
               <FileText size={24} aria-hidden="true" />
             </span>
           ) : (
-            <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#1E293B]">
+            <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#FFFFFF]">
               <Image src={value} alt="" fill sizes="56px" className="object-cover" />
             </span>
           )}
           <span className="min-w-0 flex-1">
-            <span className="block text-sm font-semibold text-[#F8FAFC]">Uploaded</span>
+            <span className="block text-sm font-semibold text-[#171717]">Uploaded</span>
             <a
               href={value}
               target="_blank"
               rel="noreferrer"
-              className="block truncate text-xs text-[#38BDF8] hover:underline"
+              className="block truncate text-xs text-[#8F5637] hover:underline"
             >
               View file
             </a>
@@ -113,7 +113,7 @@ export function FileUpload({
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
-                className="rounded-lg p-2 text-[#94A3B8] hover:bg-white/5 hover:text-[#F8FAFC]"
+                className="rounded-lg p-2 text-[#6B655C] hover:bg-[#171717]/5 hover:text-[#171717]"
                 aria-label={`Replace ${label}`}
               >
                 <RefreshCw size={16} />
@@ -121,7 +121,7 @@ export function FileUpload({
               <button
                 type="button"
                 onClick={() => onChange(null)}
-                className="rounded-lg p-2 text-[#94A3B8] hover:bg-white/5 hover:text-[#ffb4ab]"
+                className="rounded-lg p-2 text-[#6B655C] hover:bg-[#171717]/5 hover:text-[#9B2C24]"
                 aria-label={`Remove ${label}`}
               >
                 <Trash2 size={16} />
@@ -140,24 +140,24 @@ export function FileUpload({
             if (!disabled && !uploading) void handleFile(event.dataTransfer.files?.[0]);
           }}
           className={cn(
-            'flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-white/15 bg-[#0F172A]/60 px-4 py-6 text-center transition-colors',
-            'hover:border-[#00A3FF]/50 hover:bg-[#00A3FF]/5 disabled:cursor-not-allowed disabled:opacity-60',
-            error && 'border-[#ffb4ab]/50',
+            'flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-[#171717]/15 bg-[#FFFFFF]/60 px-4 py-6 text-center transition-colors',
+            'hover:border-[#B8734E]/50 hover:bg-[#B8734E]/5 disabled:cursor-not-allowed disabled:opacity-60',
+            error && 'border-[#9B2C24]/50',
           )}
         >
           {uploading ? (
             <>
-              <LoaderCircle size={22} className="animate-spin text-[#00A3FF]" aria-hidden="true" />
-              <span className="text-xs font-semibold text-[#F8FAFC]">Uploading… {progress}%</span>
-              <span className="h-1 w-40 overflow-hidden rounded-full bg-white/10">
-                <span className="block h-full bg-[#00A3FF] transition-all" style={{ width: `${progress}%` }} />
+              <LoaderCircle size={22} className="animate-spin text-[#B8734E]" aria-hidden="true" />
+              <span className="text-xs font-semibold text-[#171717]">Uploading… {progress}%</span>
+              <span className="h-1 w-40 overflow-hidden rounded-full bg-[#171717]/10">
+                <span className="block h-full bg-[#B8734E] transition-all" style={{ width: `${progress}%` }} />
               </span>
             </>
           ) : (
             <>
-              <UploadCloud size={22} className="text-[#00A3FF]" aria-hidden="true" />
-              <span className="text-xs font-semibold text-[#F8FAFC]">Click to upload or drag a file here</span>
-              <span className="text-[11px] text-[#64748B]">
+              <UploadCloud size={22} className="text-[#B8734E]" aria-hidden="true" />
+              <span className="text-xs font-semibold text-[#171717]">Click to upload or drag a file here</span>
+              <span className="text-[11px] text-[#6B655C]">
                 {kind === 'document' ? 'JPG, PNG, WebP or PDF' : 'JPG, PNG or WebP'} · up to 10 MB
               </span>
             </>
@@ -166,11 +166,11 @@ export function FileUpload({
       )}
 
       {error ? (
-        <p className="text-xs text-[#ffb4ab]" role="alert">
+        <p className="text-xs text-[#9B2C24]" role="alert">
           {error}
         </p>
       ) : (
-        hint && <p className="text-[11px] text-[#64748B]">{hint}</p>
+        hint && <p className="text-[11px] text-[#6B655C]">{hint}</p>
       )}
     </div>
   );

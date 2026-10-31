@@ -74,21 +74,21 @@ export function VerificationsPanel() {
       {error && <Alert>{error}</Alert>}
 
       {!shown && !error && (
-        <div className="flex justify-center py-12 text-[#94A3B8]">
+        <div className="flex justify-center py-12 text-[#6B655C]">
           <LoaderCircle className="animate-spin" size={24} aria-label="Loading queue" />
         </div>
       )}
 
       {shown && shown.length === 0 && (
-        <p className="rounded-2xl border border-dashed border-white/15 py-12 text-center text-sm text-[#94A3B8]">
+        <p className="rounded-2xl border border-dashed border-[#171717]/15 py-12 text-center text-sm text-[#6B655C]">
           {status === 'pending' ? 'Nothing waiting for review. ' : 'No applications here yet.'}
         </p>
       )}
 
       {shown && shown.length > 0 && (
-        <div className="overflow-hidden rounded-2xl border border-white/[0.08]">
+        <div className="overflow-hidden rounded-2xl border border-[#171717]/10">
           <table className="hidden w-full text-left text-sm md:table">
-            <thead className="bg-[#0F172A] text-[11px] uppercase tracking-wider text-[#94A3B8]">
+            <thead className="bg-[#FFFFFF] text-[11px] uppercase tracking-wider text-[#6B655C]">
               <tr>
                 <th className="px-4 py-3 font-semibold">Applicant</th>
                 <th className="px-4 py-3 font-semibold">Type</th>
@@ -99,11 +99,11 @@ export function VerificationsPanel() {
             </thead>
             <tbody>
               {shown.map((a) => (
-                <tr key={key(a)} className="border-t border-white/[0.06] bg-[#0F172A]/60 hover:bg-[#1E293B]/60" data-testid="applicant-row">
-                  <td className="px-4 py-3 font-semibold text-[#F8FAFC]">{nameOf(a)}</td>
+                <tr key={key(a)} className="border-t border-[#171717]/8 bg-[#FFFFFF]/60 hover:bg-[#FFFFFF]/60" data-testid="applicant-row">
+                  <td className="px-4 py-3 font-semibold text-[#171717]">{nameOf(a)}</td>
                   <td className="px-4 py-3">{a.kind === 'tailor' ? 'Artisan' : 'Merchant'}</td>
-                  <td className="px-4 py-3 text-[#94A3B8]">{a.profile.city ?? '—'}</td>
-                  <td className="px-4 py-3 text-[#94A3B8]">{fmtDate(a.profile.submittedAt)}</td>
+                  <td className="px-4 py-3 text-[#6B655C]">{a.profile.city ?? '—'}</td>
+                  <td className="px-4 py-3 text-[#6B655C]">{fmtDate(a.profile.submittedAt)}</td>
                   <td className="px-4 py-3 text-right">
                     <button type="button" onClick={() => setOpen(a)} className="btn-ghost px-3 py-1.5">
                       Review <ChevronRight size={14} aria-hidden="true" />
@@ -116,17 +116,17 @@ export function VerificationsPanel() {
           <ul className="divide-y divide-white/[0.06] md:hidden">
             {shown.map((a) => (
               <li key={key(a)}>
-                <button type="button" onClick={() => setOpen(a)} className="flex w-full items-center gap-3 bg-[#0F172A]/60 p-4 text-left">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#1E293B] text-[#00A3FF]">
+                <button type="button" onClick={() => setOpen(a)} className="flex w-full items-center gap-3 bg-[#FFFFFF]/60 p-4 text-left">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FFFFFF] text-[#B8734E]">
                     {a.kind === 'tailor' ? <Scissors size={18} /> : <Store size={18} />}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate font-semibold text-[#F8FAFC]">{nameOf(a)}</span>
-                    <span className="block text-xs text-[#94A3B8]">
+                    <span className="block truncate font-semibold text-[#171717]">{nameOf(a)}</span>
+                    <span className="block text-xs text-[#6B655C]">
                       {a.kind === 'tailor' ? 'Artisan' : 'Merchant'} · {a.profile.city ?? '—'} · {fmtDate(a.profile.submittedAt)}
                     </span>
                   </span>
-                  <ChevronRight size={16} className="text-[#64748B]" aria-hidden="true" />
+                  <ChevronRight size={16} className="text-[#6B655C]" aria-hidden="true" />
                 </button>
               </li>
             ))}
@@ -195,25 +195,25 @@ function VerificationDrawer({
 
   const p = applicant.profile;
   return (
-    <div className="fixed inset-0 z-[60] flex justify-end bg-[#090D16]/70 backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="fixed inset-0 z-[60] flex justify-end bg-[#F5F0E8]/70 backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <aside
         role="dialog"
         aria-modal="true"
         aria-label={`Review ${nameOf(applicant)}`}
-        className="flex h-full w-full max-w-2xl flex-col overflow-hidden border-l border-white/10 bg-[#0B1120] shadow-2xl"
+        className="flex h-full w-full max-w-2xl flex-col overflow-hidden border-l border-[#171717]/12 bg-[#EFE7DA] shadow-2xl"
       >
-        <header className="flex items-start justify-between gap-3 border-b border-white/[0.08] p-5">
+        <header className="flex items-start justify-between gap-3 border-b border-[#171717]/10 p-5">
           <div className="min-w-0">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-[#38BDF8]">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#8F5637]">
               {applicant.kind === 'tailor' ? 'Artisan verification' : 'Merchant verification'}
             </p>
-            <h2 className="mt-1 truncate text-xl font-bold text-[#F8FAFC]">{nameOf(applicant)}</h2>
-            <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-[#94A3B8]">
+            <h2 className="mt-1 truncate text-xl font-bold text-[#171717]">{nameOf(applicant)}</h2>
+            <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-[#6B655C]">
               <Pill tone={status === 'approved' ? 'green' : status === 'rejected' ? 'red' : 'amber'}>{status.replace('_', ' ')}</Pill>
               Submitted {fmtDate(p.submittedAt)}
             </div>
           </div>
-          <button type="button" onClick={onClose} className="rounded-lg p-2 text-[#94A3B8] hover:bg-white/5 hover:text-[#F8FAFC]" aria-label="Close">
+          <button type="button" onClick={onClose} className="rounded-lg p-2 text-[#6B655C] hover:bg-[#171717]/5 hover:text-[#171717]" aria-label="Close">
             <X size={18} />
           </button>
         </header>
@@ -222,17 +222,17 @@ function VerificationDrawer({
           {applicant.kind === 'tailor' ? <TailorDetails p={applicant.profile} /> : <MerchantDetails p={applicant.profile} />}
           {p.reviewNote && (
             <div>
-              <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#94A3B8]">Previous review note</h3>
-              <p className="text-sm text-[#F8FAFC]">{p.reviewNote}</p>
+              <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-[#6B655C]">Previous review note</h3>
+              <p className="text-sm text-[#171717]">{p.reviewNote}</p>
             </div>
           )}
         </div>
 
         {reviewable && (
-          <footer className="space-y-3 border-t border-white/[0.08] bg-[#0F172A] p-5">
+          <footer className="space-y-3 border-t border-[#171717]/10 bg-[#FFFFFF] p-5">
             {mode === 'reject' && (
               <label className="flex flex-col gap-1.5">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">Reason (emailed to the applicant)</span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">Reason (emailed to the applicant)</span>
                 <textarea
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
@@ -240,7 +240,7 @@ function VerificationDrawer({
                   maxLength={1000}
                   autoFocus
                   placeholder="e.g. The CAC certificate is blurry — upload a clearer scan."
-                  className="w-full rounded-xl border border-white/10 bg-[#090D16] px-3.5 py-2.5 text-sm text-[#F8FAFC] outline-none focus:border-[#00A3FF]"
+                  className="w-full rounded-xl border border-[#171717]/12 bg-[#F5F0E8] px-3.5 py-2.5 text-sm text-[#171717] outline-none focus:border-[#B8734E]"
                 />
               </label>
             )}
@@ -254,7 +254,7 @@ function VerificationDrawer({
                   <button
                     type="button"
                     onClick={() => decide('reject')}
-                    className="inline-flex items-center gap-2 rounded-xl bg-[#93000a] px-5 py-3 text-[13px] font-semibold text-[#ffdad6] hover:brightness-110"
+                    className="inline-flex items-center gap-2 rounded-xl bg-[#F6E3E0] px-5 py-3 text-[13px] font-semibold text-[#7A1F1A] hover:brightness-110"
                   >
                     Send rejection
                   </button>
@@ -280,7 +280,7 @@ function VerificationDrawer({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#94A3B8]">{title}</h3>
+      <h3 className="mb-3 text-xs font-bold uppercase tracking-wider text-[#6B655C]">{title}</h3>
       {children}
     </div>
   );

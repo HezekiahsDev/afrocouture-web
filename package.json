@@ -1,7 +1,7 @@
 {
   "name": "afrocouture-web",
   "version": "0.1.0",
-  "description": "AfroCouture AI — Luxury African Fashion Marketplace Frontend (Next.js)",
+  "description": "IPILE — Contemporary African Luxury Fashion Marketplace Frontend (Next.js)",
   "private": true,
   "scripts": {
     "dev": "next dev",

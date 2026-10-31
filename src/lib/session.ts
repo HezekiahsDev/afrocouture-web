@@ -29,7 +29,7 @@ function secret(): string | null {
   const value = process.env.SESSION_SECRET;
   if (value && value.length >= 32) return value;
   // Local development only; production refuses to sign or trust cookies without a real secret.
-  return process.env.NODE_ENV === 'production' ? null : 'afrocouture-dev-session-secret-not-for-production';
+  return process.env.NODE_ENV === 'production' ? null : 'IPILE-dev-session-secret-not-for-production';
 }
 
 const b64url = (bytes: Uint8Array) =>

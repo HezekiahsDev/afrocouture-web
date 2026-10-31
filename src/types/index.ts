@@ -1,4 +1,4 @@
-// AfroCouture AI — Shared Domain Types for Web (mirrors afrocouture-api responses)
+// IPILE — Shared Domain Types for Web (mirrors IPILE-api responses)
 
 export type UserRole = 'customer' | 'tailor' | 'merchant' | 'admin';
 export type SelfServiceRole = Exclude<UserRole, 'admin'>;
@@ -18,7 +18,7 @@ export interface User {
   role: UserRole;
   status: string;
   emailVerified: boolean;
-  /** Null until they choose how they'll use AfroCouture (shop, make or sell). */
+  /** Null until they choose how they'll use IPILE (shop, make or sell). */
   pathChosenAt?: string | null;
   createdAt: string;
 }

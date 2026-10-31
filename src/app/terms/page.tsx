@@ -4,8 +4,8 @@ import LegalPage, { CommunityLink, ContactLink, type LegalSection } from "@/comp
 import { LEGAL } from "@/lib/legal";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | AfroCouture",
-  description: "The rules for commissioning, making and selling on AfroCouture, including payments, escrow and disputes.",
+  title: "Terms of Service | IPILE",
+  description: "The rules for commissioning, making and selling on IPILE, including payments, escrow and disputes.",
 };
 
 const sections: LegalSection[] = [
@@ -46,7 +46,7 @@ const sections: LegalSection[] = [
     title: "Customers, artisans and merchants",
     body: (
       <>
-        <p>AfroCouture has three kinds of account:</p>
+        <p>IPILE has three kinds of account:</p>
         <ul>
           <li>
             <strong>Customers</strong> commission garments and buy fabric for them.
@@ -72,7 +72,7 @@ const sections: LegalSection[] = [
     title: "Our role as a marketplace",
     body: (
       <p>
-        AfroCouture provides the platform, payment handling and support. Artisans and merchants are independent
+        IPILE provides the platform, payment handling and support. Artisans and merchants are independent
         businesses, not our employees or agents. The contract to make a garment is between the customer and the
         artisan, and the sale of fabric is between the merchant and the customer. We do not make the garments or
         supply the fabric ourselves, but we hold payments in escrow and help resolve problems as these terms
@@ -138,7 +138,7 @@ const sections: LegalSection[] = [
           fixed.
         </li>
         <li>
-          Do not arrange to pay outside AfroCouture for an order started here. Off-platform payments are not covered
+          Do not arrange to pay outside IPILE for an order started here. Off-platform payments are not covered
           by escrow or our dispute process.
         </li>
       </ul>
@@ -178,7 +178,7 @@ const sections: LegalSection[] = [
             refunded going to the people who did the work. We explain the decision to both sides.
           </li>
           <li>
-            Our decision settles the order on AfroCouture. It does not remove any rights you have under Nigerian
+            Our decision settles the order on IPILE. It does not remove any rights you have under Nigerian
             law.
           </li>
           <li>
@@ -255,7 +255,7 @@ const sections: LegalSection[] = [
     title: "Acceptable use",
     body: (
       <>
-        <p>When using AfroCouture, you must not:</p>
+        <p>When using IPILE, you must not:</p>
         <ul>
           <li>break the law, or help anyone else to;</li>
           <li>harass, threaten or discriminate against anyone;</li>
@@ -279,7 +279,7 @@ const sections: LegalSection[] = [
         </li>
         <li>
           You give us a non-exclusive, royalty-free licence to store, display and adapt it (for example, resizing
-          images) as needed to run and promote AfroCouture. The licence ends when you delete the content or your
+          images) as needed to run and promote IPILE. The licence ends when you delete the content or your
           account, except for content already shared on orders or reviews.
         </li>
         <li>
@@ -287,7 +287,7 @@ const sections: LegalSection[] = [
           reference, the artisan uses it only as inspiration for your order.
         </li>
         <li>
-          If you think content on AfroCouture infringes your rights, message us on <ContactLink /> and we will look into it.
+          If you think content on IPILE infringes your rights, message us on <ContactLink /> and we will look into it.
         </li>
       </ul>
     ),
@@ -331,7 +331,7 @@ const sections: LegalSection[] = [
       <>
         <ul>
           <li>
-            We work to keep AfroCouture available and accurate, but we provide it “as is”. We cannot promise it will
+            We work to keep IPILE available and accurate, but we provide it “as is”. We cannot promise it will
             always be uninterrupted or error-free.
           </li>
           <li>
@@ -341,7 +341,7 @@ const sections: LegalSection[] = [
           <li>
             To the extent the law allows, we are not liable for indirect or consequential losses, such as lost
             profits or opportunities. Our total liability to you in connection with an order is limited to the
-            amount paid through AfroCouture for that order.
+            amount paid through IPILE for that order.
           </li>
           <li>
             Nothing in these terms limits liability for fraud, for death or personal injury caused by negligence,
@@ -367,7 +367,7 @@ const sections: LegalSection[] = [
     title: "Changes to these terms",
     body: (
       <p>
-        We may update these terms as AfroCouture grows. We will change the date at the top and, for significant
+        We may update these terms as IPILE grows. We will change the date at the top and, for significant
         changes, tell you by email or in the app before they take effect. Orders already paid continue under the
         terms that applied when they were paid.
       </p>
@@ -392,7 +392,7 @@ export default function TermsPage() {
       title="Terms of Service"
       intro={
         <p>
-          The rules for commissioning, making and selling on AfroCouture, including how payments are held in
+          The rules for commissioning, making and selling on IPILE, including how payments are held in
           escrow, how disputes are settled, and what we expect from everyone in the atelier.
         </p>
       }

@@ -4,7 +4,7 @@ import { ApprovedMerchant, MerchantShell } from "@/components/merchant/MerchantS
 import { FabricList } from "@/components/merchant/FabricList";
 
 export const metadata: Metadata = {
-  title: "Your fabrics | AfroCouture",
+  title: "Your fabrics | IPILE",
   description: "Manage your fabric listings and wholesale prices.",
 };
 

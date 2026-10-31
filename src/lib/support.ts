@@ -1,5 +1,5 @@
 /**
- * How people reach AfroCouture support: WhatsApp for now (no support inbox yet).
+ * How people reach IPILE support: WhatsApp for now (no support inbox yet).
  * NEXT_PUBLIC_SUPPORT_WHATSAPP is the number in international format, digits only (e.g. 2348106681869);
  * NEXT_PUBLIC_SUPPORT_WHATSAPP_GROUP is an optional community group invite link.
  */

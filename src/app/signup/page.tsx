@@ -4,8 +4,8 @@ import Navbar from "@/components/layout/Navbar";
 import SignUpForm from "@/components/auth/SignUpForm";
 
 export const metadata: Metadata = {
-  title: "Create your account | AfroCouture",
-  description: "Join AfroCouture to commission artisans, source fabric or sell your craft.",
+  title: "Create your account | IPILE",
+  description: "Join IPILE to commission artisans, source fabric or sell your craft.",
 };
 
 type Params = { role?: string; next?: string };

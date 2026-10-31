@@ -1,4 +1,4 @@
-// Admin dashboard API shapes (afrocouture-api src/admin, docs/rbac.md).
+// Admin dashboard API shapes (IPILE-api src/admin, docs/rbac.md).
 import type { ChatMessage, Fabric, KycStatus, Order, OrderStatus, UserRole } from './index';
 
 export interface Paged<T> {

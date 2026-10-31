@@ -26,9 +26,9 @@ interface BankFieldsProps {
 }
 
 const inputClass = cn(
-  'w-full rounded-xl border border-white/10 bg-[#0F172A]/80 px-3.5 py-2.5 text-sm text-[#F8FAFC]',
-  'placeholder:text-[#64748B] outline-none transition-[border-color,box-shadow]',
-  'focus:border-[#00A3FF] focus:shadow-[0_0_0_3px_rgba(0,163,255,0.15)]',
+  'w-full rounded-xl border border-[#171717]/12 bg-[#FFFFFF]/80 px-3.5 py-2.5 text-sm text-[#171717]',
+  'placeholder:text-[#6B655C] outline-none transition-[border-color,box-shadow]',
+  'focus:border-[#B8734E] focus:shadow-[0_0_0_3px_rgba(184,115,78,0.15)]',
   'disabled:cursor-not-allowed disabled:opacity-60',
 );
 
@@ -106,7 +106,7 @@ function BankCombobox({
   return (
     <FieldShell id={id} label="Bank" required error={shownError || loadError || undefined}>
       <div ref={wrapper} className="relative">
-        <Search size={15} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#64748B]" aria-hidden="true" />
+        <Search size={15} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B655C]" aria-hidden="true" />
         <input
           id={id}
           role="combobox"
@@ -128,21 +128,21 @@ function BankCombobox({
             setOpen(true);
           }}
           onKeyDown={onKeyDown}
-          className={cn(inputClass, 'pl-9 pr-9', shownError && 'border-[#ffb4ab]/60')}
+          className={cn(inputClass, 'pl-9 pr-9', shownError && 'border-[#9B2C24]/60')}
         />
         {loading ? (
-          <LoaderCircle size={15} className="absolute right-3.5 top-1/2 -translate-y-1/2 animate-spin text-[#94A3B8]" aria-hidden="true" />
+          <LoaderCircle size={15} className="absolute right-3.5 top-1/2 -translate-y-1/2 animate-spin text-[#6B655C]" aria-hidden="true" />
         ) : (
-          <ChevronDown size={15} className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" aria-hidden="true" />
+          <ChevronDown size={15} className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B655C]" aria-hidden="true" />
         )}
         {open && !loading && !loadError && (
           <ul
             id={listId}
             role="listbox"
-            className="absolute z-30 mt-1.5 max-h-64 w-full overflow-y-auto rounded-xl border border-white/10 bg-[#0F172A] p-1 shadow-[0_12px_32px_-4px_rgba(0,0,0,0.6)]"
+            className="absolute z-30 mt-1.5 max-h-64 w-full overflow-y-auto rounded-xl border border-[#171717]/12 bg-[#FFFFFF] p-1 shadow-[0_12px_32px_-4px_rgba(23,23,23,0.14)]"
           >
             {matches.length === 0 ? (
-              <li className="px-3 py-2.5 text-sm text-[#64748B]">No bank matches “{query}”.</li>
+              <li className="px-3 py-2.5 text-sm text-[#6B655C]">No bank matches “{query}”.</li>
             ) : (
               matches.map((bank, index) => (
                 <li
@@ -154,8 +154,8 @@ function BankCombobox({
                   onMouseEnter={() => setActive(index)}
                   className={cn(
                     'cursor-pointer rounded-lg px-3 py-2 text-sm',
-                    index === active ? 'bg-[#00A3FF]/15 text-[#F8FAFC]' : 'text-[#CBD5E1]',
-                    bank.code === bankCode && 'font-semibold text-[#38BDF8]',
+                    index === active ? 'bg-[#B8734E]/15 text-[#171717]' : 'text-[#4B453E]',
+                    bank.code === bankCode && 'font-semibold text-[#8F5637]',
                   )}
                 >
                   {bank.name}
@@ -166,7 +166,7 @@ function BankCombobox({
         )}
       </div>
       {loadError && (
-        <button type="button" onClick={onRetry} className="inline-flex w-fit items-center gap-1.5 text-xs font-semibold text-[#38BDF8] hover:underline">
+        <button type="button" onClick={onRetry} className="inline-flex w-fit items-center gap-1.5 text-xs font-semibold text-[#8F5637] hover:underline">
           <RefreshCw size={12} aria-hidden="true" /> Try loading banks again
         </button>
       )}
@@ -285,26 +285,26 @@ export function BankFields({ value, onChange, errors, accountNameHint, disabled 
         autoComplete="off"
       />
       <div className="flex min-w-0 flex-col gap-1.5 sm:col-span-2" data-field-error={errors.accountName ? 'true' : undefined}>
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">
-          Account name<span className="text-[#00A3FF]"> *</span>
+        <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">
+          Account name<span className="text-[#B8734E]"> *</span>
         </span>
         <div
           className={cn(
             'flex min-h-[44px] items-center gap-2 rounded-xl border px-3.5 py-2.5 text-sm',
             resolve.status === 'resolved' && value.accountName
-              ? 'border-[#10B981]/30 bg-[#10B981]/10 text-[#F8FAFC]'
-              : 'border-white/10 bg-[#0F172A]/50 text-[#64748B]',
+              ? 'border-[#2F6B4F]/30 bg-[#2F6B4F]/10 text-[#171717]'
+              : 'border-[#171717]/12 bg-[#FFFFFF]/50 text-[#6B655C]',
           )}
           aria-live="polite"
           data-testid="account-name"
         >
           {resolve.status === 'resolving' ? (
             <>
-              <LoaderCircle size={15} className="animate-spin text-[#00A3FF]" aria-hidden="true" /> Checking the account…
+              <LoaderCircle size={15} className="animate-spin text-[#B8734E]" aria-hidden="true" /> Checking the account…
             </>
           ) : resolve.status === 'resolved' && value.accountName ? (
             <>
-              <BadgeCheck size={16} className="shrink-0 text-[#10B981]" aria-hidden="true" />
+              <BadgeCheck size={16} className="shrink-0 text-[#2F6B4F]" aria-hidden="true" />
               <span className="min-w-0 truncate font-semibold">{value.accountName}</span>
             </>
           ) : resolve.status === 'error' ? (
@@ -313,7 +313,7 @@ export function BankFields({ value, onChange, errors, accountNameHint, disabled 
               <button
                 type="button"
                 onClick={() => setResolveAttempt((n) => n + 1)}
-                className="inline-flex items-center gap-1 font-semibold text-[#38BDF8] hover:underline"
+                className="inline-flex items-center gap-1 font-semibold text-[#8F5637] hover:underline"
               >
                 <RefreshCw size={12} aria-hidden="true" /> Check again
               </button>
@@ -323,11 +323,11 @@ export function BankFields({ value, onChange, errors, accountNameHint, disabled 
           )}
         </div>
         {errors.accountName ? (
-          <p className="text-xs text-[#ffb4ab]" role="alert">
+          <p className="text-xs text-[#9B2C24]" role="alert">
             {errors.accountName}
           </p>
         ) : (
-          <p className="text-[11px] leading-relaxed text-[#64748B]">
+          <p className="text-[11px] leading-relaxed text-[#6B655C]">
             {resolve.status === 'resolved' && value.accountName ? 'Not you? Check the account number and bank. ' : ''}
             {accountNameHint}
           </p>

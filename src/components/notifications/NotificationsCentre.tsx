@@ -82,8 +82,8 @@ function Centre() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-2">
           <span className="section-kicker">YOUR ATELIER</span>
-          <h1 className="text-[30px] font-extrabold leading-[38px] text-[#F8FAFC] sm:text-[36px] sm:leading-[44px]">Notifications</h1>
-          <p className="text-sm text-[#94A3B8]">
+          <h1 className="text-[30px] font-extrabold leading-[38px] text-[#171717] sm:text-[36px] sm:leading-[44px]">Notifications</h1>
+          <p className="text-sm text-[#6B655C]">
             {unread > 0 ? `${unread} unread` : 'You’re all caught up.'} Read notifications are cleared after 90 days.
           </p>
         </div>
@@ -105,8 +105,8 @@ function Centre() {
             className={cn(
               'rounded-full border px-4 py-1.5 text-sm font-semibold transition',
               filter === f
-                ? 'border-[#00A3FF]/50 bg-[#00A3FF]/15 text-[#F8FAFC]'
-                : 'border-white/10 text-[#94A3B8] hover:text-[#F8FAFC]',
+                ? 'border-[#B8734E]/50 bg-[#B8734E]/15 text-[#171717]'
+                : 'border-[#171717]/12 text-[#6B655C] hover:text-[#171717]',
             )}
           >
             {f === 'all' ? 'All' : 'Unread'}
@@ -118,16 +118,16 @@ function Centre() {
 
       <section className={cn(card, 'mk-notif-page p-2 sm:p-2')} aria-live="polite">
         {items === null ? (
-          <div className="flex justify-center py-16 text-[#94A3B8]" role="status">
+          <div className="flex justify-center py-16 text-[#6B655C]" role="status">
             <Spinner label="Loading notifications" />
           </div>
         ) : items.length === 0 ? (
           <div className="flex flex-col items-center gap-3 px-6 py-16 text-center">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#00A3FF]/10 text-[#22D3EE]">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#B8734E]/10 text-[#1F2A42]">
               <Bell size={22} aria-hidden="true" />
             </span>
-            <p className="font-semibold text-[#F8FAFC]">{filter === 'unread' ? 'No unread notifications' : 'No notifications yet'}</p>
-            <p className="max-w-sm text-sm text-[#94A3B8]">
+            <p className="font-semibold text-[#171717]">{filter === 'unread' ? 'No unread notifications' : 'No notifications yet'}</p>
+            <p className="max-w-sm text-sm text-[#6B655C]">
               Quotes, payments, production updates, messages and payouts will show up here as they happen.
             </p>
           </div>

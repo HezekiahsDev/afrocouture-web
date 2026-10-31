@@ -20,11 +20,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const variants = {
-      primary: 'bg-[#00A3FF] text-[#090D16] font-semibold hover:bg-[#38bdf8] shadow-[0_0_20px_rgba(0,163,255,0.35)] focus:ring-[#00A3FF]',
-      secondary: 'bg-[#1E293B] text-slate-100 hover:bg-[#334155] border border-white/10 focus:ring-slate-400',
-      outline: 'bg-transparent text-slate-200 border border-white/15 hover:bg-white/5 hover:border-white/30 focus:ring-white/20',
-      ghost: 'bg-transparent text-slate-300 hover:bg-white/5 hover:text-white',
-      gradient: 'bg-gradient-to-r from-[#00A3FF] via-[#8B5CF6] to-[#EC4899] text-white font-semibold hover:opacity-95 shadow-[0_0_24px_rgba(0,163,255,0.3)]',
+      primary: 'bg-[#9E5B37] text-[#FFFDF8] font-semibold hover:bg-[#8F5637] shadow-[0_0_20px_rgba(184,115,78,0.35)] focus:ring-[#B8734E]',
+      secondary: 'bg-[#FFFFFF] text-[#171717] hover:bg-[#EFE7DA] border border-[#171717]/12 focus:ring-slate-400',
+      outline: 'bg-transparent text-[#171717] border border-[#171717]/15 hover:bg-[#171717]/5 hover:border-[#B8734E]/50 focus:ring-[#B8734E]/30',
+      ghost: 'bg-transparent text-[#4B453E] hover:bg-[#171717]/5 hover:text-[#171717]',
+      gradient: 'bg-gradient-to-r from-[#B8734E] via-[#1F2A42] to-[#B8734E] text-[#FFFDF8] font-semibold hover:opacity-95 shadow-[0_0_24px_rgba(184,115,78,0.3)]',
     };
 
     return (

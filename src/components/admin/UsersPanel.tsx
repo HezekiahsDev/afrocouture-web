@@ -48,9 +48,9 @@ export function UsersPanel() {
       {result.state === 'ready' && result.data.items.length === 0 && <Empty>No users match these filters.</Empty>}
       {result.state === 'ready' && result.data.items.length > 0 && (
         <div className="flex flex-col gap-4">
-          <div className="overflow-hidden rounded-2xl border border-white/[0.08]">
+          <div className="overflow-hidden rounded-2xl border border-[#171717]/10">
             <table className="hidden w-full text-left text-sm md:table">
-              <thead className="bg-[#0F172A] text-[11px] uppercase tracking-wider text-[#94A3B8]">
+              <thead className="bg-[#FFFFFF] text-[11px] uppercase tracking-wider text-[#6B655C]">
                 <tr>
                   <th className="px-4 py-3 font-semibold">Person</th>
                   <th className="px-4 py-3 font-semibold">Role</th>
@@ -62,19 +62,19 @@ export function UsersPanel() {
               </thead>
               <tbody>
                 {result.data.items.map((u) => (
-                  <tr key={u.id} className="border-t border-white/[0.06] bg-[#0F172A]/60 hover:bg-[#1E293B]/60" data-testid="user-row">
+                  <tr key={u.id} className="border-t border-[#171717]/8 bg-[#FFFFFF]/60 hover:bg-[#FFFFFF]/60" data-testid="user-row">
                     <td className="max-w-[320px] px-4 py-3">
-                      <Link href={`/admin/users/${u.id}`} className="block truncate font-semibold text-[#F8FAFC] hover:text-[#38BDF8]">
+                      <Link href={`/admin/users/${u.id}`} className="block truncate font-semibold text-[#171717] hover:text-[#8F5637]">
                         {u.fullName ?? 'No name'}
                       </Link>
-                      <span className="block truncate text-xs text-[#94A3B8]">{u.email}</span>
+                      <span className="block truncate text-xs text-[#6B655C]">{u.email}</span>
                     </td>
                     <td className="px-4 py-3">{ROLE_NAME[u.role]}</td>
                     <td className="px-4 py-3">
                       <UserStatus status={u.status} verified={u.emailVerified} />
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums">{u.orderCount}</td>
-                    <td className="px-4 py-3 text-[#94A3B8]">{fmtDate(u.createdAt)}</td>
+                    <td className="px-4 py-3 text-[#6B655C]">{fmtDate(u.createdAt)}</td>
                     <td className="px-4 py-3 text-right">
                       <Link href={`/admin/users/${u.id}`} className="btn-ghost px-3 py-1.5" aria-label={`Open ${u.fullName ?? u.email}`}>
                         Open <ChevronRight size={14} aria-hidden="true" />
@@ -87,15 +87,15 @@ export function UsersPanel() {
             <ul className="divide-y divide-white/[0.06] md:hidden">
               {result.data.items.map((u) => (
                 <li key={u.id}>
-                  <Link href={`/admin/users/${u.id}`} className="flex items-center gap-3 bg-[#0F172A]/60 p-4">
+                  <Link href={`/admin/users/${u.id}`} className="flex items-center gap-3 bg-[#FFFFFF]/60 p-4">
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate font-semibold text-[#F8FAFC]">{u.fullName ?? 'No name'}</span>
-                      <span className="block truncate text-xs text-[#94A3B8]">{u.email}</span>
-                      <span className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[#94A3B8]">
+                      <span className="block truncate font-semibold text-[#171717]">{u.fullName ?? 'No name'}</span>
+                      <span className="block truncate text-xs text-[#6B655C]">{u.email}</span>
+                      <span className="mt-1 flex flex-wrap items-center gap-2 text-xs text-[#6B655C]">
                         {ROLE_NAME[u.role]} <UserStatus status={u.status} verified={u.emailVerified} />
                       </span>
                     </span>
-                    <ChevronRight size={16} className="text-[#64748B]" aria-hidden="true" />
+                    <ChevronRight size={16} className="text-[#6B655C]" aria-hidden="true" />
                   </Link>
                 </li>
               ))}

@@ -9,28 +9,28 @@ import { cn } from '@/lib/utils';
 import type { OrderMilestone, OrderStatus } from '@/types';
 
 export const card =
-  'rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-5 backdrop-blur-xl sm:p-6';
+  'rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-5 backdrop-blur-xl sm:p-6';
 export const fieldClass =
-  'w-full rounded-xl border border-white/10 bg-[#0F172A]/80 px-4 py-2.5 text-sm text-[#F8FAFC] outline-none transition placeholder:text-[#64748B] focus:border-[#00A3FF] focus:shadow-[0_0_0_3px_rgba(0,163,255,0.15)] disabled:opacity-60';
-export const labelClass = 'text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]';
+  'w-full rounded-xl border border-[#171717]/12 bg-[#FFFFFF]/80 px-4 py-2.5 text-sm text-[#171717] outline-none transition placeholder:text-[#6B655C] focus:border-[#B8734E] focus:shadow-[0_0_0_3px_rgba(184,115,78,0.15)] disabled:opacity-60';
+export const labelClass = 'text-[11px] font-bold uppercase tracking-wider text-[#6B655C]';
 export const primaryButton =
-  'inline-flex items-center justify-center gap-2 rounded-xl bg-[#00A3FF] px-5 py-3 text-sm font-semibold text-[#090D16] shadow-[0_4px_14px_rgba(0,163,255,0.4)] transition hover:bg-[#38BDF8] disabled:cursor-not-allowed disabled:opacity-60';
+  'inline-flex items-center justify-center gap-2 rounded-xl bg-[#9E5B37] px-5 py-3 text-sm font-semibold text-[#F5F0E8] shadow-[0_4px_14px_rgba(23,23,23,0.16)] transition hover:bg-[#8F5637] disabled:cursor-not-allowed disabled:opacity-60';
 export const ghostButton =
-  'inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.12] bg-[#0F172A]/60 px-4 py-2.5 text-sm font-semibold text-[#F8FAFC] transition hover:border-[#00A3FF]/40 disabled:cursor-not-allowed disabled:opacity-60';
+  'inline-flex items-center justify-center gap-2 rounded-xl border border-[#171717]/15 bg-[#FFFFFF]/60 px-4 py-2.5 text-sm font-semibold text-[#171717] transition hover:border-[#B8734E]/40 disabled:cursor-not-allowed disabled:opacity-60';
 export const dangerButton =
-  'inline-flex items-center justify-center gap-2 rounded-xl border border-[#ffb4ab]/30 px-4 py-2.5 text-sm font-semibold text-[#ffb4ab] transition hover:bg-[#93000a]/20 disabled:cursor-not-allowed disabled:opacity-60';
+  'inline-flex items-center justify-center gap-2 rounded-xl border border-[#9B2C24]/30 px-4 py-2.5 text-sm font-semibold text-[#9B2C24] transition hover:bg-[#F6E3E0]/20 disabled:cursor-not-allowed disabled:opacity-60';
 
 const STATUS_TONE: Record<OrderStatus, string> = {
-  requested: 'border-[#FBBF24]/40 bg-[#FBBF24]/10 text-[#fcd34d]',
-  quoted: 'border-[#00A3FF]/40 bg-[#00A3FF]/10 text-[#38BDF8]',
-  declined: 'border-white/15 bg-white/5 text-[#94A3B8]',
-  cancelled: 'border-white/15 bg-white/5 text-[#94A3B8]',
-  paid: 'border-[#10B981]/40 bg-[#10B981]/10 text-[#34d399]',
-  in_progress: 'border-[#22D3EE]/40 bg-[#22D3EE]/10 text-[#22D3EE]',
-  delivered: 'border-[#00A3FF]/40 bg-[#00A3FF]/10 text-[#38BDF8]',
-  completed: 'border-[#10B981]/40 bg-[#10B981]/10 text-[#34d399]',
-  disputed: 'border-[#ffb4ab]/40 bg-[#93000a]/20 text-[#ffb4ab]',
-  refunded: 'border-white/15 bg-white/5 text-[#94A3B8]',
+  requested: 'border-[#B8734E]/40 bg-[#B8734E]/10 text-[#8A6A1F]',
+  quoted: 'border-[#B8734E]/40 bg-[#B8734E]/10 text-[#8F5637]',
+  declined: 'border-[#171717]/15 bg-[#171717]/5 text-[#6B655C]',
+  cancelled: 'border-[#171717]/15 bg-[#171717]/5 text-[#6B655C]',
+  paid: 'border-[#2F6B4F]/40 bg-[#2F6B4F]/10 text-[#2F6B4F]',
+  in_progress: 'border-[#1F2A42]/40 bg-[#1F2A42]/10 text-[#1F2A42]',
+  delivered: 'border-[#B8734E]/40 bg-[#B8734E]/10 text-[#8F5637]',
+  completed: 'border-[#2F6B4F]/40 bg-[#2F6B4F]/10 text-[#2F6B4F]',
+  disputed: 'border-[#9B2C24]/40 bg-[#F6E3E0]/20 text-[#9B2C24]',
+  refunded: 'border-[#171717]/15 bg-[#171717]/5 text-[#6B655C]',
 };
 
 export function StatusPill({ status, className }: { status: OrderStatus; className?: string }) {
@@ -91,16 +91,16 @@ export function OrderTracker({ status, milestone }: { status: OrderStatus; miles
                 aria-hidden="true"
                 className={cn(
                   'absolute right-1/2 top-[17px] h-0.5 w-full -translate-y-1/2',
-                  done || active ? 'bg-[#00A3FF]' : 'bg-white/10',
+                  done || active ? 'bg-[#B8734E]' : 'bg-[#171717]/10',
                 )}
               />
             )}
             <span
               className={cn(
                 'relative z-10 flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs font-bold',
-                done && 'border-[#00A3FF] bg-[#00A3FF] text-[#090D16] shadow-[0_0_12px_rgba(0,163,255,0.5)]',
-                active && 'border-[#00A3FF] bg-[#00A3FF]/20 text-[#F8FAFC] shadow-[0_0_0_3px_rgba(34,211,238,0.35)]',
-                !done && !active && 'border-white/20 bg-[#0F172A] text-[#64748B]',
+                done && 'border-[#B8734E] bg-[#9E5B37] text-[#FFFDF8] shadow-[0_0_12px_rgba(184,115,78,0.5)]',
+                active && 'border-[#B8734E] bg-[#B8734E]/20 text-[#171717] shadow-[0_0_0_3px_rgba(184,115,78,0.35)]',
+                !done && !active && 'border-[#171717]/20 bg-[#FFFFFF] text-[#6B655C]',
               )}
               aria-current={active ? 'step' : undefined}
             >
@@ -109,7 +109,7 @@ export function OrderTracker({ status, milestone }: { status: OrderStatus; miles
             <span
               className={cn(
                 'text-[11px] font-semibold leading-tight sm:text-xs',
-                done || active ? 'text-[#F8FAFC]' : 'text-[#64748B]',
+                done || active ? 'text-[#171717]' : 'text-[#6B655C]',
               )}
             >
               {step.label}
@@ -138,8 +138,8 @@ export function SectionCard({
     <section className={cn(card, className)}>
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
-          {kicker && <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#38BDF8]">{kicker}</p>}
-          <h2 className="text-lg font-bold text-[#F8FAFC]">{title}</h2>
+          {kicker && <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#8F5637]">{kicker}</p>}
+          <h2 className="text-lg font-bold text-[#171717]">{title}</h2>
         </div>
         {action}
       </div>
@@ -160,15 +160,15 @@ export function MoneyRow({
   hint?: string;
 }) {
   return (
-    <div className={cn('flex items-baseline justify-between gap-3 py-1.5', strong && 'border-t border-white/[0.08] pt-3')}>
-      <span className={cn('text-sm', strong ? 'font-semibold text-[#F8FAFC]' : 'text-[#94A3B8]')}>
+    <div className={cn('flex items-baseline justify-between gap-3 py-1.5', strong && 'border-t border-[#171717]/10 pt-3')}>
+      <span className={cn('text-sm', strong ? 'font-semibold text-[#171717]' : 'text-[#6B655C]')}>
         {label}
-        {hint && <small className="block text-[11px] text-[#64748B]">{hint}</small>}
+        {hint && <small className="block text-[11px] text-[#6B655C]">{hint}</small>}
       </span>
       <span
         className={cn(
           'font-[family-name:var(--font-inter)] tabular-nums',
-          strong ? 'text-lg font-bold text-[#00A3FF]' : 'text-sm text-[#F8FAFC]',
+          strong ? 'text-lg font-bold text-[#B8734E]' : 'text-sm text-[#171717]',
         )}
       >
         {naira(amount)}
@@ -179,9 +179,9 @@ export function MoneyRow({
 
 export function InlineAlert({ tone = 'error', children }: { tone?: 'error' | 'info' | 'success'; children: ReactNode }) {
   const styles = {
-    error: 'border-[#ffb4ab]/30 bg-[#93000a]/20 text-[#ffdad6]',
-    info: 'border-[#00A3FF]/30 bg-[#00A3FF]/10 text-[#cfe5ff]',
-    success: 'border-[#10B981]/30 bg-[#10B981]/10 text-[#a7f3d0]',
+    error: 'border-[#9B2C24]/30 bg-[#F6E3E0]/20 text-[#7A1F1A]',
+    info: 'border-[#B8734E]/30 bg-[#B8734E]/10 text-[#5C3B29]',
+    success: 'border-[#2F6B4F]/30 bg-[#2F6B4F]/10 text-[#2F6B4F]',
   };
   return (
     <div role={tone === 'error' ? 'alert' : 'status'} className={cn('rounded-xl border px-4 py-3 text-sm', styles[tone])}>

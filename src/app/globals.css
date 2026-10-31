@@ -1,35 +1,36 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────
-   AfroCouture AI — Design Tokens
-   Source: docs/DESIGN.md
+   IPILE — Design Tokens
+   Source: brand-direction.md
+   Contemporary African Luxury · Crafted Around You.
 ───────────────────────────────────────────── */
 
 @theme inline {
   /* ── Canvas & Surfaces ── */
-  --color-canvas:              #090D16;
-  --color-surface-1:           rgba(15, 23, 42, 0.85);
-  --color-surface-2:           rgba(30, 41, 59, 0.90);
-  --color-surface-container:   #1C1F29;
-  --color-surface-high:        #262A34;
-  --color-surface-highest:     #31353F;
+  --color-canvas:              #F5F0E8;
+  --color-surface-1:           rgba(255, 255, 255, 0.92);
+  --color-surface-2:           #FFFFFF;
+  --color-surface-container:   #EFE7DA;
+  --color-surface-high:        #E7DDCE;
+  --color-surface-highest:     #DDD2C1;
 
   /* ── Brand ── */
-  --color-primary:             #00A3FF;
-  --color-primary-dim:         #004a77;
-  --color-secondary:           #0284C7;
-  --color-tertiary:            #22D3EE;
+  --color-primary:             #B8734E;
+  --color-primary-dim:         #8F5637;
+  --color-secondary:           #1F2A42;
+  --color-tertiary:            #B8734E;
 
   /* ── Text ── */
-  --color-text-primary:        #F8FAFC;
-  --color-text-secondary:      #94A3B8;
-  --color-text-muted:          #64748B;
-  --color-text-on-primary:     #090D16;
+  --color-text-primary:        #171717;
+  --color-text-secondary:      #5F5A52;
+  --color-text-muted:          #6B655C;
+  --color-text-on-primary:     #FFFDF8;
 
   /* ── Semantics ── */
-  --color-success:             #10B981;
-  --color-warning:             #FBBF24;
-  --color-error:               #ffb4ab;
+  --color-success:             #2F6B4F;
+  --color-warning:             #8A6A1F;
+  --color-error:               #9B2C24;
 
   /* ── Radius ── */
   --radius-sm:   0.375rem;
@@ -40,8 +41,14 @@
 
   /* ── Font families ── */
   --font-sans:    var(--font-inter), system-ui, sans-serif;
-  --font-display: var(--font-jakarta), sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
   --font-ui:      var(--font-inter), sans-serif;
+}
+
+/* The editorial serif is the brand voice. Older rules still reference
+   --font-jakarta, so alias it rather than touching every selector. */
+:root {
+  --font-jakarta: var(--font-cormorant);
 }
 
 /* ─────────────────────────────────────────────
@@ -58,20 +65,26 @@ html {
 }
 
 body {
-  background-color: #090D16;
-  color: #F8FAFC;
+  background-color: #F5F0E8;
+  color: #171717;
   font-family: var(--font-inter), system-ui, sans-serif;
   min-height: 100vh;
 }
 
-/* Editorial headings use Plus Jakarta Sans everywhere (DESIGN.md › Typography) */
+/* Editorial headings use Cormorant Garamond (brand-direction.md › Typography) */
 h1, h2, h3 {
-  font-family: var(--font-jakarta), sans-serif;
-  letter-spacing: -0.015em;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: #B8734E;
+  color: #FFFDF8;
 }
 
 /* ─────────────────────────────────────────────
-   Background Ambient Radial Glows
+   Background Ambient Glows — restrained, warm
 ───────────────────────────────────────────── */
 .bg-ambient {
   position: relative;
@@ -85,7 +98,7 @@ h1, h2, h3 {
   left: 40%;
   width: min(700px, 100vw);
   height: 700px;
-  background: radial-gradient(circle, rgba(0, 163, 255, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(184, 115, 78, 0.08) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -96,37 +109,37 @@ h1, h2, h3 {
   right: -10%;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(31, 42, 66, 0.05) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
 
 /* ─────────────────────────────────────────────
-   Glass Card Utility
+   Glass Card Utility — ivory paper, not neon glass
 ───────────────────────────────────────────── */
 .glass-card {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(23, 23, 23, 0.10);
   border-radius: 1rem;
 }
 
 .glass-card-interactive {
-  background: rgba(30, 41, 59, 0.90);
+  background: #FFFFFF;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 163, 255, 0.25);
+  border: 1px solid rgba(184, 115, 78, 0.30);
   border-radius: 1rem;
-  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12px 32px -8px rgba(23, 23, 23, 0.14);
 }
 
 .glass-card-ai {
-  background: rgba(15, 23, 42, 0.85);
+  background: #FFFFFF;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 1rem;
-  box-shadow: 0 0 20px -3px rgba(0, 163, 255, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(23, 23, 23, 0.16);
   position: relative;
 }
 .glass-card-ai::before {
@@ -135,7 +148,7 @@ h1, h2, h3 {
   inset: 0;
   border-radius: 1rem;
   padding: 1px;
-  background: linear-gradient(135deg, #00A3FF, #8B5CF6);
+  background: linear-gradient(135deg, #B8734E, #1F2A42);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -144,21 +157,21 @@ h1, h2, h3 {
 }
 
 /* ─────────────────────────────────────────────
-   Gradient Utilities
+   Gradient Utilities — copper and ink only
 ───────────────────────────────────────────── */
 .ai-gradient-text {
-  background: linear-gradient(135deg, #00A3FF, #8B5CF6, #EC4899);
+  background: linear-gradient(135deg, #B8734E, #1F2A42);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .ai-gradient-bg {
-  background: linear-gradient(135deg, #00A3FF, #8B5CF6, #EC4899);
+  background: linear-gradient(135deg, #B8734E, #1F2A42);
 }
 
 .primary-gradient-bg {
-  background: linear-gradient(135deg, #00A3FF, #0284C7);
+  background: linear-gradient(135deg, #B8734E, #8F5637);
 }
 
 /* ─────────────────────────────────────────────
@@ -169,44 +182,44 @@ h1, h2, h3 {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #090D16;
+  background: #F5F0E8;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 163, 255, 0.3);
+  background: rgba(23, 23, 23, 0.22);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 163, 255, 0.6);
+  background: rgba(184, 115, 78, 0.7);
 }
 
 /* ─────────────────────────────────────────────
    Typography Scale
 ───────────────────────────────────────────── */
 .display-hero {
-  font-family: var(--font-jakarta), sans-serif;
-  font-size: 40px;
-  font-weight: 800;
-  line-height: 48px;
-  letter-spacing: -0.02em;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 52px;
+  font-weight: 600;
+  line-height: 54px;
+  letter-spacing: -0.015em;
 }
 .headline-lg {
-  font-family: var(--font-jakarta), sans-serif;
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 34px;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 40px;
   letter-spacing: -0.01em;
 }
 .headline-md {
-  font-family: var(--font-jakarta), sans-serif;
-  font-size: 20px;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 26px;
   font-weight: 600;
-  line-height: 28px;
+  line-height: 32px;
 }
 .headline-sm {
-  font-family: var(--font-jakarta), sans-serif;
-  font-size: 17px;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 21px;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 28px;
 }
 .label-lg {
   font-family: var(--font-inter), sans-serif;
@@ -238,22 +251,22 @@ h1, h2, h3 {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: #00A3FF;
-  color: #090D16;
+  background: #9E5B37;
+  color: #FFFDF8;
   font-family: var(--font-inter), sans-serif;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  border-radius: 0.75rem;
+  letter-spacing: 0.02em;
+  border-radius: 0.5rem;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0, 163, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(158, 91, 55, 0.20);
   white-space: nowrap;
 }
 .btn-primary:hover {
-  background: #22b8ff;
-  box-shadow: 0 4px 20px rgba(0, 163, 255, 0.45);
+  background: #8F5637;
+  box-shadow: 0 6px 20px rgba(184, 115, 78, 0.28);
   transform: translateY(-1px);
 }
 .btn-primary:active {
@@ -265,23 +278,23 @@ h1, h2, h3 {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #00A3FF, #9333EA);
-  color: #ffffff;
+  background: linear-gradient(135deg, #B8734E, #1F2A42);
+  color: #FFFDF8;
   font-family: var(--font-inter), sans-serif;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  border-radius: 0.75rem;
+  letter-spacing: 0.02em;
+  border-radius: 0.5rem;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0, 163, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(31, 42, 66, 0.18);
   white-space: nowrap;
 }
 .btn-ai:hover {
-  box-shadow: 0 4px 24px rgba(0, 163, 255, 0.4);
+  box-shadow: 0 6px 22px rgba(31, 42, 66, 0.25);
   transform: translateY(-1px);
-  filter: brightness(1.1);
+  filter: brightness(1.05);
 }
 
 .btn-ghost {
@@ -289,21 +302,21 @@ h1, h2, h3 {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: rgba(15, 23, 42, 0.6);
-  color: #F8FAFC;
+  background: rgba(255, 255, 255, 0.6);
+  color: #171717;
   font-family: var(--font-inter), sans-serif;
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  letter-spacing: 0.02em;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(23, 23, 23, 0.16);
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
 }
 .btn-ghost:hover {
-  border-color: rgba(0, 163, 255, 0.4);
-  background: rgba(0, 163, 255, 0.08);
+  border-color: rgba(184, 115, 78, 0.55);
+  background: rgba(184, 115, 78, 0.06);
 }
 
 /* ─────────────────────────────────────────────
@@ -312,21 +325,21 @@ h1, h2, h3 {
 .input-field {
   width: 100%;
   padding: 0.75rem 1rem;
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  color: #F8FAFC;
+  background: #FFFFFF;
+  border: 1px solid rgba(23, 23, 23, 0.16);
+  border-radius: 0.5rem;
+  color: #171717;
   font-family: var(--font-inter), sans-serif;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .input-field::placeholder {
-  color: #64748B;
+  color: #6B655C;
 }
 .input-field:focus {
-  border-color: #00A3FF;
-  box-shadow: 0 0 0 3px rgba(0, 163, 255, 0.15);
+  border-color: #B8734E;
+  box-shadow: 0 0 0 3px rgba(184, 115, 78, 0.14);
 }
 
 /* ─────────────────────────────────────────────
@@ -337,10 +350,10 @@ h1, h2, h3 {
   align-items: center;
   gap: 4px;
   padding: 3px 8px;
-  background: rgba(0, 163, 255, 0.15);
-  border: 1px solid #00A3FF;
+  background: rgba(184, 115, 78, 0.10);
+  border: 1px solid rgba(184, 115, 78, 0.55);
   border-radius: 9999px;
-  color: #38BDF8;
+  color: #8F5637;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -352,10 +365,10 @@ h1, h2, h3 {
   align-items: center;
   gap: 4px;
   padding: 3px 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(23, 23, 23, 0.04);
+  border: 1px solid rgba(23, 23, 23, 0.12);
   border-radius: 9999px;
-  color: #94A3B8;
+  color: #5F5A52;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -366,10 +379,10 @@ h1, h2, h3 {
   align-items: center;
   gap: 4px;
   padding: 3px 10px;
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid #10B981;
+  background: rgba(47, 107, 79, 0.10);
+  border: 1px solid rgba(47, 107, 79, 0.45);
   border-radius: 9999px;
-  color: #10B981;
+  color: #2F6B4F;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -387,8 +400,8 @@ h1, h2, h3 {
   100% { background-position: 200% center; }
 }
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 8px rgba(0, 163, 255, 0.3); }
-  50%       { box-shadow: 0 0 20px rgba(0, 163, 255, 0.6); }
+  0%, 100% { box-shadow: 0 0 8px rgba(184, 115, 78, 0.18); }
+  50%       { box-shadow: 0 0 20px rgba(184, 115, 78, 0.32); }
 }
 @keyframes spin-slow {
   from { transform: rotate(0deg); }
@@ -411,21 +424,21 @@ h1, h2, h3 {
   left: 0;
   right: 0;
   height: 2px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(23, 23, 23, 0.12);
   transform: translateY(-50%);
   z-index: 0;
 }
 .milestone-line-filled {
   height: 2px;
-  background: #00A3FF;
+  background: #B8734E;
   transition: width 0.6s ease;
 }
 .milestone-node {
   width: 36px;
   height: 36px;
   border-radius: 9999px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  background: rgba(15, 23, 42, 0.8);
+  border: 2px solid rgba(23, 23, 23, 0.18);
+  background: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -434,14 +447,15 @@ h1, h2, h3 {
   transition: all 0.3s ease;
 }
 .milestone-node.done {
-  background: #00A3FF;
-  border-color: #00A3FF;
-  box-shadow: 0 0 12px rgba(0, 163, 255, 0.5);
+  background: #B8734E;
+  border-color: #B8734E;
+  color: #FFFDF8;
+  box-shadow: 0 0 0 4px rgba(184, 115, 78, 0.14);
 }
 .milestone-node.active {
-  background: rgba(0, 163, 255, 0.2);
-  border-color: #00A3FF;
-  box-shadow: 0 0 16px rgba(0, 163, 255, 0.4);
+  background: rgba(184, 115, 78, 0.12);
+  border-color: #B8734E;
+  box-shadow: 0 0 0 4px rgba(184, 115, 78, 0.10);
 }
 
 /* ─────────────────────────────────────────────
@@ -449,16 +463,16 @@ h1, h2, h3 {
 ───────────────────────────────────────────── */
 .progress-bar-track {
   height: 3px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(23, 23, 23, 0.10);
   border-radius: 9999px;
   overflow: hidden;
 }
 .progress-bar-fill {
   height: 100%;
-  background: #00A3FF;
+  background: #B8734E;
   border-radius: 9999px;
   transition: width 0.4s ease;
 }
 .progress-bar-fill.cyan {
-  background: #22D3EE;
+  background: #1F2A42;
 }

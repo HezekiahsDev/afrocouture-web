@@ -46,9 +46,9 @@ function Detail({ initial }: { initial: AdminUserDetail }) {
     <>
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-[11px] font-bold uppercase tracking-wider text-[#38BDF8]">{ROLE_NAME[user.role]}</p>
-          <h1 className="mt-1 text-2xl font-extrabold text-[#F8FAFC] sm:text-3xl">{user.fullName ?? 'No name'}</h1>
-          <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-[#94A3B8]">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-[#8F5637]">{ROLE_NAME[user.role]}</p>
+          <h1 className="mt-1 text-2xl font-extrabold text-[#171717] sm:text-3xl">{user.fullName ?? 'No name'}</h1>
+          <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-[#6B655C]">
             {user.email} <UserStatus status={user.status} verified={user.emailVerified} />
           </p>
         </div>
@@ -86,8 +86,8 @@ function Detail({ initial }: { initial: AdminUserDetail }) {
               {tailorProfile && (
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <p className="font-semibold text-[#F8FAFC]">{tailorProfile.atelierName ?? tailorProfile.displayName ?? 'Atelier'}</p>
-                    <p className="text-xs text-[#94A3B8]">
+                    <p className="font-semibold text-[#171717]">{tailorProfile.atelierName ?? tailorProfile.displayName ?? 'Atelier'}</p>
+                    <p className="text-xs text-[#6B655C]">
                       {tailorProfile.city ?? '—'} · {tailorProfile.rating !== null ? `${tailorProfile.rating.toFixed(1)} ★ (${tailorProfile.reviewCount})` : 'No reviews'}
                     </p>
                   </div>
@@ -104,8 +104,8 @@ function Detail({ initial }: { initial: AdminUserDetail }) {
               {merchantProfile && (
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <p className="font-semibold text-[#F8FAFC]">{merchantProfile.businessName ?? 'Business'}</p>
-                    <p className="text-xs text-[#94A3B8]">{merchantProfile.city ?? '—'}</p>
+                    <p className="font-semibold text-[#171717]">{merchantProfile.businessName ?? 'Business'}</p>
+                    <p className="text-xs text-[#6B655C]">{merchantProfile.city ?? '—'}</p>
                   </div>
                   <span className="flex items-center gap-2">
                     <KycPill status={merchantProfile.verificationStatus} />
@@ -120,20 +120,20 @@ function Detail({ initial }: { initial: AdminUserDetail }) {
 
           <Panel title="Recent orders">
             {recentOrders.length === 0 ? (
-              <p className="text-sm text-[#64748B]">No orders yet.</p>
+              <p className="text-sm text-[#6B655C]">No orders yet.</p>
             ) : (
               <ul className="divide-y divide-white/[0.06]">
                 {recentOrders.map((o) => (
                   <li key={o.id}>
-                    <Link href={`/admin/orders/${o.id}`} className="flex flex-wrap items-center justify-between gap-2 py-3 hover:text-[#F8FAFC]">
+                    <Link href={`/admin/orders/${o.id}`} className="flex flex-wrap items-center justify-between gap-2 py-3 hover:text-[#171717]">
                       <span>
-                        <span className="font-mono text-sm font-bold text-[#F8FAFC]">{o.reference}</span>{' '}
-                        <span className="text-sm text-[#94A3B8]">
+                        <span className="font-mono text-sm font-bold text-[#171717]">{o.reference}</span>{' '}
+                        <span className="text-sm text-[#6B655C]">
                           {o.garmentType} · as {o.as === 'customer' ? 'customer' : 'artisan'}
                         </span>
                       </span>
                       <span className="flex items-center gap-3">
-                        <span className="text-sm tabular-nums text-[#F8FAFC]">{naira(o.totalAmount)}</span>
+                        <span className="text-sm tabular-nums text-[#171717]">{naira(o.totalAmount)}</span>
                         <StatusPill status={o.status} />
                       </span>
                     </Link>
@@ -149,7 +149,7 @@ function Detail({ initial }: { initial: AdminUserDetail }) {
             <SuspendPanel userId={user.id} suspended={user.status === 'suspended'} onChanged={onChanged} />
           ) : (
             <Panel title="Access">
-              <p className="text-sm text-[#94A3B8]">
+              <p className="text-sm text-[#6B655C]">
                 {user.id === me?.id ? 'This is your account.' : 'Admin accounts'} can&apos;t be suspended from the dashboard.
                 {user.role === 'admin' && ' Manage admins on the server with the admin scripts.'}
               </p>
@@ -191,22 +191,22 @@ function SuspendPanel({ userId, suspended, onChanged }: { userId: string; suspen
     <Panel title={suspended ? 'Reactivate account' : 'Suspend account'}>
       <form onSubmit={submit} className="flex flex-col gap-3">
         {suspended ? (
-          <p className="text-sm text-[#94A3B8]">They&apos;ll be able to sign in again straight away and will get an email.</p>
+          <p className="text-sm text-[#6B655C]">They&apos;ll be able to sign in again straight away and will get an email.</p>
         ) : (
           <>
-            <p className="text-sm text-[#94A3B8]">
+            <p className="text-sm text-[#6B655C]">
               They&apos;re signed out everywhere and can&apos;t sign in until reactivated. Orders and payouts already in progress
               continue. They&apos;ll get an email with your reason.
             </p>
             <label className="flex flex-col gap-1.5">
-              <span className="text-xs font-semibold text-[#94A3B8]">Reason (sent to them)</span>
+              <span className="text-xs font-semibold text-[#6B655C]">Reason (sent to them)</span>
               <textarea
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 minLength={5}
                 maxLength={500}
                 required
-                className="min-h-24 rounded-xl border border-white/10 bg-[#0F172A]/80 px-3 py-2 text-sm text-[#F8FAFC] outline-none focus:border-[#00A3FF]"
+                className="min-h-24 rounded-xl border border-[#171717]/12 bg-[#FFFFFF]/80 px-3 py-2 text-sm text-[#171717] outline-none focus:border-[#B8734E]"
               />
             </label>
           </>
@@ -215,7 +215,7 @@ function SuspendPanel({ userId, suspended, onChanged }: { userId: string; suspen
         {!suspended && !confirming ? (
           <button
             type="button"
-            className="btn-ghost self-start border-[#ffb4ab]/40 text-[#ffb4ab]"
+            className="btn-ghost self-start border-[#9B2C24]/40 text-[#9B2C24]"
             disabled={reason.trim().length < 5}
             onClick={() => setConfirming(true)}
           >
@@ -223,7 +223,7 @@ function SuspendPanel({ userId, suspended, onChanged }: { userId: string; suspen
           </button>
         ) : (
           <div className="flex flex-wrap gap-2">
-            <button type="submit" className={suspended ? 'btn-primary' : 'btn-primary bg-[#b91c1c] hover:bg-[#dc2626]'} disabled={busy}>
+            <button type="submit" className={suspended ? 'btn-primary' : 'btn-primary bg-[#9B2C24] hover:bg-[#A33A30]'} disabled={busy}>
               {suspended ? <ShieldCheck size={15} aria-hidden="true" /> : <ShieldOff size={15} aria-hidden="true" />}
               {busy ? 'Saving…' : suspended ? 'Reactivate account' : 'Confirm suspension'}
             </button>
@@ -241,9 +241,9 @@ function SuspendPanel({ userId, suspended, onChanged }: { userId: string; suspen
 
 function Tile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4">
-      <p className="text-xs text-[#94A3B8]">{label}</p>
-      <p className="mt-1 text-xl font-extrabold tabular-nums text-[#F8FAFC]">{value}</p>
+    <div className="rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-4">
+      <p className="text-xs text-[#6B655C]">{label}</p>
+      <p className="mt-1 text-xl font-extrabold tabular-nums text-[#171717]">{value}</p>
     </div>
   );
 }

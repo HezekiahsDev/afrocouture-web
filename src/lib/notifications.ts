@@ -16,7 +16,7 @@ export async function markNotificationsRead(target: { ids?: string[]; orderId?: 
   return unreadCount;
 }
 
-const UNREAD_EVENT = 'afrocouture:unread-notifications';
+const UNREAD_EVENT = 'IPILE:unread-notifications';
 
 /** Lets the navbar bell pick up count changes made elsewhere on the page. */
 export function announceUnread(count: number) {

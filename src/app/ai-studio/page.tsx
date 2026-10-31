@@ -7,7 +7,7 @@ import AiStudioComingSoon from "@/components/ai-studio/ComingSoon";
 import { AI_STUDIO_ENABLED } from "@/lib/features";
 
 export const metadata: Metadata = {
-  title: "AI Design Studio | AfroCouture",
+  title: "AI Design Studio | IPILE",
   description: "Describe a garment and generate visual concepts to take to an artisan.",
 };
 

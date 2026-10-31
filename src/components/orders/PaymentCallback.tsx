@@ -74,17 +74,17 @@ function Verify({ reference, cancelled }: { reference?: string; cancelled?: bool
       <div className={`${card} flex w-full flex-col items-center gap-4 text-center`}>
         {state.kind === 'verifying' && (
           <>
-            <LoaderCircle size={36} className="animate-spin text-[#00A3FF]" aria-hidden="true" />
-            <h1 className="text-2xl font-bold text-[#F8FAFC]">Confirming your payment…</h1>
-            <p className="text-sm text-[#94A3B8]">This takes a few seconds. Please don&apos;t close the page.</p>
+            <LoaderCircle size={36} className="animate-spin text-[#B8734E]" aria-hidden="true" />
+            <h1 className="text-2xl font-bold text-[#171717]">Confirming your payment…</h1>
+            <p className="text-sm text-[#6B655C]">This takes a few seconds. Please don&apos;t close the page.</p>
           </>
         )}
         {state.kind === 'paid' && (
           <>
-            <CheckCircle2 size={40} className="text-[#10B981]" aria-hidden="true" />
-            <h1 className="text-2xl font-bold text-[#F8FAFC]">Payment received</h1>
-            <p className="text-sm text-[#94A3B8]">
-              {naira(state.order.totalAmount)} is held by AfroCouture until you approve the finished piece. Your artisan
+            <CheckCircle2 size={40} className="text-[#2F6B4F]" aria-hidden="true" />
+            <h1 className="text-2xl font-bold text-[#171717]">Payment received</h1>
+            <p className="text-sm text-[#6B655C]">
+              {naira(state.order.totalAmount)} is held by IPILE until you approve the finished piece. Your artisan
               has been told to start.
             </p>
             <Link href={`/orders/${state.order.id}`} className={primaryButton}>
@@ -94,9 +94,9 @@ function Verify({ reference, cancelled }: { reference?: string; cancelled?: bool
         )}
         {state.kind === 'failed' && (
           <>
-            <CircleAlert size={40} className="text-[#ffb4ab]" aria-hidden="true" />
-            <h1 className="text-2xl font-bold text-[#F8FAFC]">Payment not confirmed</h1>
-            <p className="text-sm text-[#94A3B8]">{state.message}</p>
+            <CircleAlert size={40} className="text-[#9B2C24]" aria-hidden="true" />
+            <h1 className="text-2xl font-bold text-[#171717]">Payment not confirmed</h1>
+            <p className="text-sm text-[#6B655C]">{state.message}</p>
             {state.orderId ? (
               <Link href={`/orders/${state.orderId}`} className={primaryButton}>
                 Back to the order

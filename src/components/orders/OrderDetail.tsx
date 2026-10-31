@@ -56,7 +56,7 @@ import {
   useAction,
 } from './ui';
 
-export const PAYING_ORDER_KEY = 'afrocouture:paying-order';
+export const PAYING_ORDER_KEY = 'IPILE:paying-order';
 
 export default function OrderDetail({ id }: { id: string }) {
   return (
@@ -102,7 +102,7 @@ function OrderLoader({ id }: { id: string }) {
   }
   if (!order) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center text-[#94A3B8]" role="status">
+      <div className="flex min-h-[50vh] items-center justify-center text-[#6B655C]" role="status">
         <Spinner label="Loading order" />
       </div>
     );
@@ -135,13 +135,13 @@ function OrderHeader({
         <ArrowLeft size={16} /> All orders
       </Link>
       <div className="flex flex-wrap items-center gap-3">
-        <span className="font-[family-name:var(--font-inter)] text-sm font-semibold tracking-wide text-[#94A3B8]">
+        <span className="font-[family-name:var(--font-inter)] text-sm font-semibold tracking-wide text-[#6B655C]">
           {reference}
         </span>
         <StatusPill status={status} />
       </div>
-      <h1 className="text-[28px] font-extrabold leading-9 text-[#F8FAFC] sm:text-[36px] sm:leading-[44px]">{garmentType}</h1>
-      <p className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-[#94A3B8]">
+      <h1 className="text-[28px] font-extrabold leading-9 text-[#171717] sm:text-[36px] sm:leading-[44px]">{garmentType}</h1>
+      <p className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-[#6B655C]">
         <span>Requested {formatDate(createdAt)}</span>
         {estimatedDeliveryDate && (
           <span className="flex items-center gap-1.5">
@@ -157,15 +157,15 @@ function Timeline({ events }: { events: Order['events'] }) {
   if (!events.length) return null;
   return (
     <SectionCard title="Timeline" kicker="History">
-      <ol className="relative flex flex-col gap-4 border-l border-white/10 pl-5">
+      <ol className="relative flex flex-col gap-4 border-l border-[#171717]/12 pl-5">
         {[...events].reverse().map((event) => (
           <li key={event.id} className="relative">
             <span
-              className="absolute -left-[25px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-[#00A3FF] bg-[#090D16]"
+              className="absolute -left-[25px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-[#B8734E] bg-[#F5F0E8]"
               aria-hidden="true"
             />
-            <p className="text-sm text-[#F8FAFC]">{event.label}</p>
-            <p className="text-xs text-[#64748B]">{formatDate(event.createdAt, true)}</p>
+            <p className="text-sm text-[#171717]">{event.label}</p>
+            <p className="text-xs text-[#6B655C]">{formatDate(event.createdAt, true)}</p>
           </li>
         ))}
       </ol>
@@ -183,21 +183,21 @@ function FabricLines({
   return (
     <ul className="flex flex-col gap-3">
       {items.map((item) => (
-        <li key={item.id} className="flex flex-wrap items-center gap-3 rounded-xl border border-white/[0.08] p-3">
-          <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#1E293B]">
+        <li key={item.id} className="flex flex-wrap items-center gap-3 rounded-xl border border-[#171717]/10 p-3">
+          <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#FFFFFF]">
             <Image src={item.imageUrl} alt="" fill sizes="56px" className="object-cover" />
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-sm font-semibold text-[#F8FAFC]">{item.fabricName}</span>
-            <span className="block text-xs text-[#94A3B8]">
+            <span className="block text-sm font-semibold text-[#171717]">{item.fabricName}</span>
+            <span className="block text-xs text-[#6B655C]">
               {item.quantity} {item.unit}
               {item.quantity === 1 ? '' : 's'} × {naira(item.unitPrice)} ={' '}
-              <strong className="text-[#F8FAFC]">{naira(item.lineTotal)}</strong>
+              <strong className="text-[#171717]">{naira(item.lineTotal)}</strong>
             </span>
             <span className="mt-1 flex items-center gap-1.5 text-xs">
               <FulfilmentTag item={item} />
             </span>
-            {item.shippingNote && <span className="mt-1 block text-xs text-[#64748B]">Shipping note: {item.shippingNote}</span>}
+            {item.shippingNote && <span className="mt-1 block text-xs text-[#6B655C]">Shipping note: {item.shippingNote}</span>}
           </span>
           {action?.(item)}
         </li>
@@ -209,18 +209,18 @@ function FabricLines({
 function FulfilmentTag({ item }: { item: OrderItem }) {
   if (item.fulfilment === 'received')
     return (
-      <span className="flex items-center gap-1 text-[#34d399]">
+      <span className="flex items-center gap-1 text-[#2F6B4F]">
         <CheckCircle2 size={13} aria-hidden="true" /> Received by the artisan {formatDate(item.receivedAt)}
       </span>
     );
   if (item.fulfilment === 'shipped')
     return (
-      <span className="flex items-center gap-1 text-[#38BDF8]">
+      <span className="flex items-center gap-1 text-[#8F5637]">
         <Truck size={13} aria-hidden="true" /> Shipped {formatDate(item.shippedAt)}
       </span>
     );
   return (
-    <span className="flex items-center gap-1 text-[#94A3B8]">
+    <span className="flex items-center gap-1 text-[#6B655C]">
       <Package size={13} aria-hidden="true" /> Waiting to ship
     </span>
   );
@@ -378,19 +378,19 @@ function PartiesCard({ order }: { order: Order }) {
         <Portrait src={order.tailor?.portraitUrl ?? null} name={tailorName} size={48} />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-xs text-[#38BDF8]">{order.tailor?.atelierName}</p>
-        <Link href={`/tailors/${order.tailorId}`} className="font-semibold text-[#F8FAFC] hover:text-[#38BDF8]">
+        <p className="text-xs text-[#8F5637]">{order.tailor?.atelierName}</p>
+        <Link href={`/tailors/${order.tailorId}`} className="font-semibold text-[#171717] hover:text-[#8F5637]">
           {tailorName}
         </Link>
         {order.tailor?.city && (
-          <p className="flex items-center gap-1 text-xs text-[#94A3B8]">
+          <p className="flex items-center gap-1 text-xs text-[#6B655C]">
             <MapPin size={12} aria-hidden="true" /> {order.tailor.city}
           </p>
         )}
       </div>
       <div className="text-right text-sm">
-        <p className="text-xs text-[#64748B]">Customer</p>
-        <p className="text-[#F8FAFC]">{order.customer.fullName ?? 'Customer'}</p>
+        <p className="text-xs text-[#6B655C]">Customer</p>
+        <p className="text-[#171717]">{order.customer.fullName ?? 'Customer'}</p>
       </div>
     </section>
   );
@@ -417,13 +417,13 @@ function PriceCard({ order }: { order: Order }) {
         <MoneyRow label="Fabric total" amount={order.fabricTotal} strong />
       )}
       {order.quoteNote && (
-        <p className="mt-3 rounded-xl bg-[#1E293B]/60 p-3 text-sm text-[#cbd5e1]">
-          <span className="block text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">Note from the artisan</span>
+        <p className="mt-3 rounded-xl bg-[#FFFFFF]/60 p-3 text-sm text-[#4B453E]">
+          <span className="block text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">Note from the artisan</span>
           {order.quoteNote}
         </p>
       )}
       {!quoted && (
-        <p className="mt-2 text-xs text-[#64748B]">The artisan adds workmanship and delivery when they send a quote.</p>
+        <p className="mt-2 text-xs text-[#6B655C]">The artisan adds workmanship and delivery when they send a quote.</p>
       )}
     </SectionCard>
   );
@@ -435,9 +435,9 @@ function EscrowCard({ order }: { order: Order }) {
   const fee = refunded >= held ? 0 : order.platformFee;
   const stillHeld = Math.max(0, balance - fee);
   return (
-    <SectionCard title="Payment protection" kicker="Escrow" action={<Lock size={18} className="text-[#00A3FF]" aria-hidden="true" />}>
-      <p className="mb-3 text-sm leading-6 text-[#94A3B8]">
-        Your payment is held by AfroCouture and released to the artisan when you approve delivery; fabric payments go to
+    <SectionCard title="Payment protection" kicker="Escrow" action={<Lock size={18} className="text-[#B8734E]" aria-hidden="true" />}>
+      <p className="mb-3 text-sm leading-6 text-[#6B655C]">
+        Your payment is held by IPILE and released to the artisan when you approve delivery; fabric payments go to
         merchants when the artisan confirms the fabric arrived.
       </p>
       <MoneyRow label="Paid in" amount={held} />
@@ -452,13 +452,13 @@ function EscrowCard({ order }: { order: Order }) {
 function BriefCard({ order }: { order: Order }) {
   return (
     <SectionCard title="The request" kicker="Brief">
-      <p className="whitespace-pre-wrap text-sm leading-6 text-[#cbd5e1]">{order.brief}</p>
-      {order.desiredDate && <p className="mt-3 text-sm text-[#94A3B8]">Needed by {formatDate(order.desiredDate)}</p>}
+      <p className="whitespace-pre-wrap text-sm leading-6 text-[#4B453E]">{order.brief}</p>
+      {order.desiredDate && <p className="mt-3 text-sm text-[#6B655C]">Needed by {formatDate(order.desiredDate)}</p>}
       {order.referenceImageUrls.length > 0 && (
         <ul className="mt-4 flex flex-wrap gap-2">
           {order.referenceImageUrls.map((url) => (
             <li key={url}>
-              <a href={url} target="_blank" rel="noreferrer" className="relative block h-28 w-24 overflow-hidden rounded-lg bg-[#1E293B]">
+              <a href={url} target="_blank" rel="noreferrer" className="relative block h-28 w-24 overflow-hidden rounded-lg bg-[#FFFFFF]">
                 <Image src={url} alt="Reference image" fill sizes="96px" className="object-cover" />
               </a>
             </li>
@@ -490,31 +490,31 @@ function FitCard({ order }: { order: Order }) {
     <SectionCard title="Measurements & delivery" kicker="Saved when the request was sent">
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {MEASURES.map(([key, label]) => (
-          <div key={key} className="rounded-xl bg-[#1E293B]/50 px-3 py-2">
-            <dt className="text-[11px] text-[#94A3B8]">{label}</dt>
-            <dd className="font-[family-name:var(--font-inter)] text-sm font-semibold tabular-nums text-[#F8FAFC]">
+          <div key={key} className="rounded-xl bg-[#FFFFFF]/50 px-3 py-2">
+            <dt className="text-[11px] text-[#6B655C]">{label}</dt>
+            <dd className="font-[family-name:var(--font-inter)] text-sm font-semibold tabular-nums text-[#171717]">
               {fit[key] !== null ? `${fit[key]} ${fit.unit}` : '—'}
             </dd>
           </div>
         ))}
       </dl>
-      <p className="mt-3 text-sm text-[#94A3B8]">Fit preference: {SILHOUETTE[fit.drapeSilhouette] ?? fit.drapeSilhouette}</p>
+      <p className="mt-3 text-sm text-[#6B655C]">Fit preference: {SILHOUETTE[fit.drapeSilhouette] ?? fit.drapeSilhouette}</p>
       {(fit.frontPhotoUrl || fit.sidePhotoUrl) && (
         <div className="mt-3 flex gap-2">
           {[fit.frontPhotoUrl, fit.sidePhotoUrl].filter(Boolean).map((url) => (
-            <a key={url} href={url!} target="_blank" rel="noreferrer" className="relative block h-28 w-20 overflow-hidden rounded-lg bg-[#1E293B]">
+            <a key={url} href={url!} target="_blank" rel="noreferrer" className="relative block h-28 w-20 overflow-hidden rounded-lg bg-[#FFFFFF]">
               <Image src={url!} alt="Reference photo for measurements" fill sizes="80px" className="object-cover" />
             </a>
           ))}
         </div>
       )}
       {address && (
-        <p className="mt-4 flex items-start gap-2 text-sm text-[#cbd5e1]">
-          <MapPin size={15} className="mt-0.5 shrink-0 text-[#00A3FF]" aria-hidden="true" />
+        <p className="mt-4 flex items-start gap-2 text-sm text-[#4B453E]">
+          <MapPin size={15} className="mt-0.5 shrink-0 text-[#B8734E]" aria-hidden="true" />
           <span>
             {address.line1}, {address.city}, {address.state}
-            {address.landmark && <span className="block text-xs text-[#94A3B8]">Landmark: {address.landmark}</span>}
-            {address.phone && <span className="block text-xs text-[#94A3B8]">Phone: {address.phone}</span>}
+            {address.landmark && <span className="block text-xs text-[#6B655C]">Landmark: {address.landmark}</span>}
+            {address.phone && <span className="block text-xs text-[#6B655C]">Phone: {address.phone}</span>}
           </span>
         </p>
       )}
@@ -530,12 +530,12 @@ function NextStep({ title, children, tone = 'info' }: { title: string; children:
       className={cn(
         card,
         'flex flex-col gap-4',
-        tone === 'info' && 'border-[#00A3FF]/30 shadow-[0_0_20px_-6px_rgba(0,163,255,0.4)]',
-        tone === 'success' && 'border-[#10B981]/30',
-        tone === 'warn' && 'border-[#ffb4ab]/30',
+        tone === 'info' && 'border-[#B8734E]/30 shadow-[0_0_20px_-6px_rgba(184,115,78,0.4)]',
+        tone === 'success' && 'border-[#2F6B4F]/30',
+        tone === 'warn' && 'border-[#9B2C24]/30',
       )}
     >
-      <h2 className="text-lg font-bold text-[#F8FAFC]">{title}</h2>
+      <h2 className="text-lg font-bold text-[#171717]">{title}</h2>
       {children}
     </section>
   );
@@ -566,7 +566,7 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
   const disputeForm = (
     <ReasonForm
       label="What went wrong?"
-      placeholder="Explain the problem. An AfroCouture admin reviews both sides and the payment stays held until it's resolved."
+      placeholder="Explain the problem. An IPILE admin reviews both sides and the payment stays held until it's resolved."
       submitLabel="Open a dispute"
       busy={busy === 'dispute'}
       danger
@@ -580,7 +580,7 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
     case 'requested':
       body = (
         <NextStep title={`Waiting for ${artisan}'s quote`}>
-          <p className="text-sm text-[#94A3B8]">
+          <p className="text-sm text-[#6B655C]">
             They&apos;ll reply with a price and a delivery date. You&apos;ll get an email when it arrives. Use the messages to
             answer any questions.
           </p>
@@ -597,9 +597,9 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
     case 'quoted':
       body = (
         <NextStep title="Your quote is ready">
-          <p className="text-sm text-[#94A3B8]">
-            {artisan} can have it ready by <strong className="text-[#F8FAFC]">{formatDate(order.estimatedDeliveryDate)}</strong>.
-            Your payment is held by AfroCouture until you approve the finished piece.
+          <p className="text-sm text-[#6B655C]">
+            {artisan} can have it ready by <strong className="text-[#171717]">{formatDate(order.estimatedDeliveryDate)}</strong>.
+            Your payment is held by IPILE until you approve the finished piece.
           </p>
           <div className="flex flex-wrap gap-2">
             <button type="button" className={primaryButton} onClick={pay} disabled={busy !== null}>
@@ -622,8 +622,8 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
     case 'in_progress':
       body = (
         <NextStep title={order.status === 'paid' ? 'Paid — your artisan can start' : 'Your piece is being made'} tone="success">
-          <p className="text-sm text-[#94A3B8]">
-            Current stage: <strong className="text-[#F8FAFC]">{MILESTONES.find((m) => m.id === order.milestone)?.label}</strong>.
+          <p className="text-sm text-[#6B655C]">
+            Current stage: <strong className="text-[#171717]">{MILESTONES.find((m) => m.id === order.milestone)?.label}</strong>.
             You&apos;ll be notified at each step.
           </p>
           {mode === 'dispute' ? (
@@ -639,7 +639,7 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
     case 'delivered':
       body = (
         <NextStep title="Your piece has been delivered">
-          <p className="text-sm text-[#94A3B8]">
+          <p className="text-sm text-[#6B655C]">
             Happy with it? Approving releases the payment to {artisan}. If something isn&apos;t right, open a dispute instead
             — the payment stays held while an admin reviews it.
           </p>
@@ -677,16 +677,16 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
     case 'completed':
       body = (
         <NextStep title="Completed" tone="success">
-          <p className="text-sm text-[#94A3B8]">Payment released to {artisan}.</p>
-          {order.resolutionNote && <p className="text-sm text-[#cbd5e1]">Admin decision: {order.resolutionNote}</p>}
+          <p className="text-sm text-[#6B655C]">Payment released to {artisan}.</p>
+          {order.resolutionNote && <p className="text-sm text-[#4B453E]">Admin decision: {order.resolutionNote}</p>}
         </NextStep>
       );
       break;
     case 'disputed':
       body = (
         <NextStep title="Dispute open" tone="warn">
-          <p className="text-sm text-[#94A3B8]">
-            You raised: “{order.disputeReason}”. The payment stays held while an AfroCouture admin reviews the order and
+          <p className="text-sm text-[#6B655C]">
+            You raised: “{order.disputeReason}”. The payment stays held while an IPILE admin reviews the order and
             the conversation. You&apos;ll get an email with the decision.
           </p>
         </NextStep>
@@ -695,18 +695,18 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
     case 'refunded':
       body = (
         <NextStep title="Refunded" tone="warn">
-          <p className="text-sm text-[#94A3B8]">
+          <p className="text-sm text-[#6B655C]">
             {naira(order.escrow.refunded)} was refunded to your payment method. Refunds can take a few working days to
             appear.
           </p>
-          {order.resolutionNote && <p className="text-sm text-[#cbd5e1]">Admin decision: {order.resolutionNote}</p>}
+          {order.resolutionNote && <p className="text-sm text-[#4B453E]">Admin decision: {order.resolutionNote}</p>}
         </NextStep>
       );
       break;
     case 'declined':
       body = (
         <NextStep title="The artisan declined this request" tone="warn">
-          <p className="text-sm text-[#94A3B8]">Reason: {order.declineReason}</p>
+          <p className="text-sm text-[#6B655C]">Reason: {order.declineReason}</p>
           <Link href="/tailors" className={cn(primaryButton, 'self-start')}>
             Find another artisan
           </Link>
@@ -716,7 +716,7 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
     case 'cancelled':
       body = (
         <NextStep title="You cancelled this request" tone="warn">
-          <p className="text-sm text-[#94A3B8]">Nothing was charged.</p>
+          <p className="text-sm text-[#6B655C]">Nothing was charged.</p>
         </NextStep>
       );
       break;
@@ -732,8 +732,8 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
 
 function CancelConfirm({ busy, onConfirm, onBack }: { busy: boolean; onConfirm: () => void; onBack: () => void }) {
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-[#ffb4ab]/30 bg-[#93000a]/10 p-3">
-      <p className="text-sm text-[#ffdad6]">Cancel this request? The artisan will be told, and you can&apos;t undo it.</p>
+    <div className="flex flex-col gap-2 rounded-xl border border-[#9B2C24]/30 bg-[#F6E3E0]/10 p-3">
+      <p className="text-sm text-[#7A1F1A]">Cancel this request? The artisan will be told, and you can&apos;t undo it.</p>
       <div className="flex gap-2">
         <button type="button" className={dangerButton} onClick={onConfirm} disabled={busy}>
           {busy && <Spinner />} Yes, cancel
@@ -795,7 +795,7 @@ function TailorActions({ order, onUpdate }: { order: Order; onUpdate: (o: Order)
   } else if (order.status === 'quoted') {
     body = (
       <NextStep title="Quote sent — waiting for payment">
-        <p className="text-sm text-[#94A3B8]">
+        <p className="text-sm text-[#6B655C]">
           The customer pays {naira(order.totalAmount)} into escrow to confirm. You can change the quote until they pay.
         </p>
         <button type="button" className={cn(ghostButton, 'self-start')} onClick={() => setRequoting(true)}>
@@ -807,12 +807,12 @@ function TailorActions({ order, onUpdate }: { order: Order; onUpdate: (o: Order)
     const atDelivery = order.milestone === 'delivery';
     body = (
       <NextStep title={atDelivery ? 'Hand over the piece' : order.status === 'paid' ? 'Paid — start work' : 'Update progress'} tone="success">
-        <p className="text-sm text-[#94A3B8]">
+        <p className="text-sm text-[#6B655C]">
           The customer&apos;s {naira(order.totalAmount)} is held in escrow. Your {naira((order.workmanshipPrice ?? 0) + (order.deliveryFee ?? 0))}{' '}
           is released when they approve delivery.
         </p>
         {pendingFabric.length > 0 && (
-          <p className="text-sm text-[#fcd34d]">
+          <p className="text-sm text-[#8A6A1F]">
             {pendingFabric.length} fabric line{pendingFabric.length === 1 ? ' is' : 's are'} still on the way — confirm below when
             it arrives.
           </p>
@@ -847,7 +847,7 @@ function TailorActions({ order, onUpdate }: { order: Order; onUpdate: (o: Order)
   } else if (order.status === 'delivered') {
     body = (
       <NextStep title="Delivered — waiting for approval" tone="success">
-        <p className="text-sm text-[#94A3B8]">
+        <p className="text-sm text-[#6B655C]">
           Your payment is released when the customer approves, or automatically after the review period if they don&apos;t
           respond.
         </p>
@@ -856,14 +856,14 @@ function TailorActions({ order, onUpdate }: { order: Order; onUpdate: (o: Order)
   } else if (order.status === 'completed') {
     body = (
       <NextStep title="Completed" tone="success">
-        <p className="text-sm text-[#94A3B8]">Payment released to your payout account.</p>
+        <p className="text-sm text-[#6B655C]">Payment released to your payout account.</p>
       </NextStep>
     );
   } else if (order.status === 'disputed') {
     body = (
       <NextStep title="The customer opened a dispute" tone="warn">
-        <p className="text-sm text-[#94A3B8]">
-          “{order.disputeReason}” — an AfroCouture admin will review the order and your messages. Reply in the chat with
+        <p className="text-sm text-[#6B655C]">
+          “{order.disputeReason}” — an IPILE admin will review the order and your messages. Reply in the chat with
           anything that helps.
         </p>
       </NextStep>
@@ -871,8 +871,8 @@ function TailorActions({ order, onUpdate }: { order: Order; onUpdate: (o: Order)
   } else {
     body = (
       <NextStep title={order.status === 'declined' ? 'You declined this request' : order.status === 'cancelled' ? 'The customer cancelled' : 'Refunded'} tone="warn">
-        {order.declineReason && <p className="text-sm text-[#94A3B8]">Reason: {order.declineReason}</p>}
-        {order.resolutionNote && <p className="text-sm text-[#94A3B8]">Admin decision: {order.resolutionNote}</p>}
+        {order.declineReason && <p className="text-sm text-[#6B655C]">Reason: {order.declineReason}</p>}
+        {order.resolutionNote && <p className="text-sm text-[#6B655C]">Admin decision: {order.resolutionNote}</p>}
       </NextStep>
     );
   }
@@ -930,24 +930,24 @@ function QuoteForm({
         <label className="flex flex-col gap-1.5">
           <span className={labelClass}>Workmanship (₦)</span>
           <input className={fieldClass} inputMode="numeric" value={workmanship} onChange={(e) => setWorkmanship(e.target.value.replace(/\D/g, ''))} placeholder="45000" />
-          {show('workmanship') && <span className="text-xs text-[#ffb4ab]">{show('workmanship')}</span>}
+          {show('workmanship') && <span className="text-xs text-[#9B2C24]">{show('workmanship')}</span>}
         </label>
         <label className="flex flex-col gap-1.5">
           <span className={labelClass}>Delivery fee (₦)</span>
           <input className={fieldClass} inputMode="numeric" value={delivery} onChange={(e) => setDelivery(e.target.value.replace(/\D/g, ''))} placeholder="0" />
-          {show('delivery') && <span className="text-xs text-[#ffb4ab]">{show('delivery')}</span>}
+          {show('delivery') && <span className="text-xs text-[#9B2C24]">{show('delivery')}</span>}
         </label>
         <label className="flex flex-col gap-1.5">
           <span className={labelClass}>Ready by</span>
           <input type="date" className={fieldClass} value={date} min={today} onChange={(e) => setDate(e.target.value)} />
-          {show('date') && <span className="text-xs text-[#ffb4ab]">{show('date')}</span>}
+          {show('date') && <span className="text-xs text-[#9B2C24]">{show('date')}</span>}
         </label>
       </div>
       <label className="flex flex-col gap-1.5">
         <span className={labelClass}>Note (optional)</span>
         <textarea className={cn(fieldClass, 'min-h-20')} value={note} onChange={(e) => setNote(e.target.value)} maxLength={1000} placeholder="What the price includes, fittings, anything the customer should know." />
       </label>
-      <div className="rounded-xl bg-[#1E293B]/50 p-3 text-sm">
+      <div className="rounded-xl bg-[#FFFFFF]/50 p-3 text-sm">
         <MoneyRow label="Your workmanship + delivery" amount={(errors.workmanship ? 0 : w) + (errors.delivery ? 0 : d)} />
         {order.fabricTotal > 0 && <MoneyRow label="Fabric (paid to merchants)" amount={order.fabricTotal} />}
         <MoneyRow label="Customer pays" amount={subtotal} strong hint="plus a platform fee, if any" />
@@ -985,7 +985,7 @@ function ReceiveButton({ order, item, onUpdate }: { order: Order; item: OrderIte
       >
         {busy && <Spinner />} Mark received
       </button>
-      {error && <span className="text-xs text-[#ffb4ab]">{error}</span>}
+      {error && <span className="text-xs text-[#9B2C24]">{error}</span>}
     </span>
   );
 }
@@ -999,17 +999,17 @@ function MerchantOrder({ order, reload }: { order: MerchantOrderView; reload: ()
       <OrderHeader reference={order.reference} status={order.status} garmentType={order.garmentType} createdAt={order.createdAt} />
 
       <NextStep title={allReceived ? 'Fabric received' : 'Ship your fabric to the artisan'} tone={allReceived ? 'success' : 'info'}>
-        <p className="text-sm text-[#94A3B8]">
+        <p className="text-sm text-[#6B655C]">
           The customer has paid. Your {naira(order.merchantTotal)} is released to your payout account when the artisan
           confirms the fabric arrived.
         </p>
         {order.shipTo && (
-          <div className="flex items-start gap-3 rounded-xl bg-[#1E293B]/60 p-3">
-            <MapPin size={18} className="mt-0.5 shrink-0 text-[#00A3FF]" aria-hidden="true" />
+          <div className="flex items-start gap-3 rounded-xl bg-[#FFFFFF]/60 p-3">
+            <MapPin size={18} className="mt-0.5 shrink-0 text-[#B8734E]" aria-hidden="true" />
             <div className="text-sm">
-              <p className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">Ship to</p>
-              <p className="font-semibold text-[#F8FAFC]">{order.shipTo.name}</p>
-              <p className="text-[#cbd5e1]">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">Ship to</p>
+              <p className="font-semibold text-[#171717]">{order.shipTo.name}</p>
+              <p className="text-[#4B453E]">
                 {order.shipTo.address}
                 {order.shipTo.city && `, ${order.shipTo.city}`}
               </p>
@@ -1023,8 +1023,8 @@ function MerchantOrder({ order, reload }: { order: MerchantOrderView; reload: ()
       </SectionCard>
 
       <section className={cn(card, 'flex items-start gap-3')}>
-        <ShieldCheck size={20} className="shrink-0 text-[#00A3FF]" aria-hidden="true" />
-        <p className="text-sm text-[#94A3B8]">
+        <ShieldCheck size={20} className="shrink-0 text-[#B8734E]" aria-hidden="true" />
+        <p className="text-sm text-[#6B655C]">
           You only see the fabric lines that are yours and the artisan&apos;s workshop address. The customer&apos;s
           measurements and address stay private.
         </p>
@@ -1064,7 +1064,7 @@ function ShipControl({ order, item, onDone }: { order: MerchantOrderView; item: 
           Back
         </button>
       </div>
-      {error && <span className="text-xs text-[#ffb4ab]">{error}</span>}
+      {error && <span className="text-xs text-[#9B2C24]">{error}</span>}
     </form>
   );
 }

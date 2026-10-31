@@ -3,7 +3,7 @@ import { ApprovedMerchant, MerchantShell } from "@/components/merchant/MerchantS
 import { FabricForm } from "@/components/merchant/FabricForm";
 
 export const metadata: Metadata = {
-  title: "List a fabric | AfroCouture",
+  title: "List a fabric | IPILE",
   description: "Add a fabric listing with optional wholesale prices.",
 };
 

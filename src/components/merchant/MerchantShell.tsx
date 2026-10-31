@@ -17,10 +17,10 @@ const LINKS = [
 
 export function MerchantShell({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-[#090D16] text-[#DFE2EF]">
+    <div className="flex min-h-screen flex-col bg-[#F5F0E8] text-[#171717]">
       <PortalHeader portal="Merchant Portal" current="My fabrics" links={LINKS} />
       <main className="relative w-full flex-1 pb-16 pt-20 md:pt-24">
-        <div className="pointer-events-none absolute right-1/4 top-10 h-72 w-72 rounded-full bg-[#00A3FF]/10 blur-3xl" aria-hidden="true" />
+        <div className="pointer-events-none absolute right-1/4 top-10 h-72 w-72 rounded-full bg-[#B8734E]/10 blur-3xl" aria-hidden="true" />
         <div className="relative mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:px-10">
           <RequireAuth role="merchant">{children}</RequireAuth>
         </div>
@@ -69,13 +69,13 @@ export function ApprovedMerchant({ children }: { children: ReactNode }) {
   const pending = profile?.verificationStatus === 'pending' || profile?.verificationStatus === 'under_review';
   return (
     <div className="mx-auto flex max-w-lg flex-col items-center gap-4 py-16 text-center">
-      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1E293B] text-[#00A3FF]">
+      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FFFFFF] text-[#B8734E]">
         {pending ? <Clock size={26} /> : <Store size={26} />}
       </span>
-      <h1 className="text-2xl font-extrabold text-[#F8FAFC]">
+      <h1 className="text-2xl font-extrabold text-[#171717]">
         {pending ? 'Your verification is under review' : 'Get verified to list fabric'}
       </h1>
-      <p className="text-sm leading-relaxed text-[#94A3B8]">
+      <p className="text-sm leading-relaxed text-[#6B655C]">
         {pending
           ? 'You can add fabrics as soon as our team approves your business. We’ll email you when that happens.'
           : 'Customers buy from verified merchants only. Share your business and CAC details first — it takes a few minutes.'}

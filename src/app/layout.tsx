@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
+import { Cormorant_Garamond, Inter } from 'next/font/google';
 import './globals.css';
 import './atelier.css';
 import { AuthProvider } from '@/components/auth/AuthProvider';
@@ -11,21 +11,54 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const jakarta = Plus_Jakarta_Sans({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   display: 'swap',
-  variable: '--font-jakarta',
+  variable: '--font-cormorant',
 });
 
+/** Absolute base for OG/Twitter images; Vercel provides its own production hostname. */
+function resolveSiteUrl(): URL {
+  const raw =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : 'http://localhost:3000');
+  try {
+    return new URL(raw);
+  } catch {
+    return new URL('http://localhost:3000');
+  }
+}
+
 export const metadata: Metadata = {
-  title: 'AfroCouture AI — Africa\'s Premier AI Couture & Artisan Ecosystem',
+  metadataBase: resolveSiteUrl(),
+  title: 'IPILE — Contemporary African Luxury, Crafted Around You',
   description:
-    'Find verified African tailors, source premium Ankara and brocade silks, and preview tailored silhouettes instantly with AI. Escrow-protected commissions.',
-  keywords: ['African fashion', 'bespoke tailoring', 'Ankara', 'Kaftan', 'Agbada', 'Nigerian fashion', 'AI design'],
+    'Discover skilled makers, explore fabrics, and bring your next outfit to life. Commission verified African tailors and source premium fabric on IPILE.',
+  keywords: [
+    'African fashion',
+    'bespoke tailoring',
+    'Ankara',
+    'Kaftan',
+    'Agbada',
+    'Nigerian fashion',
+    'made to measure',
+    'artisan marketplace',
+  ],
   openGraph: {
-    title: 'AfroCouture AI',
-    description: 'Africa\'s Premier AI Couture & Artisan Ecosystem',
+    title: 'IPILE — Crafted Around You',
+    description:
+      'Contemporary African luxury. Discover skilled makers, explore fabrics, and bring your next outfit to life.',
     type: 'website',
+    siteName: 'IPILE',
+    images: [{ url: '/img/logo.png', width: 666, height: 375, alt: 'IPILE' }],
+  },
+  icons: {
+    icon: '/img/icon.png',
+    apple: '/img/icon.png',
   },
 };
 
@@ -35,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
+    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
       <body className="bg-ambient font-sans">
         <AuthProvider>
           <SavedProvider>

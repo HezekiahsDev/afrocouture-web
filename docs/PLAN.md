@@ -1,4 +1,4 @@
-# AfroCouture AI — Product & Implementation Plan
+# IPILE — Product & Implementation Plan
 
 _Last updated: 2026-10-24. This document describes what is built, how it is deployed, and what comes next.
 Detailed API contracts for orders, payments, chat and AI Studio live in
@@ -164,3 +164,4 @@ React Native app reusing the API; designs from the original Stitch mobile export
 2. `afrocouture-web`: `npx tsc --noEmit`, `pnpm lint`, `pnpm build`; browser checks at 1440 px and 390 px (no horizontal scroll, pages scroll).
 3. Flows: sign up as each role → onboarding → admin approval → browse → save → commission → pay (Paystack test mode) → milestones → chat → deliver → approve → payouts; dispute → admin resolution.
 4. Copy review against the content principle above.
+

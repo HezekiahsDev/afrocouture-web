@@ -20,34 +20,34 @@ export default function AiStudioComingSoon({ prompt }: { prompt?: string }) {
       </Link>
       <header className="flex max-w-2xl flex-col gap-3">
         <span className="section-kicker">AI DESIGN STUDIO · COMING SOON</span>
-        <h1 className="text-[30px] font-extrabold leading-[38px] text-[#F8FAFC] sm:text-[40px] sm:leading-[48px]">
+        <h1 className="text-[30px] font-extrabold leading-[38px] text-[#171717] sm:text-[40px] sm:leading-[48px]">
           Sketch your idea{' '}
-          <span className="bg-gradient-to-r from-[#00A3FF] via-[#8B5CF6] to-[#EC4899] bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-[#B8734E] via-[#1F2A42] to-[#B8734E] bg-clip-text text-transparent">
             with AI, soon.
           </span>
         </h1>
-        <p className="text-sm leading-6 text-[#94A3B8] sm:text-base">
+        <p className="text-sm leading-6 text-[#6B655C] sm:text-base">
           We&apos;re putting the finishing touches on AI Studio. Until it opens, you can still commission the
           exact look you want: upload photos of the style and an artisan will quote for it.
         </p>
       </header>
 
       {idea && (
-        <div className="max-w-2xl rounded-2xl border border-[#00A3FF]/25 bg-[#00A3FF]/5 p-4 text-sm text-[#cfe5ff]">
-          <span className="font-semibold text-[#F8FAFC]">Your idea:</span> {idea}
-          <span className="mt-1 block text-[#94A3B8]">We&apos;ll add it to your commission brief.</span>
+        <div className="max-w-2xl rounded-2xl border border-[#B8734E]/25 bg-[#B8734E]/5 p-4 text-sm text-[#5C3B29]">
+          <span className="font-semibold text-[#171717]">Your idea:</span> {idea}
+          <span className="mt-1 block text-[#6B655C]">We&apos;ll add it to your commission brief.</span>
         </div>
       )}
 
       <ol className="grid gap-4 sm:grid-cols-3">
         {steps.map(({ icon: Icon, title, body }, i) => (
           <li key={title} className={cn(card, 'flex flex-col gap-2')}>
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#00A3FF]/10 text-[#22D3EE]">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#B8734E]/10 text-[#1F2A42]">
               <Icon size={20} aria-hidden="true" />
             </span>
-            <span className="text-xs font-bold tracking-widest text-[#64748B]">STEP {i + 1}</span>
-            <span className="font-bold text-[#F8FAFC]">{title}</span>
-            <span className="text-sm leading-6 text-[#94A3B8]">{body}</span>
+            <span className="text-xs font-bold tracking-widest text-[#6B655C]">STEP {i + 1}</span>
+            <span className="font-bold text-[#171717]">{title}</span>
+            <span className="text-sm leading-6 text-[#6B655C]">{body}</span>
           </li>
         ))}
       </ol>

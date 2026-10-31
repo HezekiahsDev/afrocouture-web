@@ -104,7 +104,7 @@ export type MyFabric = Omit<Fabric, 'merchant'> & {
   merchantId: string;
   stock: number | null;
   isPublished: boolean;
-  /** Set while AfroCouture has taken the listing down; only an admin can republish it. */
+  /** Set while IPILE has taken the listing down; only an admin can republish it. */
   moderatedAt?: string | null;
   unpublishedReason?: string | null;
 };

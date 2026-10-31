@@ -75,10 +75,10 @@ function addressErrors(a: AddressValues): Partial<Record<keyof AddressValues, st
   return errors;
 }
 
-const card = 'rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-5 backdrop-blur-xl sm:p-6';
-const fieldLabel = 'text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]';
+const card = 'rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-5 backdrop-blur-xl sm:p-6';
+const fieldLabel = 'text-[11px] font-bold uppercase tracking-wider text-[#6B655C]';
 const input =
-  'w-full rounded-xl border border-white/10 bg-[#0F172A] px-3.5 py-2.5 text-sm text-[#F8FAFC] outline-none transition placeholder:text-[#64748B] focus:border-[#00A3FF] focus:shadow-[0_0_0_3px_rgba(0,163,255,0.15)]';
+  'w-full rounded-xl border border-[#171717]/12 bg-[#FFFFFF] px-3.5 py-2.5 text-sm text-[#171717] outline-none transition placeholder:text-[#6B655C] focus:border-[#B8734E] focus:shadow-[0_0_0_3px_rgba(184,115,78,0.15)]';
 
 export function FitProfileForm() {
   // Set when another page (e.g. a commission request) sent the customer here to finish their profile.
@@ -209,7 +209,7 @@ export function FitProfileForm() {
 
   if (loadState === 'loading') {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center text-[#94A3B8]" role="status">
+      <div className="flex min-h-[50vh] items-center justify-center text-[#6B655C]" role="status">
         <LoaderCircle className="animate-spin" size={28} aria-label="Loading your fit profile" />
       </div>
     );
@@ -218,7 +218,7 @@ export function FitProfileForm() {
   if (loadState === 'error') {
     return (
       <div className={cn(card, 'mx-auto mt-10 max-w-md text-center')}>
-        <p className="text-sm text-[#ffb4ab]">{loadError}</p>
+        <p className="text-sm text-[#9B2C24]">{loadError}</p>
         <button type="button" className="btn-primary mt-4" onClick={() => window.location.reload()}>
           Try again
         </button>
@@ -231,11 +231,11 @@ export function FitProfileForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#38BDF8]">Your fit profile</span>
-        <h1 className="text-[30px] font-extrabold leading-[38px] tracking-[-0.02em] text-[#F8FAFC] md:text-[40px] md:leading-[48px]">
+        <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#8F5637]">Your fit profile</span>
+        <h1 className="text-[30px] font-extrabold leading-[38px] tracking-[-0.02em] text-[#171717] md:text-[40px] md:leading-[48px]">
           {firstName ? `${firstName}, let's get your measurements right` : "Let's get your measurements right"}
         </h1>
-        <p className="max-w-2xl text-sm leading-6 text-[#94A3B8] md:text-base">
+        <p className="max-w-2xl text-sm leading-6 text-[#6B655C] md:text-base">
           Save your measurements once and share them with any artisan you commission. Measure over light clothing
           with a soft tape — ask someone to help for shoulders and length. You can leave a field blank and add it
           later; your tailor will confirm everything at the first fitting.
@@ -247,17 +247,17 @@ export function FitProfileForm() {
         <section className={cn(card, 'lg:col-span-7')} aria-labelledby="measure-heading">
           <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
             <div className="flex items-start gap-3">
-              <Ruler size={20} className="mt-1 text-[#00A3FF]" aria-hidden="true" />
+              <Ruler size={20} className="mt-1 text-[#B8734E]" aria-hidden="true" />
               <div>
-                <h2 id="measure-heading" className="text-lg font-bold text-[#F8FAFC]">
+                <h2 id="measure-heading" className="text-lg font-bold text-[#171717]">
                   Body measurements
                 </h2>
-                <p className="text-xs text-[#94A3B8]">
+                <p className="text-xs text-[#6B655C]">
                   {filledCount} of {MEASUREMENTS.length} added
                 </p>
               </div>
             </div>
-            <div className="flex rounded-full border border-white/[0.08] bg-[#090D16] p-1" role="group" aria-label="Units">
+            <div className="flex rounded-full border border-[#171717]/10 bg-[#F5F0E8] p-1" role="group" aria-label="Units">
               {(['in', 'cm'] as const).map((u) => (
                 <button
                   key={u}
@@ -266,7 +266,7 @@ export function FitProfileForm() {
                   aria-pressed={form.unit === u}
                   className={cn(
                     'rounded-full px-3.5 py-1.5 text-xs font-semibold transition',
-                    form.unit === u ? 'bg-[#00A3FF] text-[#090D16]' : 'text-[#94A3B8] hover:text-[#F8FAFC]',
+                    form.unit === u ? 'bg-[#9E5B37] text-[#FFFDF8]' : 'text-[#6B655C] hover:text-[#171717]',
                   )}
                 >
                   {u === 'in' ? 'Inches' : 'Centimetres'}
@@ -283,11 +283,11 @@ export function FitProfileForm() {
                 <div
                   key={key}
                   className={cn(
-                    'flex flex-col gap-2 rounded-xl border bg-[#090D16]/60 p-3.5',
-                    error ? 'border-[#ffb4ab]/50' : 'border-white/[0.06]',
+                    'flex flex-col gap-2 rounded-xl border bg-[#F5F0E8]/60 p-3.5',
+                    error ? 'border-[#9B2C24]/50' : 'border-[#171717]/8',
                   )}
                 >
-                  <label htmlFor={id} className="text-sm font-semibold text-[#F8FAFC]">
+                  <label htmlFor={id} className="text-sm font-semibold text-[#171717]">
                     {label}
                   </label>
                   <div className="flex items-center gap-2">
@@ -306,14 +306,14 @@ export function FitProfileForm() {
                         aria-describedby={`${id}-help`}
                         className={cn(input, 'pr-10 text-base font-semibold [font-variant-numeric:tabular-nums]')}
                       />
-                      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#64748B]">
+                      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#6B655C]">
                         {form.unit}
                       </span>
                     </div>
                     <button
                       type="button"
                       onClick={() => step(key, form.unit === 'cm' ? -1 : -0.5)}
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 text-[#94A3B8] hover:border-[#00A3FF]/50 hover:text-[#F8FAFC]"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#171717]/12 text-[#6B655C] hover:border-[#B8734E]/50 hover:text-[#171717]"
                       aria-label={`Decrease ${label}`}
                     >
                       <Minus size={16} />
@@ -321,13 +321,13 @@ export function FitProfileForm() {
                     <button
                       type="button"
                       onClick={() => step(key, form.unit === 'cm' ? 1 : 0.5)}
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 text-[#94A3B8] hover:border-[#00A3FF]/50 hover:text-[#F8FAFC]"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#171717]/12 text-[#6B655C] hover:border-[#B8734E]/50 hover:text-[#171717]"
                       aria-label={`Increase ${label}`}
                     >
                       <Plus size={16} />
                     </button>
                   </div>
-                  <p id={`${id}-help`} className={cn('text-[11px] leading-4', error ? 'text-[#ffb4ab]' : 'text-[#64748B]')}>
+                  <p id={`${id}-help`} className={cn('text-[11px] leading-4', error ? 'text-[#9B2C24]' : 'text-[#6B655C]')}>
                     {error || how}
                   </p>
                 </div>
@@ -340,12 +340,12 @@ export function FitProfileForm() {
           {/* Silhouette */}
           <section className={card} aria-labelledby="drape-heading">
             <div className="mb-4 flex items-start gap-3">
-              <Shirt size={20} className="mt-1 text-[#00A3FF]" aria-hidden="true" />
+              <Shirt size={20} className="mt-1 text-[#B8734E]" aria-hidden="true" />
               <div>
-                <h2 id="drape-heading" className="text-lg font-bold text-[#F8FAFC]">
+                <h2 id="drape-heading" className="text-lg font-bold text-[#171717]">
                   Preferred fit
                 </h2>
-                <p className="text-xs text-[#94A3B8]">How much ease you like. Your tailor adjusts each piece.</p>
+                <p className="text-xs text-[#6B655C]">How much ease you like. Your tailor adjusts each piece.</p>
               </div>
             </div>
             <div className="flex flex-col gap-2.5" role="radiogroup" aria-labelledby="drape-heading">
@@ -361,24 +361,24 @@ export function FitProfileForm() {
                     className={cn(
                       'flex items-start gap-3 rounded-xl border p-3.5 text-left transition',
                       active
-                        ? 'border-[#00A3FF] bg-[#1E293B]/90 shadow-[0_0_20px_-3px_rgba(0,163,255,0.35)]'
-                        : 'border-white/[0.06] bg-[#090D16]/60 hover:border-[#00A3FF]/30',
+                        ? 'border-[#B8734E] bg-[#FFFFFF]/90 shadow-[0_0_20px_-3px_rgba(184,115,78,0.35)]'
+                        : 'border-[#171717]/8 bg-[#F5F0E8]/60 hover:border-[#B8734E]/30',
                     )}
                   >
                     <span
                       className={cn(
                         'mt-1 h-4 w-4 shrink-0 rounded-full border',
-                        active ? 'border-[5px] border-[#00A3FF]' : 'border-[#64748B]',
+                        active ? 'border-[5px] border-[#B8734E]' : 'border-[#6B655C]',
                       )}
                     />
                     <span className="flex flex-col gap-1">
                       <span className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm font-semibold text-[#F8FAFC]">{s.title}</span>
-                        <span className="rounded-full bg-[#00A3FF]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#38BDF8]">
+                        <span className="text-sm font-semibold text-[#171717]">{s.title}</span>
+                        <span className="rounded-full bg-[#B8734E]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#7A4429]">
                           {s.tag}
                         </span>
                       </span>
-                      <span className="text-xs leading-5 text-[#94A3B8]">{s.description}</span>
+                      <span className="text-xs leading-5 text-[#6B655C]">{s.description}</span>
                     </span>
                   </button>
                 );
@@ -389,12 +389,12 @@ export function FitProfileForm() {
           {/* Photos */}
           <section className={card} aria-labelledby="photo-heading">
             <div className="mb-4 flex items-start gap-3">
-              <UserRound size={20} className="mt-1 text-[#00A3FF]" aria-hidden="true" />
+              <UserRound size={20} className="mt-1 text-[#B8734E]" aria-hidden="true" />
               <div>
-                <h2 id="photo-heading" className="text-lg font-bold text-[#F8FAFC]">
-                  Reference photos <span className="text-xs font-normal text-[#64748B]">(optional)</span>
+                <h2 id="photo-heading" className="text-lg font-bold text-[#171717]">
+                  Reference photos <span className="text-xs font-normal text-[#6B655C]">(optional)</span>
                 </h2>
-                <p className="text-xs leading-5 text-[#94A3B8]">
+                <p className="text-xs leading-5 text-[#6B655C]">
                   Your tailor uses these to check proportions. Photos are only shared with tailors you commission.
                   Stand straight in fitted clothing against a plain wall.
                 </p>
@@ -421,12 +421,12 @@ export function FitProfileForm() {
       {/* Address */}
       <section className={card} aria-labelledby="address-heading">
         <div className="mb-4 flex items-start gap-3">
-          <Truck size={20} className="mt-1 text-[#00A3FF]" aria-hidden="true" />
+          <Truck size={20} className="mt-1 text-[#B8734E]" aria-hidden="true" />
           <div>
-            <h2 id="address-heading" className="text-lg font-bold text-[#F8FAFC]">
-              Delivery & fitting address <span className="text-xs font-normal text-[#64748B]">(optional)</span>
+            <h2 id="address-heading" className="text-lg font-bold text-[#171717]">
+              Delivery & fitting address <span className="text-xs font-normal text-[#6B655C]">(optional)</span>
             </h2>
-            <p className="text-xs text-[#94A3B8]">Where your artisan meets you for fittings and sends the finished piece.</p>
+            <p className="text-xs text-[#6B655C]">Where your artisan meets you for fittings and sends the finished piece.</p>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -463,7 +463,7 @@ export function FitProfileForm() {
                 value={form.address.state}
                 onChange={(e) => setAddress({ state: e.target.value })}
                 autoComplete="address-level1"
-                className={cn(input, !form.address.state && 'text-[#64748B]')}
+                className={cn(input, !form.address.state && 'text-[#6B655C]')}
               >
                 <option value="">Choose a state</option>
                 {NIGERIAN_STATES.map((s) => (
@@ -501,22 +501,22 @@ export function FitProfileForm() {
             )}
           </AddressField>
         </div>
-        <p className="mt-3 text-[11px] text-[#64748B]">Fields marked * are needed only if you add an address.</p>
+        <p className="mt-3 text-[11px] text-[#6B655C]">Fields marked * are needed only if you add an address.</p>
       </section>
 
       {/* Save bar */}
       <div className={cn(card, 'flex flex-col gap-4 md:flex-row md:items-center md:justify-between')}>
         <div className="flex items-start gap-3" aria-live="polite">
           {justSaved ? (
-            <CircleCheck size={22} className="mt-0.5 shrink-0 text-[#10B981]" aria-hidden="true" />
+            <CircleCheck size={22} className="mt-0.5 shrink-0 text-[#2F6B4F]" aria-hidden="true" />
           ) : (
-            <Ruler size={22} className="mt-0.5 shrink-0 text-[#00A3FF]" aria-hidden="true" />
+            <Ruler size={22} className="mt-0.5 shrink-0 text-[#B8734E]" aria-hidden="true" />
           )}
           <div>
-            <p className="text-sm font-semibold text-[#F8FAFC]">
+            <p className="text-sm font-semibold text-[#171717]">
               {saveError ? 'Not saved' : justSaved ? 'Fit profile saved' : dirty ? 'You have unsaved changes' : savedAt ? 'All changes saved' : 'Not saved yet'}
             </p>
-            <p className={cn('text-xs', saveError ? 'text-[#ffb4ab]' : 'text-[#94A3B8]')}>
+            <p className={cn('text-xs', saveError ? 'text-[#9B2C24]' : 'text-[#6B655C]')}>
               {saveError ||
                 (savedAt
                   ? `Last saved ${savedAt.toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' })}`
@@ -537,7 +537,7 @@ export function FitProfileForm() {
 
       {savedAt && !dirty && (
         <section className={cn(card, 'flex flex-col gap-4')} aria-labelledby="next-heading">
-          <h2 id="next-heading" className="text-lg font-bold text-[#F8FAFC]">
+          <h2 id="next-heading" className="text-lg font-bold text-[#171717]">
             What next?
           </h2>
           {returnTo && (
@@ -548,23 +548,23 @@ export function FitProfileForm() {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Link
               href="/tailors"
-              className="group flex items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-[#090D16]/60 p-4 transition hover:border-[#00A3FF]/40"
+              className="group flex items-center justify-between gap-3 rounded-xl border border-[#171717]/10 bg-[#F5F0E8]/60 p-4 transition hover:border-[#B8734E]/40"
             >
               <span>
-                <span className="block text-sm font-semibold text-[#F8FAFC]">Find an artisan</span>
-                <span className="block text-xs text-[#94A3B8]">Browse makers and save the ones you like.</span>
+                <span className="block text-sm font-semibold text-[#171717]">Find an artisan</span>
+                <span className="block text-xs text-[#6B655C]">Browse makers and save the ones you like.</span>
               </span>
-              <ArrowRight size={18} className="shrink-0 text-[#00A3FF] transition group-hover:translate-x-0.5" />
+              <ArrowRight size={18} className="shrink-0 text-[#B8734E] transition group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="/fabric-explorer"
-              className="group flex items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-[#090D16]/60 p-4 transition hover:border-[#00A3FF]/40"
+              className="group flex items-center justify-between gap-3 rounded-xl border border-[#171717]/10 bg-[#F5F0E8]/60 p-4 transition hover:border-[#B8734E]/40"
             >
               <span>
-                <span className="block text-sm font-semibold text-[#F8FAFC]">Choose your fabric</span>
-                <span className="block text-xs text-[#94A3B8]">Plan yardage for your next piece.</span>
+                <span className="block text-sm font-semibold text-[#171717]">Choose your fabric</span>
+                <span className="block text-xs text-[#6B655C]">Plan yardage for your next piece.</span>
               </span>
-              <ArrowRight size={18} className="shrink-0 text-[#00A3FF] transition group-hover:translate-x-0.5" />
+              <ArrowRight size={18} className="shrink-0 text-[#B8734E] transition group-hover:translate-x-0.5" />
             </Link>
           </div>
         </section>
@@ -591,11 +591,11 @@ function AddressField({
     <div className={cn('flex flex-col gap-1.5', className)}>
       <label htmlFor={id} className={fieldLabel}>
         {label}
-        {required && <span className="text-[#00A3FF]"> *</span>}
+        {required && <span className="text-[#B8734E]"> *</span>}
       </label>
       {children(id)}
       {error && (
-        <p className="text-xs text-[#ffb4ab]" role="alert">
+        <p className="text-xs text-[#9B2C24]" role="alert">
           {error}
         </p>
       )}

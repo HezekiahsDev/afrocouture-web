@@ -76,7 +76,7 @@ export default function LegalPage({
 
 /** WhatsApp link to support. */
 export function ContactLink() {
-  if (!SUPPORT.whatsappUrl) return <>AfroCouture support</>;
+  if (!SUPPORT.whatsappUrl) return <>IPILE support</>;
   return (
     <a href={SUPPORT.whatsappUrl} target="_blank" rel="noopener noreferrer">
       WhatsApp {SUPPORT.whatsappDisplay}

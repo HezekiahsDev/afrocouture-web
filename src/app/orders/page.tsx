@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import OrdersList from "@/components/orders/OrdersList";
 
 export const metadata: Metadata = {
-  title: "Orders | AfroCouture",
+  title: "Orders | IPILE",
   description: "Your commissions, requests and fabric orders.",
 };
 

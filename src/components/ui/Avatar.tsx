@@ -26,9 +26,9 @@ export function Avatar({
   };
 
   const statusColors = {
-    online: "bg-emerald-500 ring-emerald-950",
-    offline: "bg-slate-500 ring-slate-950",
-    busy: "bg-amber-500 ring-amber-950",
+    online: "bg-[#2F6B4F] ring-[#F5F0E8]",
+    offline: "bg-[#6B655C] ring-[#F5F0E8]",
+    busy: "bg-[#B8734E] ring-[#F5F0E8]",
   };
 
   const initials = name
@@ -47,7 +47,7 @@ export function Avatar({
     >
       <div
         className={cn(
-          "rounded-full overflow-hidden flex items-center justify-center font-bold bg-[#1E293B] border border-white/10 text-slate-200 select-none",
+          "rounded-full overflow-hidden flex items-center justify-center font-bold bg-[#FFFFFF] border border-[#171717]/12 text-[#171717] select-none",
           sizes[size],
         )}
       >

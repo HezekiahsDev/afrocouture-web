@@ -3,17 +3,17 @@ import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export const TOKEN_KEYS = {
-  ACCESS: 'afrocouture_access_token',
-  REFRESH: 'afrocouture_refresh_token',
+  ACCESS: 'IPILE_access_token',
+  REFRESH: 'IPILE_refresh_token',
 } as const;
 
 /**
  * Fired when the session can no longer be refreshed, so the auth context can sign out.
  * `detail` is 'suspended' when the account was suspended, otherwise 'expired'.
  */
-export const SESSION_EXPIRED_EVENT = 'afrocouture:session-expired';
+export const SESSION_EXPIRED_EVENT = 'IPILE:session-expired';
 /** Fired after tokens rotate, so the auth context can renew the session cookie. */
-export const TOKENS_REFRESHED_EVENT = 'afrocouture:tokens-refreshed';
+export const TOKENS_REFRESHED_EVENT = 'IPILE:tokens-refreshed';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -83,7 +83,7 @@ export function apiErrorMessage(err: unknown, fallback = 'Something went wrong. 
     if (!err.response) {
       return err.code === 'ECONNABORTED'
         ? 'The request took too long. Check your connection and try again.'
-        : 'We could not reach AfroCouture. Check your connection and try again.';
+        : 'We could not reach IPILE. Check your connection and try again.';
     }
     const body = err.response.data as ApiErrorBody | undefined;
     const raw = typeof body?.error === 'object' ? body.error.message : (body?.message ?? body?.error);

@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import OrderDetail from "@/components/orders/OrderDetail";
 
 export const metadata: Metadata = {
-  title: "Order | AfroCouture",
+  title: "Order | IPILE",
   description: "Track your commission, payment and conversation with your artisan.",
 };
 

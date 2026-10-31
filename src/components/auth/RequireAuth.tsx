@@ -67,7 +67,7 @@ export function RequireAuth({ role, children }: { role?: SelfServiceRole | 'admi
 
   if (status !== 'authenticated' || !user || redirecting) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center text-[#94A3B8]" role="status">
+      <div className="flex min-h-[60vh] items-center justify-center text-[#6B655C]" role="status">
         <LoaderCircle className="animate-spin" size={28} aria-label="Loading your account" />
       </div>
     );
@@ -89,13 +89,13 @@ export function RequireAuth({ role, children }: { role?: SelfServiceRole | 'admi
 
     return (
       <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center gap-4 px-4 text-center">
-        <ShieldAlert size={36} className="text-[#00A3FF]" />
-        <h1 className="text-2xl font-bold text-[#F8FAFC]">This page is for {ROLE_LABEL[role]}s</h1>
-        <p className="text-sm text-[#94A3B8]">
+        <ShieldAlert size={36} className="text-[#B8734E]" />
+        <h1 className="text-2xl font-bold text-[#171717]">This page is for {ROLE_LABEL[role]}s</h1>
+        <p className="text-sm text-[#6B655C]">
           You&apos;re signed in as a {ROLE_LABEL[user.role as SelfServiceRole] ?? user.role}. Switch your account to{' '}
           {ROLE_LABEL[role]} to continue. Accounts can switch until they place an order or submit a profile for review.
         </p>
-        {error && <p className="text-sm text-[#ffb4ab]">{error}</p>}
+        {error && <p className="text-sm text-[#9B2C24]">{error}</p>}
         <div className="flex gap-3">
           <button type="button" className="btn-primary" onClick={switchRole} disabled={switching}>
             {switching ? 'Switching…' : `Continue as ${ROLE_LABEL[role]}`}

@@ -17,7 +17,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-xs font-semibold uppercase tracking-wider text-slate-300"
+            className="text-xs font-semibold uppercase tracking-wider text-[#4B453E]"
           >
             {label}
           </label>
@@ -26,17 +26,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           ref={ref}
           className={cn(
-            "w-full px-4 py-2.5 rounded-xl bg-[#1C1F29] border border-white/10 text-slate-100 placeholder-slate-500 text-sm transition-all duration-150",
-            "focus:outline-none focus:border-[#00A3FF] focus:ring-1 focus:ring-[#00A3FF] focus:bg-[#222634]",
+            "w-full px-4 py-2.5 rounded-xl bg-[#FFFFFF] border border-[#171717]/12 text-[#171717] placeholder-[#6B655C] text-sm transition-all duration-150",
+            "focus:outline-none focus:border-[#B8734E] focus:ring-1 focus:ring-[#B8734E] focus:bg-[#FFFFFF]",
             error &&
               "border-rose-500 focus:border-rose-500 focus:ring-rose-500",
             className,
           )}
           {...props}
         />
-        {error && <span className="text-xs text-rose-400">{error}</span>}
+        {error && <span className="text-xs text-[#9B2C24]">{error}</span>}
         {!error && helperText && (
-          <span className="text-xs text-slate-500">{helperText}</span>
+          <span className="text-xs text-[#6B655C]">{helperText}</span>
         )}
       </div>
     );

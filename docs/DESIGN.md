@@ -1,97 +1,53 @@
 ---
-name: AfroCouture AI
+name: IPILE
 colors:
-  surface: '#0f131c'
-  surface-dim: '#0f131c'
-  surface-bright: '#353943'
-  surface-container-lowest: '#0a0e17'
-  surface-container-low: '#181b25'
-  surface-container: '#1c1f29'
-  surface-container-high: '#262a34'
-  surface-container-highest: '#31353f'
-  on-surface: '#dfe2ef'
-  on-surface-variant: '#bec7d4'
-  inverse-surface: '#dfe2ef'
-  inverse-on-surface: '#2c303a'
-  outline: '#88919d'
-  outline-variant: '#3f4852'
-  surface-tint: '#98cbff'
-  primary: '#98cbff'
-  on-primary: '#003354'
-  primary-container: '#00a3ff'
-  on-primary-container: '#00375a'
-  inverse-primary: '#00629d'
-  secondary: '#93ccff'
-  on-secondary: '#003351'
-  secondary-container: '#3198dc'
-  on-secondary-container: '#002c47'
-  tertiary: '#2fd9f4'
-  on-tertiary: '#00363e'
-  tertiary-container: '#00acc3'
-  on-tertiary-container: '#003a43'
-  error: '#ffb4ab'
-  on-error: '#690005'
-  error-container: '#93000a'
-  on-error-container: '#ffdad6'
-  primary-fixed: '#cfe5ff'
-  primary-fixed-dim: '#98cbff'
-  on-primary-fixed: '#001d33'
-  on-primary-fixed-variant: '#004a77'
-  secondary-fixed: '#cce5ff'
-  secondary-fixed-dim: '#93ccff'
-  on-secondary-fixed: '#001d31'
-  on-secondary-fixed-variant: '#004b73'
-  tertiary-fixed: '#a2eeff'
-  tertiary-fixed-dim: '#2fd9f4'
-  on-tertiary-fixed: '#001f25'
-  on-tertiary-fixed-variant: '#004e5a'
-  background: '#0f131c'
-  on-background: '#dfe2ef'
-  surface-variant: '#31353f'
+  canvas: '#F5F0E8'
+  surface: '#FFFFFF'
+  surface-container: '#EFE7DA'
+  surface-high: '#E7DDCE'
+  on-surface: '#171717'
+  on-surface-variant: '#5F5A52'
+  on-surface-muted: '#8A847A'
+  outline: 'rgba(23, 23, 23, 0.10)'
+  primary: '#B8734E'
+  primary-dim: '#8F5637'
+  secondary: '#1F2A42'
+  success: '#2F6B4F'
+  warning: '#8A6A1F'
+  error: '#9B2C24'
 typography:
   display-hero:
-    fontFamily: Plus Jakarta Sans
-    fontSize: 40px
-    fontWeight: '800'
-    lineHeight: 48px
-    letterSpacing: -0.02em
-  display-hero-mobile:
-    fontFamily: Plus Jakarta Sans
-    fontSize: 30px
-    fontWeight: '800'
-    lineHeight: 38px
+    fontFamily: Cormorant Garamond
+    fontSize: 52px
+    fontWeight: '600'
+    lineHeight: 54px
     letterSpacing: -0.015em
   headline-lg:
-    fontFamily: Plus Jakarta Sans
-    fontSize: 26px
-    fontWeight: '700'
-    lineHeight: 34px
+    fontFamily: Cormorant Garamond
+    fontSize: 34px
+    fontWeight: '600'
+    lineHeight: 40px
     letterSpacing: -0.01em
   headline-md:
-    fontFamily: Plus Jakarta Sans
-    fontSize: 20px
+    fontFamily: Cormorant Garamond
+    fontSize: 26px
+    fontWeight: '600'
+    lineHeight: 32px
+  headline-sm:
+    fontFamily: Cormorant Garamond
+    fontSize: 21px
     fontWeight: '600'
     lineHeight: 28px
-  headline-sm:
-    fontFamily: Plus Jakarta Sans
-    fontSize: 17px
-    fontWeight: '600'
-    lineHeight: 24px
   body-lg:
-    fontFamily: Plus Jakarta Sans
+    fontFamily: Inter
     fontSize: 16px
     fontWeight: '400'
-    lineHeight: 24px
+    lineHeight: 26px
   body-md:
-    fontFamily: Plus Jakarta Sans
+    fontFamily: Inter
     fontSize: 14px
     fontWeight: '400'
-    lineHeight: 20px
-  body-sm:
-    fontFamily: Plus Jakarta Sans
-    fontSize: 12px
-    fontWeight: '400'
-    lineHeight: 16px
+    lineHeight: 22px
   label-lg:
     fontFamily: Inter
     fontSize: 13px
@@ -111,11 +67,10 @@ typography:
     lineHeight: 12px
     letterSpacing: 0.04em
 rounded:
-  sm: 0.25rem
-  DEFAULT: 0.5rem
-  md: 0.75rem
-  lg: 1rem
-  xl: 1.5rem
+  sm: 0.375rem
+  md: 0.5rem
+  lg: 0.75rem
+  xl: 1rem
   full: 9999px
 spacing:
   gutter: 1rem
@@ -131,99 +86,156 @@ spacing:
 
 ## Brand & Style
 
-This design system establishes a high-trust, luxury African fashion marketplace powered by generative intelligence. The aesthetic merges haute couture sophistication with cutting-edge tech precision: deep obsidian and midnight slate foundations support glowing electric blue, vivid cyan, and subtle magenta-tinged accents. 
+IPILE is a contemporary African luxury fashion-tech house. The interface should feel
+editorial, calm, spacious, and premium — closer to a modern fashion house than a loud
+e-commerce store or a generic technology startup.
+
+The core idea: **every great creation begins with a foundation.** The name is inspired
+by the Yoruba word *ipilė*, meaning foundation, beginning, or origin.
 
 ### Emotional Profile
-- **Prestige & Heritage:** Reverence for bespoke African craftsmanship (Ankara, Kaftans, Aso Ebi, Agbada), communicated through rich imagery and sleek dark modes.
-- **Uncompromised Trust:** High-visibility escrow guarantees, tailor verification badges, and crystal-clear transaction pipelines eliminate buyer friction and artisan hesitation.
-- **Futuristic Fluidity:** AI design generation, fabric simulation, and virtual try-ons feel ethereal yet dependable through translucent glassmorphic surfaces, subtle light bleeds, and precise cyan micro-accents.
+- **Considered, not loud:** restrained headings, generous white space, thin dividers.
+- **Human and service-led:** makers, materials, and trust signals lead; technology supports them.
+- **Culturally grounded, globally legible:** African craftsmanship presented with clarity and confidence.
 
-### Design Style: Modern Glassmorphic Dark Luxury
-A blend of dark mode minimalism and luminous glassmorphism. Deep navy slate canvases (`#090D16`) provide negative space, while layered cards use slight transparency, hairline borders (`rgba(255, 255, 255, 0.08)`), and soft radial blue glow backdrops to generate dimensional hierarchy without clutter.
+### Design Style: Warm Editorial Minimalism
+Warm ivory paper surfaces, obsidian typography, and hairline rules. Craft Copper is a
+restrained accent used for small details, selected states, and calls to action. Photography
+is the primary color source; the interface should never compete with the clothing.
+
+Avoid: excessive gradients, shiny gold effects, crowded screens, decorative patterns used
+without purpose, and neon glassmorphism.
 
 ## Colors
 
-The palette leverages an obsidian-navy bedrock with vivid luminous accents that illuminate trust, action, and intelligent features.
+| Token | Hex | Role | Balance |
+| :--- | :--- | :--- | :--- |
+| **Warm Ivory** | `#F5F0E8` | Primary canvas | 65% |
+| **Obsidian Black** | `#171717` | Wordmark, text, navigation, strong CTAs | 25% |
+| **Ink Blue** | `#1F2A42` | Secondary depth, selected surfaces, information states | 7% |
+| **Craft Copper** | `#B8734E` | Small accents, dividers, badges, focus rings | 3% |
 
-### Palette Architecture
-- **Primary (`#00a3ff`):** Electric Azure. Drives critical interaction points, primary buttons, active state indicators, and verified badges.
-- **Secondary (`#0284c7`):** Deep Sky Blue. Utilized for secondary elements, gradient stops, focused controls, and status pills.
-- **Tertiary (`#22d3ee`):** Radiant Cyan. Reserved for AI indicators, active glowing borders, success states, and live pipeline pips.
-- **Neutral Canvas & Surfaces:**
-  - `Canvas / Background`: `#090D16` (Deep Obsidian Navy)
-  - `Surface Tier 1 (Cards)`: `#0F172A` at `70% - 90%` opacity with hairline inner glow.
-  - `Surface Tier 2 (Interactive inputs, raised cards)`: `#1E293B`
-  - `Border / Hairline stroke`: `rgba(255, 255, 255, 0.08)` or `rgba(0, 163, 255, 0.25)` for active items.
-- **Accents & Semantics:**
-  - `Trust Escrow / Success`: `#10B981` (Emerald) & `#00A3FF` dual-indicator.
-  - `AI Shimmer Accent`: Linear gradient running from `#00A3FF` through `#8B5CF6` to `#EC4899`.
-  - `Text On Dark (High Contrast)`: `#F8FAFC` (Titles/Headers), `#94A3B8` (Subtitles/Metadata).
+Pure white (`#FFFFFF`) is used for cards and raised surfaces alongside Warm Ivory.
+
+### Usage Rules
+- **Obsidian** carries typography and the dark navigation/footer chrome. The supplied logo
+  is ivory/copper artwork, so it must sit on an obsidian field for contrast.
+- **Warm Ivory** is the default page canvas. Avoid pure white full-page backgrounds.
+- **Craft Copper** is an accent, not a dominant fill. Use it for selected states, small
+  dividers, focus rings, badges, and primary actions.
+- **Ink Blue** adds depth without introducing a second bright accent. Prefer it for
+  informational chips, progress variants, and image overlays.
+- **Semantics:** success `#2F6B4F`, warning `#8A6A1F`, error `#9B2C24` — tuned for
+  contrast on light surfaces.
+- **Accessibility:** verify body text at 4.5:1+ against ivory and white. Never place ivory
+  logo artwork or white text on ivory/white surfaces.
 
 ## Typography
 
-Typography balances clean geometric authority with warm modernity. **Plus Jakarta Sans** provides structural elegance for editorial headings, tailoring descriptions, and prominent cards. **Inter** handles data-dense UI elements, pricing tags, badge identifiers, escrow verification steps, and status timelines.
+**Cormorant Garamond** is the editorial voice: heroes, section headings, card titles, and
+pull quotes. **Inter** handles UI text, labels, forms, prices, badges, and body copy.
 
 ### Implementation Rules
-- **Editorial Headlines:** Employ tight negative tracking (`-0.015em` to `-0.02em`) for titles to create a contemporary luxury publication feel.
-- **Numbers and Currency:** Always format with tabular numerals (`tnum`) in Inter for Nigerian Naira (₦) and global currency consistency across invoices and escrow calculations.
-- **Contrast Ratios:** Primary body and headings must maintain an absolute contrast ratio of 10:1+ against `#090D16` and `#0F172A` glass backdrops.
+- Headlines use medium weights (500–600) and slight negative tracking. Avoid heavy 800
+  weights; luxury reads through restraint, not bulk.
+- Emphasised phrases inside headlines are italic Cormorant in Craft Copper.
+- Body copy stays Inter at 14–16px with a comfortable 1.6–1.8 line height.
+- Prices and tabular data use Inter with `font-variant-numeric: tabular-nums`.
+- CSS maps legacy `--font-jakarta` references to Cormorant Garamond; new work should use
+  `--font-display` (serif) and `--font-ui` / `--font-sans` (Inter).
 
 ## Layout & Spacing
 
-The layout is constructed around an 8pt geometric grid system that scales smoothly from compact mobile views to expansive desktop dashboards.
+The layout follows an 8pt rhythm with generous editorial margins.
 
 ### Grid & Responsiveness
-- **Mobile (Phone):** Fluid 4-column layout, 16px screen margins (`margin: 1rem`), and 16px gutters (`gutter: 1rem`). Bottom navigation bar remains anchored with safe-area spacing.
-- **Tablet / Large Handheld:** 8-column layout, 24px margins, 16px gutters.
-- **Desktop:** 12-column fixed or constrained fluid grid (max width 1280px) with 40px outer margins (`margin-desktop: 2.5rem`) and 24px gutters.
+- **Mobile:** fluid single column, 16–24px side margins, stacked cards.
+- **Tablet:** two-column card grids, 24px margins.
+- **Desktop:** constrained content width up to 1376px with 40px outer margins; 12-column
+  grids for catalog and dashboard layouts.
+- **Navigation:** 80px sticky header. Dark obsidian chrome with the ivory/copper logo.
+- **Footer:** obsidian field with copper kicker, editorial headline, and quiet legal links.
 
-### Component Spacing Rhythm
-- Compact metadata blocks (e.g., tailor location, rating, badge chips) utilize `space-xs` (4px) to `space-sm` (8px).
-- Card interiors apply consistent padding: `16px` (`space-md`) on mobile, scaling to `20px` or `24px` (`space-lg`) on desktop cards.
-- Vertical section spacing maintains `space-xl` (40px) cadence to allow high-contrast garment photos to breathe.
+### Spacing Rhythm
+- Section spacing is large and consistent (`64–120px`) to let imagery breathe.
+- Card interiors use 16–24px padding; metadata groups use 4–12px gaps.
+- Thin 1px rules in `rgba(23, 23, 23, 0.10)` separate sections without heavy boxes.
 
 ## Elevation & Depth
 
-Visual hierarchy does not rely on heavy drop shadows, but rather on luminous glass layers, subtle ambient halos, and crisp border boundaries.
+Depth comes from paper layering and hairline borders, not luminous halos.
 
-### Layer Stacking Structure
-- **Level 0 (Base Canvas):** Solid `#090D16`. Background displays subtle, low-opacity radial gradients of electric blue (`rgba(0, 163, 255, 0.08)`) and violet (`rgba(139, 92, 246, 0.05)`) placed strategically behind heroes or feature cards.
-- **Level 1 (Surface Glass):** Fill `#0F172A` at 80% opacity, paired with a `backdrop-filter: blur(16px)` and an outer hairline border of `1px solid rgba(255, 255, 255, 0.08)`.
-- **Level 2 (Interactive Floating & Modals):** Fill `#1E293B` at 90% opacity, `backdrop-filter: blur(24px)`, framed with `1px solid rgba(0, 163, 255, 0.25)`. A soft, diffused ambient shadow extends below: `0 12px 32px -4px rgba(0, 0, 0, 0.6)`.
-- **Level 3 (AI Accentuated Focus):** Radiant stroke highlights using a linear gradient `border-image: linear-gradient(135deg, #00A3FF, #8B5CF6)` with an inner soft ambient glow: `box-shadow: 0 0 20px -3px rgba(0, 163, 255, 0.35)`.
+- **Level 0 — Canvas:** Warm Ivory `#F5F0E8`, with very subtle copper/ink radial washes.
+- **Level 1 — Cards:** White or `rgba(255,255,255,0.9)`, `1px solid rgba(23,23,23,0.10)`,
+  soft neutral shadow on hover only.
+- **Level 2 — Menus & Modals:** White surface, copper-tinted border, diffused shadow
+  `0 18px 40px -16px rgba(23,23,23,0.28)`.
+- **Level 3 — Dark image overlays:** Obsidian/Ink gradients behind white caption text on
+  photography. Keep overlays local to the image, never across body content.
+- Avoid glow effects. Use copper focus rings (`0 0 0 3px rgba(184,115,78,0.14)`) for
+  interactive feedback instead.
 
 ## Shapes
 
-The interface balances sleek structural geometry with soft tactile comfort (`roundedness: 2`).
+Radii are restrained and consistent with a tailored, architectural feel.
 
-### Corner Radius System
-- **Micro Elements (Badges, Rating Tags, Dots):** `6px` to `8px` (`0.375rem` to `0.5rem`) for compact alignment.
-- **Interactive Controls (Buttons, Inputs, Selectors):** `12px` (`0.75rem`) to `16px` (`1rem`) corner radius. Pills are reserved strictly for high-visibility triggers (e.g., "Get Started", "Generate", "Verified Badge").
-- **Containers & Glass Cards:** `16px` (`1rem`) to `24px` (`1.5rem`) for tailored showcase cards, order status sheets, and photo tiles.
-- **Avatars & Camera Circles:** Strictly `9999px` (Full Circular).
+- **Badges / small controls:** 6–8px (`0.375–0.5rem`).
+- **Buttons / inputs / selects:** 8px (`0.5rem`), avoiding pill-shaped primary actions.
+- **Cards / panels:** 12–16px (`0.75–1rem`) where softness helps; editorial image blocks may
+  stay square.
+- **Avatars / status dots:** full circle.
+- Pills are reserved for verified badges, status chips, and compact filters.
 
 ## Components
 
 ### Buttons
-- **Primary Action (Electric Blue CTA):** Solid `#00A3FF` with dark text `#090D16` or white `#FFFFFF` (semibold `label-lg`). Includes a subtle inner highlight and a dynamic `0 4px 14px rgba(0, 163, 255, 0.4)` hover glow.
-- **AI Magic CTA:** Radiant horizontal gradient (`#00A3FF` to `#9333EA`), accented with a small sparkle icon.
-- **Secondary / Ghost:** Transparent dark slate `#0F172A` with `1px solid rgba(255, 255, 255, 0.12)`, text `#F8FAFC`, transitioning to blue border on focus.
+- **Primary:** Craft Copper `#B8734E`, ivory text `#FFFDF8`, 8px radius. Hover deepens to
+  `#A9643F`; shadow is soft and copper-tinted.
+- **Secondary / Ghost:** Transparent or white with a hairline obsidian border and obsidian
+  text; hover introduces a copper border.
+- **AI action:** Copper-to-ink gradient used sparingly, with ivory text. Prefer the solid
+  copper primary unless the action is explicitly generative.
 
-### Verified & Escrow Badges
-- **Tailor Verification:** Pill badge (`#00A3FF` at 15% opacity, `1px solid #00A3FF`), featuring a small electric blue checkmark icon and `label-badge` text in `#38BDF8`.
-- **Escrow Trust Indicator:** Subtle slate card with a secure lock icon, displaying "Wallet (Escrow): Payment held safely until work is completed" with a gentle green or blue indicator dot.
+### Verified & Trust Badges
+- **Verified maker:** Copper at 10% fill, 1px copper border, deep copper text, uppercase
+  micro-label.
+- **Escrow / secure payment:** Ink Blue or success green indicator with a lock icon; copy
+  states plainly that payment is held until work is completed.
 
-### Status Pipelines (Order Milestones)
-- **Tracker Component:** Horizontal sequence linking circular milestone nodes (Placed, Cutting, Fitting, Completed).
-  - *Completed / Active Step:* Solid `#00A3FF` circle with cyan center ring and connected electric blue progress line.
-  - *Pending Step:* Translucent ring with muted outline `rgba(255, 255, 255, 0.2)` and muted text `#64748B`.
+### Order Milestones
+- Horizontal tracker with 36px circular nodes.
+- Completed node: solid Craft Copper with ivory icon and a soft copper ring.
+- Active node: copper-tinted fill and copper ring.
+- Pending node: white fill with a hairline obsidian border and muted label.
 
-### Glass Cards & Product Grids
-- **Tailor / Fabric Cards:** Top-half visual media with a subtle dark gradient vignette over images. Bottom portion includes artisan portrait, name, star rating (`#FBBF24`), verified badge, and pricing metadata.
-- **Fabric Explorer Cards:** High-fidelity fabric texture previews with overlay labels (e.g., "Ankara Premium Cotton - ₦8,500/yd") encased in translucent frosted glass capsules.
+### Cards & Catalogs
+- **Artisan / fabric cards:** white paper surface, hairline border, image on top, metadata
+  below in Inter. Hover lifts subtly with a neutral shadow — no glow.
+- **Dark path cards:** photography with an obsidian gradient overlay and ivory text; used
+  only for the three primary discovery paths on the marketplace.
+- **Image labels:** white/ivory text on a local dark gradient. Copper is reserved for the
+  small index or kicker.
 
-### Form Inputs & Search Fields
-- Dark slate surface `#0F172A` with `1px solid rgba(255, 255, 255, 0.1)`. Placeholder text in `#64748B`. Active focus state triggers an electric blue boundary glow (`border-color: #00A3FF`, `box-shadow: 0 0 0 3px rgba(0, 163, 255, 0.15)`).
+### Forms & Inputs
+- White surface, `1px solid rgba(23,23,23,0.16)`, 8px radius, obsidian text.
+- Placeholder `#8A847A`; focus border Craft Copper with a 3px copper-tinted ring.
+- Errors use `#9B2C24` text and a soft `#F6E3E0` field tint.
 
-### Tabs & Segmented Filters
-- Pill-shaped dark background tray (`#090D16`), where the active tab lifts into a solid `#00A3FF` or `#1E293B` pill with crisp white typography.
+### Navigation
+- Obsidian header and footer only. The supplied logo (`public/img/logo.png`) is ivory and
+  copper, so it is displayed on the dark chrome.
+- On light portal/admin headers, use the ink variant (`public/img/logo-ink-trim.png`) so the
+  wordmark stays legible on ivory.
+- Primary nav labels are uppercase Inter at 12px with 0.06em tracking.
+
+## Voice in UI
+
+Tone: confident, refined, personal, clear, and culturally grounded.
+
+- Prefer **“Your vision, thoughtfully made.”** over technical or hype-led headlines.
+- Supporting line: **“Discover skilled makers, explore fabrics, and bring your next outfit
+  to life.”**
+- Primary CTA: **“Start your design.”**
+- Brand line: **“Crafted around you.”**
+- Describe AI as a design assistant that helps customers express ideas; never promise a
+  perfect garment without review by a human maker.

@@ -118,7 +118,7 @@ export default function TailorDirectory() {
                       <div>
                         <span>{item.atelierName}</span>
                         <h2>
-                          <Link href={`/tailors/${item.id}`} className="hover:text-[#38BDF8]">
+                          <Link href={`/tailors/${item.id}`} className="hover:text-[#8F5637]">
                             {name}
                           </Link>
                         </h2>
@@ -134,7 +134,7 @@ export default function TailorDirectory() {
                       )}
                       {item.rating !== null && (
                         <span>
-                          <Link href={`/tailors/${item.id}#reviews`} className="inline-flex items-center gap-[5px] hover:text-[#F8FAFC]">
+                          <Link href={`/tailors/${item.id}#reviews`} className="inline-flex items-center gap-[5px] hover:text-[#171717]">
                             <Star size={14} fill="currentColor" />
                             {item.rating.toFixed(1)}
                             {item.reviewCount > 0 && ` (${item.reviewCount})`}

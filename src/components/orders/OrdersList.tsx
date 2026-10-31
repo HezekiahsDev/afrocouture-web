@@ -48,8 +48,8 @@ function Orders() {
     <div className="mx-auto flex max-w-5xl flex-col gap-6 py-8 sm:py-12">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#38BDF8]">Orders</p>
-          <h1 className="text-[30px] font-extrabold leading-[38px] text-[#F8FAFC] sm:text-[40px] sm:leading-[48px]">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-[#8F5637]">Orders</p>
+          <h1 className="text-[30px] font-extrabold leading-[38px] text-[#171717] sm:text-[40px] sm:leading-[48px]">
             {TAB[role].label}
           </h1>
         </div>
@@ -74,8 +74,8 @@ function Orders() {
                 className={cn(
                   'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition',
                   role === r
-                    ? 'border-[#00A3FF] bg-[#00A3FF] text-[#090D16]'
-                    : 'border-white/10 text-[#94A3B8] hover:text-[#F8FAFC]',
+                    ? 'border-[#B8734E] bg-[#9E5B37] text-[#FFFDF8]'
+                    : 'border-[#171717]/12 text-[#6B655C] hover:text-[#171717]',
                 )}
               >
                 <Icon size={15} aria-hidden="true" /> {TAB[r].label}
@@ -163,31 +163,31 @@ function OrderCard({ order, role }: { order: OrderListItem; role: OrdersRole }) 
       <Link
         href={`/orders/${order.id}`}
         className={cn(
-          'flex flex-col gap-4 rounded-2xl border bg-[#0F172A]/80 p-4 transition hover:-translate-y-0.5 hover:border-[#00A3FF]/40 sm:flex-row sm:items-center sm:p-5',
-          step ? 'border-[#00A3FF]/40 shadow-[0_0_20px_-6px_rgba(0,163,255,0.45)]' : 'border-white/[0.08]',
+          'flex flex-col gap-4 rounded-2xl border bg-[#FFFFFF]/80 p-4 transition hover:-translate-y-0.5 hover:border-[#B8734E]/40 sm:flex-row sm:items-center sm:p-5',
+          step ? 'border-[#B8734E]/40 shadow-[0_0_20px_-6px_rgba(184,115,78,0.45)]' : 'border-[#171717]/10',
         )}
       >
-        <span className="relative h-20 w-full shrink-0 overflow-hidden rounded-xl bg-[#1E293B] sm:h-20 sm:w-20">
+        <span className="relative h-20 w-full shrink-0 overflow-hidden rounded-xl bg-[#FFFFFF] sm:h-20 sm:w-20">
           {thumb ? (
             <Image src={thumb} alt="" fill sizes="(max-width: 640px) 100vw, 80px" className="object-cover" />
           ) : (
-            <span className="flex h-full items-center justify-center text-[#64748B]">
+            <span className="flex h-full items-center justify-center text-[#6B655C]">
               <Scissors size={22} aria-hidden="true" />
             </span>
           )}
         </span>
         <span className="flex min-w-0 flex-1 flex-col gap-1.5">
           <span className="flex flex-wrap items-center gap-2">
-            <span className="font-[family-name:var(--font-inter)] text-xs font-semibold tracking-wide text-[#94A3B8]">
+            <span className="font-[family-name:var(--font-inter)] text-xs font-semibold tracking-wide text-[#6B655C]">
               {order.reference}
             </span>
             <StatusPill status={order.status} />
           </span>
-          <span className="text-base font-bold text-[#F8FAFC]">
+          <span className="text-base font-bold text-[#171717]">
             {order.garmentType}
             {role === 'merchant' && ` · ${order.items.length} fabric line${order.items.length === 1 ? '' : 's'}`}
           </span>
-          <span className="flex items-center gap-2 text-sm text-[#94A3B8]">
+          <span className="flex items-center gap-2 text-sm text-[#6B655C]">
             {role !== 'tailor' && order.tailor && (
               <span className="overflow-hidden rounded-full">
                 <Portrait src={order.tailor.portraitUrl} name={counterpart} size={22} />
@@ -195,13 +195,13 @@ function OrderCard({ order, role }: { order: OrderListItem; role: OrdersRole }) 
             )}
             {role === 'tailor' ? `For ${counterpart}` : counterpart} · updated {formatDate(order.updatedAt)}
           </span>
-          {step && <span className="text-xs font-semibold text-[#38BDF8]">Next: {step}</span>}
+          {step && <span className="text-xs font-semibold text-[#8F5637]">Next: {step}</span>}
         </span>
         <span className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
-          <span className="font-[family-name:var(--font-inter)] text-lg font-bold tabular-nums text-[#F8FAFC]">
+          <span className="font-[family-name:var(--font-inter)] text-lg font-bold tabular-nums text-[#171717]">
             {amount ? naira(amount) : order.status === 'requested' ? 'Awaiting quote' : '—'}
           </span>
-          <ArrowRight size={18} className="text-[#00A3FF]" aria-hidden="true" />
+          <ArrowRight size={18} className="text-[#B8734E]" aria-hidden="true" />
         </span>
       </Link>
     </li>

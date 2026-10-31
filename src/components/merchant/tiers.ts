@@ -9,7 +9,7 @@ export interface TierDraft {
 }
 
 /**
- * Mirrors afrocouture-api/src/fabrics/price-tiers.ts plus the DTO bounds, so the
+ * Mirrors IPILE-api/src/fabrics/price-tiers.ts plus the DTO bounds, so the
  * merchant sees the same message before saving. Returns a message per row (or a
  * general one at index -1), or null when the tiers are valid.
  */

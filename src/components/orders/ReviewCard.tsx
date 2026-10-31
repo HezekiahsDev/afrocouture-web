@@ -7,14 +7,14 @@ import { cn } from '@/lib/utils';
 import type { Order } from '@/types';
 import { fieldClass, formatDate, InlineAlert, labelClass, primaryButton, SectionCard, Spinner, useAction } from './ui';
 
-/** Mirrors REVIEW_WINDOW_DAYS in afrocouture-api/src/orders/orders.service.ts. */
+/** Mirrors REVIEW_WINDOW_DAYS in IPILE-api/src/orders/orders.service.ts. */
 const REVIEW_WINDOW_DAYS = 60;
 
 export function Stars({ rating, size = 16 }: { rating: number; size?: number }) {
   return (
-    <span className="inline-flex items-center gap-0.5 text-[#FBBF24]">
+    <span className="inline-flex items-center gap-0.5 text-[#B8734E]">
       {[1, 2, 3, 4, 5].map((n) => (
-        <Star key={n} size={size} fill={n <= rating ? 'currentColor' : 'none'} className={n > rating ? 'text-[#475569]' : undefined} aria-hidden="true" />
+        <Star key={n} size={size} fill={n <= rating ? 'currentColor' : 'none'} className={n > rating ? 'text-[#6B655C]' : undefined} aria-hidden="true" />
       ))}
       <span className="sr-only">{rating} out of 5 stars</span>
     </span>
@@ -32,7 +32,7 @@ export function StarPicker({ value, onChange }: { value: number; onChange: (n: n
           aria-checked={value === n}
           aria-label={`${n} star${n === 1 ? '' : 's'}`}
           onClick={() => onChange(n)}
-          className="p-1 text-[#FBBF24]"
+          className="p-1 text-[#B8734E]"
         >
           <Star size={26} fill={n <= value ? 'currentColor' : 'none'} />
         </button>
@@ -74,7 +74,7 @@ function RateForm({ order, onUpdate }: { order: Order; onUpdate: (o: Order) => v
 
   return (
     <form className="flex flex-col gap-3" onSubmit={submit}>
-      <p className="text-sm text-[#94A3B8]">
+      <p className="text-sm text-[#6B655C]">
         How did {artisan} do? Your first name and last initial appear with the review.
       </p>
       <fieldset>
@@ -115,27 +115,27 @@ function ReviewBody({ order, onUpdate }: { order: Order; onUpdate: (o: Order) =>
       {order.reviewHiddenAt && (
         <InlineAlert tone="info">
           <EyeOff size={14} className="mr-1 inline" aria-hidden="true" />
-          This review was hidden from the artisan&apos;s profile by AfroCouture and doesn&apos;t count towards their rating.
+          This review was hidden from the artisan&apos;s profile by IPILE and doesn&apos;t count towards their rating.
         </InlineAlert>
       )}
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center gap-3">
           <Stars rating={order.rating ?? 0} />
-          {order.reviewedAt && <span className="text-xs text-[#64748B]">{formatDate(order.reviewedAt)}</span>}
+          {order.reviewedAt && <span className="text-xs text-[#6B655C]">{formatDate(order.reviewedAt)}</span>}
         </div>
         {order.review ? (
-          <p className="text-sm leading-6 text-[#cbd5e1]">“{order.review}”</p>
+          <p className="text-sm leading-6 text-[#4B453E]">“{order.review}”</p>
         ) : (
-          <p className="text-sm text-[#64748B]">No written review.</p>
+          <p className="text-sm text-[#6B655C]">No written review.</p>
         )}
       </div>
 
       {order.reviewReply ? (
-        <div className="rounded-xl border border-white/[0.08] bg-white/[0.03] p-4">
-          <p className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#94A3B8]">
+        <div className="rounded-xl border border-[#171717]/10 bg-[#171717]/3 p-4">
+          <p className="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#6B655C]">
             <MessageSquareReply size={14} aria-hidden="true" /> Artisan&apos;s reply
           </p>
-          <p className="text-sm leading-6 text-[#cbd5e1]">{order.reviewReply}</p>
+          <p className="text-sm leading-6 text-[#4B453E]">{order.reviewReply}</p>
         </div>
       ) : (
         isTailor && (

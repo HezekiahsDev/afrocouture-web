@@ -19,12 +19,12 @@ export function Badge({
   };
 
   const variants = {
-    primary: 'bg-[#00A3FF]/15 text-[#38bdf8] border border-[#00A3FF]/30',
-    cyan: 'bg-[#22D3EE]/15 text-[#22D3EE] border border-[#22D3EE]/30',
-    success: 'bg-[#10B981]/15 text-[#34d399] border border-[#10B981]/30',
-    warning: 'bg-[#FBBF24]/15 text-[#fbbf24] border border-[#FBBF24]/30',
-    purple: 'bg-[#8B5CF6]/15 text-[#c084fc] border border-[#8B5CF6]/30',
-    neutral: 'bg-white/5 text-slate-300 border border-white/10',
+    primary: 'bg-[#B8734E]/15 text-[#7A4429] border border-[#B8734E]/30',
+    cyan: 'bg-[#1F2A42]/15 text-[#1F2A42] border border-[#1F2A42]/30',
+    success: 'bg-[#2F6B4F]/15 text-[#2F6B4F] border border-[#2F6B4F]/30',
+    warning: 'bg-[#B8734E]/15 text-[#7A4429] border border-[#B8734E]/30',
+    purple: 'bg-[#1F2A42]/15 text-[#1F2A42] border border-[#1F2A42]/30',
+    neutral: 'bg-[#171717]/5 text-[#4B453E] border border-[#171717]/12',
   };
 
   return (

@@ -82,7 +82,7 @@ export default function RoleSelection({ idea }: { idea?: string }) {
   }, [user?.role]);
 
   async function continueJourney() {
-    if (idea) sessionStorage.setItem("afrocouture-style-idea", idea);
+    if (idea) sessionStorage.setItem("IPILE-style-idea", idea);
     // Customers can start browsing straight away; measurements are asked for when they commission.
     const home = selected === "customer" ? "/marketplace" : ROLE_HOME[selected];
     if (status !== "authenticated" || !user) {
@@ -115,7 +115,7 @@ export default function RoleSelection({ idea }: { idea?: string }) {
         <h1>
           {status === "authenticated" && user ? (
             <>
-              Welcome{user.fullName ? `, ${user.fullName.split(" ")[0]}` : ""}. <em>How will you use AfroCouture?</em>
+              Welcome{user.fullName ? `, ${user.fullName.split(" ")[0]}` : ""}. <em>How will you use IPILE?</em>
             </>
           ) : (
             <>
@@ -197,7 +197,7 @@ export default function RoleSelection({ idea }: { idea?: string }) {
             )}
           </button>
           {error && (
-            <p className="join-note" role="alert" style={{ color: "#ffb4ab" }}>
+            <p className="join-note" role="alert" style={{ color: "#9B2C24" }}>
               {error}
             </p>
           )}

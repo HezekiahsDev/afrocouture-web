@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import MarketplaceExperience from "@/components/marketplace/MarketplaceExperience";
 
 export const metadata: Metadata = {
-  title: "Discover | AfroCouture",
+  title: "Discover | IPILE",
   description:
     "Discover African couture, artisan makers, and beautiful textiles.",
 };

@@ -45,7 +45,7 @@ export function ReviewsPanel() {
   return (
     <>
       <AdminHeading kicker="Community" title="Reviews" />
-      <p className="-mt-3 mb-5 max-w-2xl text-sm text-[#94A3B8]">
+      <p className="-mt-3 mb-5 max-w-2xl text-sm text-[#6B655C]">
         Hide reviews that are abusive, off-topic or share private details. Hidden reviews leave the artisan&apos;s profile and
         average; the customer can see that theirs was hidden.
       </p>
@@ -55,21 +55,21 @@ export function ReviewsPanel() {
       {items && items.length > 0 && (
         <ul className="grid gap-3">
           {items.map((r) => (
-            <li key={r.id} className="rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4" data-testid="review-row">
+            <li key={r.id} className="rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-4" data-testid="review-row">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <Stars rating={r.rating} size={14} />
                     {r.reviewHiddenAt && <Pill tone="amber">Hidden</Pill>}
                   </div>
-                  <p className="mt-2 text-sm text-[#E2E8F0]">{r.review ? `“${r.review}”` : 'No written review.'}</p>
-                  {r.reviewReply && <p className="mt-1 text-xs text-[#94A3B8]">Reply: “{r.reviewReply}”</p>}
-                  <p className="mt-2 text-xs text-[#64748B]">
-                    <Link href={`/admin/users/${r.customer.id}`} className="hover:text-[#38BDF8]">
+                  <p className="mt-2 text-sm text-[#2A2622]">{r.review ? `“${r.review}”` : 'No written review.'}</p>
+                  {r.reviewReply && <p className="mt-1 text-xs text-[#6B655C]">Reply: “{r.reviewReply}”</p>}
+                  <p className="mt-2 text-xs text-[#6B655C]">
+                    <Link href={`/admin/users/${r.customer.id}`} className="hover:text-[#8F5637]">
                       {r.customer.fullName ?? 'Customer'}
                     </Link>{' '}
                     → {r.tailor?.atelierName ?? r.tailor?.displayName ?? 'Artisan'} · {r.garmentType} ·{' '}
-                    <Link href={`/admin/orders/${r.id}`} className="font-mono hover:text-[#38BDF8]">
+                    <Link href={`/admin/orders/${r.id}`} className="font-mono hover:text-[#8F5637]">
                       {r.reference}
                     </Link>{' '}
                     · {fmtDate(r.reviewedAt)}

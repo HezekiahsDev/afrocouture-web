@@ -236,16 +236,16 @@ export function OrderChat({
 
   return (
     <section
-      className="flex h-[640px] max-h-[80vh] min-h-[460px] flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 backdrop-blur-xl"
+      className="flex h-[640px] max-h-[80vh] min-h-[460px] flex-col overflow-hidden rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 backdrop-blur-xl"
       aria-label={`Conversation with ${otherName}`}
     >
-      <header className="flex items-center justify-between gap-3 border-b border-white/[0.08] px-5 py-4">
+      <header className="flex items-center justify-between gap-3 border-b border-[#171717]/10 px-5 py-4">
         <div>
-          <h2 className="text-base font-bold text-[#F8FAFC]">Messages</h2>
-          <p className="text-xs text-[#94A3B8]">With {otherName}</p>
+          <h2 className="text-base font-bold text-[#171717]">Messages</h2>
+          <p className="text-xs text-[#6B655C]">With {otherName}</p>
         </div>
-        <span className="flex items-center gap-1.5 text-[11px] text-[#94A3B8]">
-          <span className={cn('h-2 w-2 rounded-full', live ? 'bg-[#10B981]' : 'bg-[#64748B]')} aria-hidden="true" />
+        <span className="flex items-center gap-1.5 text-[11px] text-[#6B655C]">
+          <span className={cn('h-2 w-2 rounded-full', live ? 'bg-[#2F6B4F]' : 'bg-[#6B655C]')} aria-hidden="true" />
           {live ? 'Live' : 'Reconnecting…'}
         </span>
       </header>
@@ -260,7 +260,7 @@ export function OrderChat({
         aria-live="polite"
       >
         {loading ? (
-          <div className="flex flex-1 items-center justify-center text-[#94A3B8]">
+          <div className="flex flex-1 items-center justify-center text-[#6B655C]">
             <LoaderCircle className="animate-spin" size={22} aria-label="Loading messages" />
           </div>
         ) : (
@@ -270,13 +270,13 @@ export function OrderChat({
                 type="button"
                 onClick={loadEarlier}
                 disabled={loadingMore}
-                className="mx-auto mb-2 rounded-full border border-white/10 px-3 py-1 text-xs text-[#94A3B8] hover:text-[#F8FAFC]"
+                className="mx-auto mb-2 rounded-full border border-[#171717]/12 px-3 py-1 text-xs text-[#6B655C] hover:text-[#171717]"
               >
                 {loadingMore ? 'Loading…' : 'Load earlier messages'}
               </button>
             )}
             {!messages.length && (
-              <p className="m-auto max-w-xs text-center text-sm text-[#64748B]">
+              <p className="m-auto max-w-xs text-center text-sm text-[#6B655C]">
                 No messages yet. Ask {otherName} anything about the piece — fit, fabric, timing.
               </p>
             )}
@@ -287,15 +287,15 @@ export function OrderChat({
               return (
                 <div key={m.id} className="flex flex-col">
                   {showDay && (
-                    <span className="my-2 self-center text-[10px] font-semibold uppercase tracking-wider text-[#64748B]">
+                    <span className="my-2 self-center text-[10px] font-semibold uppercase tracking-wider text-[#6B655C]">
                       {day}
                     </span>
                   )}
                   {m.type === 'system' ? (
-                    <p className="flex items-start gap-2 self-center rounded-xl border border-[#00A3FF]/20 bg-[#00A3FF]/5 px-3 py-2 text-center text-xs text-[#cfe5ff]">
-                      <Info size={13} className="mt-0.5 shrink-0 text-[#38BDF8]" aria-hidden="true" />
+                    <p className="flex items-start gap-2 self-center rounded-xl border border-[#B8734E]/20 bg-[#B8734E]/5 px-3 py-2 text-center text-xs text-[#5C3B29]">
+                      <Info size={13} className="mt-0.5 shrink-0 text-[#8F5637]" aria-hidden="true" />
                       <span>
-                        {m.content} <span className="text-[#64748B]">· {timeOf(m.createdAt)}</span>
+                        {m.content} <span className="text-[#6B655C]">· {timeOf(m.createdAt)}</span>
                       </span>
                     </p>
                   ) : (
@@ -305,7 +305,7 @@ export function OrderChat({
                           href={m.attachmentUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="relative block h-48 w-48 overflow-hidden rounded-xl bg-[#1E293B]"
+                          className="relative block h-48 w-48 overflow-hidden rounded-xl bg-[#FFFFFF]"
                         >
                           <Image src={m.attachmentUrl} alt="Photo in chat" fill sizes="192px" className="object-cover" />
                         </a>
@@ -314,20 +314,20 @@ export function OrderChat({
                         <p
                           className={cn(
                             'whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2 text-sm leading-5',
-                            mine ? 'rounded-br-md bg-[#00A3FF] text-[#090D16]' : 'rounded-bl-md bg-[#1E293B] text-[#F8FAFC]',
+                            mine ? 'rounded-br-md bg-[#9E5B37] text-[#FFFDF8]' : 'rounded-bl-md bg-[#FFFFFF] text-[#171717]',
                           )}
                         >
                           {m.content}
                         </p>
                       )}
-                      <span className="text-[10px] text-[#64748B]">{timeOf(m.createdAt)}</span>
+                      <span className="text-[10px] text-[#6B655C]">{timeOf(m.createdAt)}</span>
                     </div>
                   )}
                 </div>
               );
             })}
             {typing && (
-              <p className="self-start text-xs italic text-[#94A3B8]" aria-live="polite">
+              <p className="self-start text-xs italic text-[#6B655C]" aria-live="polite">
                 {otherName} is typing…
               </p>
             )}
@@ -336,15 +336,15 @@ export function OrderChat({
       </div>
 
       {error && (
-        <p className="border-t border-white/[0.08] px-4 py-2 text-xs text-[#ffb4ab]" role="alert">
+        <p className="border-t border-[#171717]/10 px-4 py-2 text-xs text-[#9B2C24]" role="alert">
           {error}
         </p>
       )}
 
       {closedReason ? (
-        <p className="border-t border-white/[0.08] px-5 py-4 text-sm text-[#94A3B8]">{closedReason}</p>
+        <p className="border-t border-[#171717]/10 px-5 py-4 text-sm text-[#6B655C]">{closedReason}</p>
       ) : (
-        <form onSubmit={onSubmit} className="flex items-end gap-2 border-t border-white/[0.08] p-3">
+        <form onSubmit={onSubmit} className="flex items-end gap-2 border-t border-[#171717]/10 p-3">
           <input
             ref={fileRef}
             type="file"
@@ -357,7 +357,7 @@ export function OrderChat({
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={uploading}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 text-[#94A3B8] hover:text-[#F8FAFC] disabled:opacity-60"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#171717]/12 text-[#6B655C] hover:text-[#171717] disabled:opacity-60"
             aria-label="Send a photo"
           >
             {uploading ? <LoaderCircle size={18} className="animate-spin" /> : <ImagePlus size={18} />}
@@ -378,12 +378,12 @@ export function OrderChat({
               }
             }}
             placeholder="Write a message…"
-            className="max-h-32 min-h-11 flex-1 resize-none rounded-xl border border-white/10 bg-[#090D16]/60 px-3.5 py-2.5 text-sm text-[#F8FAFC] outline-none placeholder:text-[#64748B] focus:border-[#00A3FF]"
+            className="max-h-32 min-h-11 flex-1 resize-none rounded-xl border border-[#171717]/12 bg-[#F5F0E8]/60 px-3.5 py-2.5 text-sm text-[#171717] outline-none placeholder:text-[#6B655C] focus:border-[#B8734E]"
           />
           <button
             type="submit"
             disabled={!draft.trim() || sending}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#00A3FF] text-[#090D16] disabled:opacity-50"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#9E5B37] text-[#FFFDF8] disabled:opacity-50"
             aria-label="Send message"
           >
             {sending ? <LoaderCircle size={18} className="animate-spin" /> : <Send size={18} />}

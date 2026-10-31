@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import TailorDirectory from "@/components/marketplace/TailorDirectory";
 
 export const metadata: Metadata = {
-  title: "Artisans | AfroCouture",
+  title: "Artisans | IPILE",
   description: "Meet the independent makers behind African couture.",
 };
 

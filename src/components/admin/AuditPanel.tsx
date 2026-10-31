@@ -42,7 +42,7 @@ export function AuditPanel() {
   return (
     <>
       <AdminHeading kicker="Account" title="Audit log" />
-      <p className="-mt-3 mb-5 max-w-2xl text-sm text-[#94A3B8]">
+      <p className="-mt-3 mb-5 max-w-2xl text-sm text-[#6B655C]">
         Every admin decision is recorded here: who did it, when, and why. Entries can&apos;t be edited or deleted.
       </p>
       <div className="mb-4">
@@ -82,21 +82,21 @@ export function AuditList({
 
   if (error) return <Alert>{error}</Alert>;
   if (!items) return <Loading label="Loading audit log" />;
-  if (items.length === 0) return compact ? <p className="text-sm text-[#64748B]">No admin actions yet.</p> : <Empty>No admin actions recorded yet.</Empty>;
+  if (items.length === 0) return compact ? <p className="text-sm text-[#6B655C]">No admin actions yet.</p> : <Empty>No admin actions recorded yet.</Empty>;
 
   return (
     <div className="flex flex-col gap-3">
-      <ol className={compact ? 'flex flex-col gap-3' : 'divide-y divide-white/[0.06] overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0F172A]/60'}>
+      <ol className={compact ? 'flex flex-col gap-3' : 'divide-y divide-white/[0.06] overflow-hidden rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/60'}>
         {items.map((e) => {
           const href = targetHref(e);
           return (
             <li key={e.id} className={compact ? '' : 'px-4 py-3'} data-testid="audit-row">
-              <p className="text-sm text-[#F8FAFC]">{href ? <Link href={href} className="hover:text-[#38BDF8]">{e.summary}</Link> : e.summary}</p>
-              <p className="text-xs text-[#64748B]">
+              <p className="text-sm text-[#171717]">{href ? <Link href={href} className="hover:text-[#8F5637]">{e.summary}</Link> : e.summary}</p>
+              <p className="text-xs text-[#6B655C]">
                 {e.admin?.fullName ?? e.admin?.email ?? 'Admin'} · {fmtDate(e.createdAt)} · <span className="font-mono">{e.action}</span>
               </p>
               {typeof e.details?.note === 'string' || typeof e.details?.reason === 'string' ? (
-                <p className="mt-1 text-xs italic text-[#94A3B8]">“{String(e.details?.note ?? e.details?.reason)}”</p>
+                <p className="mt-1 text-xs italic text-[#6B655C]">“{String(e.details?.note ?? e.details?.reason)}”</p>
               ) : null}
             </li>
           );

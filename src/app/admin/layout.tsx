@@ -7,14 +7,14 @@ import { AdminShell } from "@/components/admin/AdminShell";
 export const instant = false;
 
 export const metadata: Metadata = {
-  title: "Admin | AfroCouture",
+  title: "Admin | IPILE",
   robots: { index: false, follow: false },
 };
 
 /** Every /admin page shares the dashboard shell. The proxy only serves these routes to admins. */
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#090D16" }} />}>
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#F5F0E8" }} />}>
       <AdminShell>{children}</AdminShell>
     </Suspense>
   );

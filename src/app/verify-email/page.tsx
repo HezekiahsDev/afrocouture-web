@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import VerifyEmailForm from "@/components/auth/VerifyEmailForm";
 
 export const metadata: Metadata = {
-  title: "Verify your email | AfroCouture",
+  title: "Verify your email | IPILE",
   description: "Confirm your email address to finish creating your account.",
 };
 

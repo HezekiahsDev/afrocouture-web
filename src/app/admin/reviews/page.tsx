@@ -4,7 +4,7 @@ import { ReviewsPanel } from "@/components/admin/ReviewsPanel";
 // Admin pages wait for the admin session and load data in the browser (see ../layout.tsx).
 export const instant = false;
 
-export const metadata: Metadata = { title: "Reviews | AfroCouture admin" };
+export const metadata: Metadata = { title: "Reviews | IPILE admin" };
 
 export default function Page() {
   return <ReviewsPanel />;

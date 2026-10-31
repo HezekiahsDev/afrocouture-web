@@ -82,13 +82,13 @@ export default function VerifyEmailForm({ email, next }: { email?: string; next?
       title="Check your inbox."
       subtitle={
         <>
-          We sent a 6-digit code to <strong className="text-[#F8FAFC]">{email}</strong>. It expires in 10 minutes.
+          We sent a 6-digit code to <strong className="text-[#171717]">{email}</strong>. It expires in 10 minutes.
         </>
       }
       footer={
         <>
           Wrong email?{' '}
-          <Link href="/signup" className="font-semibold text-[#38BDF8] hover:underline">
+          <Link href="/signup" className="font-semibold text-[#8F5637] hover:underline">
             Start again
           </Link>
         </>
@@ -121,13 +121,13 @@ export default function VerifyEmailForm({ email, next }: { email?: string; next?
           )}
         </button>
 
-        <p className="flex items-center justify-center gap-2 text-sm text-[#94A3B8]">
+        <p className="flex items-center justify-center gap-2 text-sm text-[#6B655C]">
           <MailCheck size={16} aria-hidden="true" />
           Didn&apos;t get it? Check spam, or{' '}
           {cooldown > 0 ? (
-            <span className="tabular-nums text-[#64748B]">resend in {cooldown}s</span>
+            <span className="tabular-nums text-[#6B655C]">resend in {cooldown}s</span>
           ) : (
-            <button type="button" onClick={resend} className="font-semibold text-[#38BDF8] hover:underline">
+            <button type="button" onClick={resend} className="font-semibold text-[#8F5637] hover:underline">
               send a new code
             </button>
           )}

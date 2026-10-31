@@ -64,8 +64,8 @@ export function CodeInput({
           disabled={disabled}
           aria-label={`Digit ${index + 1}`}
           aria-invalid={invalid}
-          className={`h-14 w-full min-w-0 rounded-xl border bg-[#0F172A]/80 text-center text-xl font-bold tabular-nums text-[#F8FAFC] outline-none transition focus:border-[#00A3FF] focus:shadow-[0_0_0_3px_rgba(0,163,255,0.15)] disabled:opacity-60 ${
-            invalid ? 'border-[#ffb4ab]/60' : 'border-white/10'
+          className={`h-14 w-full min-w-0 rounded-xl border bg-[#FFFFFF]/80 text-center text-xl font-bold tabular-nums text-[#171717] outline-none transition focus:border-[#B8734E] focus:shadow-[0_0_0_3px_rgba(184,115,78,0.15)] disabled:opacity-60 ${
+            invalid ? 'border-[#9B2C24]/60' : 'border-[#171717]/12'
           }`}
         />
       ))}

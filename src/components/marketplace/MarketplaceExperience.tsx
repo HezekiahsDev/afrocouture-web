@@ -85,24 +85,23 @@ export default function MarketplaceExperience({
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy">
           <div className="eyebrow">
-            <span className="eyebrow-rule" /> AFRICAN STYLE, BEAUTIFULLY
-            REIMAGINED
+            <span className="eyebrow-rule" /> CONTEMPORARY AFRICAN LUXURY
           </div>
           <h1 id="hero-title">
-            Your story.
+            Your vision,
             <br />
-            <em>Our craft.</em>
+            <em>thoughtfully made.</em>
           </h1>
           <p>
-            Discover extraordinary fabrics, meet the hands behind the craft, and
-            create something that feels unmistakably yours.
+            Discover skilled makers, explore fabrics, and bring your next outfit
+            to life.
           </p>
           <div className="hero-actions">
-            <Link href="#explore" className="action-primary">
-              Explore the atelier <ArrowUpRight size={19} />
+            <Link href="/onboarding" className="action-primary">
+              Start your design <ArrowUpRight size={19} />
             </Link>
-            <Link href="/tailors" className="action-text">
-              Meet the artisans <ArrowRight size={18} />
+            <Link href="#explore" className="action-text">
+              Explore the atelier <ArrowRight size={18} />
             </Link>
           </div>
           <div className="hero-footnote">
@@ -128,7 +127,7 @@ export default function MarketplaceExperience({
             <strong>Craft meets imagination.</strong>
             <ArrowUpRight size={19} />
           </div>
-          <div className="hero-vertical">AFROCOUTURE AI · MADE BY HAND</div>
+          <div className="hero-vertical">IPILE · CRAFTED AROUND YOU</div>
         </div>
         <a
           href="#explore"
@@ -139,7 +138,7 @@ export default function MarketplaceExperience({
         </a>
       </section>
 
-      <div className="value-strip" aria-label="How AfroCouture works">
+      <div className="value-strip" aria-label="How IPILE works">
         <span>
           <Scissors size={18} /> Skilled artisans
         </span>

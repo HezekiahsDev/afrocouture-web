@@ -31,7 +31,7 @@ export function FabricsPanel() {
   return (
     <>
       <AdminHeading kicker="Community" title="Fabrics" />
-      <p className="-mt-3 mb-5 max-w-2xl text-sm text-[#94A3B8]">
+      <p className="-mt-3 mb-5 max-w-2xl text-sm text-[#6B655C]">
         Take down listings that break the rules. The merchant is notified with your reason and can&apos;t republish it until an
         admin does.
       </p>
@@ -78,19 +78,21 @@ function FabricRow({ fabric, onChanged }: { fabric: AdminFabric; onChanged: () =
   }
 
   return (
-    <li className="rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4" data-testid="fabric-row">
+    <li className="rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-4" data-testid="fabric-row">
       <div className="flex flex-wrap items-center gap-4">
-        <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#1E293B]">
+        <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#FFFFFF]">
           <Image src={fabric.imageUrl} alt="" fill sizes="64px" className="object-cover" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-semibold text-[#F8FAFC]">{fabric.name}</p>
-          <p className="truncate text-xs text-[#94A3B8]">
-            {fabric.category} · {naira(fabric.price)}/{fabric.unit} · {fabric.merchant.businessName ?? 'Merchant'}{' '}
-            <KycPill status={fabric.merchant.verificationStatus} />
+          <p className="truncate font-semibold text-[#171717]">{fabric.name}</p>
+          <p className="truncate text-xs text-[#6B655C]">
+            {fabric.category} · {naira(fabric.price)}/{fabric.unit} · {fabric.merchant.businessName ?? 'Merchant'}
           </p>
+          <div className="mt-1">
+            <KycPill status={fabric.merchant.verificationStatus} />
+          </div>
           {fabric.moderatedAt && (
-            <p className="mt-1 text-xs text-[#ffb4ab]">
+            <p className="mt-1 text-xs text-[#9B2C24]">
               Taken down {fmtDate(fabric.moderatedAt)}: “{fabric.unpublishedReason}”
             </p>
           )}
@@ -110,16 +112,16 @@ function FabricRow({ fabric, onChanged }: { fabric: AdminFabric; onChanged: () =
         </span>
       </div>
       {open && (
-        <form onSubmit={apply} className="mt-4 flex flex-col gap-2 border-t border-white/[0.06] pt-4">
+        <form onSubmit={apply} className="mt-4 flex flex-col gap-2 border-t border-[#171717]/8 pt-4">
           <label className="flex flex-col gap-1.5">
-            <span className="text-xs font-semibold text-[#94A3B8]">Reason (sent to the merchant)</span>
+            <span className="text-xs font-semibold text-[#6B655C]">Reason (sent to the merchant)</span>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
               minLength={5}
               maxLength={500}
               required
-              className="min-h-20 rounded-xl border border-white/10 bg-[#0F172A]/80 px-3 py-2 text-sm text-[#F8FAFC] outline-none focus:border-[#00A3FF]"
+              className="min-h-20 rounded-xl border border-[#171717]/12 bg-[#FFFFFF]/80 px-3 py-2 text-sm text-[#171717] outline-none focus:border-[#B8734E]"
               placeholder="e.g. Photos don't show the actual fabric being sold."
             />
           </label>

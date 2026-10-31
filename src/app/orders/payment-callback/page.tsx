@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import PaymentCallback from "@/components/orders/PaymentCallback";
 
 export const metadata: Metadata = {
-  title: "Confirming payment | AfroCouture",
+  title: "Confirming payment | IPILE",
   description: "Confirming your Paystack payment.",
 };
 

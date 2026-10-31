@@ -58,7 +58,7 @@ export function PasswordInput({
       <button
         type="button"
         onClick={() => setVisible(!visible)}
-        className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-[#64748B] hover:text-[#F8FAFC]"
+        className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-[#6B655C] hover:text-[#171717]"
         aria-label={visible ? 'Hide password' : 'Show password'}
       >
         {visible ? <EyeOff size={17} /> : <Eye size={17} />}
@@ -137,18 +137,18 @@ export default function SignUpForm({ initialRole, next }: { initialRole?: string
       kicker="Create your account"
       title={
         <>
-          Join the <span className="text-[#00A3FF]">atelier.</span>
+          Join the <span className="text-[#B8734E]">atelier.</span>
         </>
       }
       subtitle={
         intent
           ? `Just your account first. ${NEXT_STEP[intent]}`
-          : 'Just your account first. We’ll email you a 6-digit code, then you choose how you’ll use AfroCouture.'
+          : 'Just your account first. We’ll email you a 6-digit code, then you choose how you’ll use IPILE.'
       }
       footer={
         <>
           Already have an account?{' '}
-          <Link href={signInHref} className="font-semibold text-[#38BDF8] hover:underline">
+          <Link href={signInHref} className="font-semibold text-[#8F5637] hover:underline">
             Sign in
           </Link>
         </>
@@ -197,7 +197,7 @@ export default function SignUpForm({ initialRole, next }: { initialRole?: string
 
         {existing && (
           <FormAlert tone="info">
-            <p className="font-semibold text-[#F8FAFC]">You already have an account with this email.</p>
+            <p className="font-semibold text-[#171717]">You already have an account with this email.</p>
             <p className="mt-1">Sign in to pick up where you left off — your progress is saved.</p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Link href={signInQuery(existing)} className="btn-primary px-4 py-2">
@@ -222,13 +222,13 @@ export default function SignUpForm({ initialRole, next }: { initialRole?: string
             </>
           )}
         </button>
-        <p className="text-center text-xs leading-5 text-[#64748B]">
+        <p className="text-center text-xs leading-5 text-[#6B655C]">
           By creating an account you agree to our{' '}
-          <Link href="/terms" className="text-[#94A3B8] underline underline-offset-2 hover:text-[#38BDF8]">
+          <Link href="/terms" className="text-[#6B655C] underline underline-offset-2 hover:text-[#8F5637]">
             Terms of Service
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" className="text-[#94A3B8] underline underline-offset-2 hover:text-[#38BDF8]">
+          <Link href="/privacy" className="text-[#6B655C] underline underline-offset-2 hover:text-[#8F5637]">
             Privacy Policy
           </Link>
           .

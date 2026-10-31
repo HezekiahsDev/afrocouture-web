@@ -300,17 +300,17 @@ function MerchantVerification() {
                 <label
                   className={cn(
                     'flex cursor-pointer items-start gap-3 rounded-xl border p-4 sm:col-span-2',
-                    f.qualityDeclarationAccepted ? 'border-[#00A3FF]/50 bg-[#00A3FF]/10' : 'border-white/10 bg-[#0F172A]/60',
+                    f.qualityDeclarationAccepted ? 'border-[#B8734E]/50 bg-[#B8734E]/10' : 'border-[#171717]/12 bg-[#FFFFFF]/60',
                   )}
                 >
                   <input
                     type="checkbox"
                     checked={f.qualityDeclarationAccepted}
                     onChange={(event) => set('qualityDeclarationAccepted', event.target.checked)}
-                    className="mt-0.5 h-4 w-4 shrink-0 accent-[#00A3FF]"
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-[#B8734E]"
                   />
-                  <span className="text-xs leading-relaxed text-[#CBD5E1]">
-                    <span className="font-semibold text-[#F8FAFC]">Quality declaration. </span>
+                  <span className="text-xs leading-relaxed text-[#4B453E]">
+                    <span className="font-semibold text-[#171717]">Quality declaration. </span>
                     I confirm that the fabrics I list will be described accurately — including fibre content, colour and
                     whether they are original or replica — and that I will accept returns for items that don&apos;t match
                     their description.

@@ -4,8 +4,8 @@ import LegalPage, { CommunityLink, ContactLink, type LegalSection } from "@/comp
 import { LEGAL } from "@/lib/legal";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | AfroCouture",
-  description: "What AfroCouture collects, why, who can see it, and the choices you have.",
+  title: "Privacy Policy | IPILE",
+  description: "What IPILE collects, why, who can see it, and the choices you have.",
 };
 
 const sections: LegalSection[] = [
@@ -31,7 +31,7 @@ const sections: LegalSection[] = [
     title: "What we collect",
     body: (
       <>
-        <p>We only ask for what the service needs. What we hold depends on how you use AfroCouture.</p>
+        <p>We only ask for what the service needs. What we hold depends on how you use IPILE.</p>
         <h3>Everyone with an account</h3>
         <ul>
           <li>Your name, email address and account type (customer, artisan or fabric merchant).</li>
@@ -117,7 +117,7 @@ const sections: LegalSection[] = [
             from fraud (our legitimate interest, and our legal obligations).
           </li>
           <li>
-            <strong>To keep AfroCouture secure</strong>: rate limiting, detecting abuse, and investigating
+            <strong>To keep IPILE secure</strong>: rate limiting, detecting abuse, and investigating
             disputes (legitimate interest).
           </li>
           <li>
@@ -211,7 +211,7 @@ const sections: LegalSection[] = [
             <strong>Vercel</strong>: hosts the website you are using.
           </li>
           <li>
-            <strong>Our own servers</strong>: run the AfroCouture service, its database and its cache.
+            <strong>Our own servers</strong>: run the IPILE service, its database and its cache.
           </li>
           <li>
             <strong>Google Cloud Vertex AI</strong>: generates design images in AI Design Studio, once that
@@ -247,7 +247,7 @@ const sections: LegalSection[] = [
     title: "How we protect your data",
     body: (
       <ul>
-        <li>All traffic to AfroCouture is encrypted with HTTPS.</li>
+        <li>All traffic to IPILE is encrypted with HTTPS.</li>
         <li>Passwords and verification codes are stored as one-way hashes.</li>
         <li>Sign-in, sign-up, code and upload requests are rate limited to block guessing and abuse.</li>
         <li>Customer payments are held in escrow and released only when an order is approved or settled.</li>
@@ -305,7 +305,7 @@ const sections: LegalSection[] = [
   {
     id: "children",
     title: "Children",
-    body: <p>AfroCouture is for people aged 18 and over. We do not knowingly collect data from children.</p>,
+    body: <p>IPILE is for people aged 18 and over. We do not knowingly collect data from children.</p>,
   },
   {
     id: "changes",

@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import TailorProfileView from "@/components/marketplace/TailorProfileView";
 
 export const metadata: Metadata = {
-  title: "Artisan | AfroCouture",
+  title: "Artisan | IPILE",
   description: "Portfolio, specialties and reviews from customers who commissioned this artisan.",
 };
 

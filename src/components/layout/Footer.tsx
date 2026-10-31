@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { SUPPORT } from "@/lib/support";
@@ -7,7 +8,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="footer-main page-shell">
         <div>
-          <div className="footer-kicker">A MORE PERSONAL WAY TO DRESS</div>
+          <div className="footer-kicker">CRAFTED AROUND YOU</div>
           <h2>
             Made for the way
             <br />
@@ -15,14 +16,20 @@ export default function Footer() {
           </h2>
         </div>
         <Link className="footer-cta" href="/onboarding">
-          Find your place in the atelier <ArrowUpRight size={20} />
+          Start your design <ArrowUpRight size={20} />
         </Link>
       </div>
       <div className="footer-bottom page-shell">
-        <Link href="/marketplace" className="footer-logo">
-          AfroCouture <span>AI</span>
+        <Link href="/marketplace" className="footer-logo" aria-label="IPILE — home">
+          <Image
+            src="/img/logo.png"
+            alt="IPILE"
+            width={398}
+            height={135}
+            className="footer-logo-image"
+          />
         </Link>
-        <span>Crafted with a love for African style.</span>
+        <span>Contemporary African luxury, thoughtfully made.</span>
         <div>
           <Link href="/fabric-explorer">Fabrics</Link>
           <Link href="/tailors">Artisans</Link>

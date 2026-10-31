@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState, type FormEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -15,7 +16,6 @@ import {
   Ruler,
   Search,
   ShieldCheck,
-  Sparkles,
   UserRound,
   X,
 } from "lucide-react";
@@ -154,18 +154,16 @@ function NavbarContent() {
         <Link
           href="/marketplace"
           className="brand"
-          aria-label="AfroCouture AI home"
+          aria-label="IPILE — home"
         >
-          <span className="brand-symbol">
-            A
-            <span>
-              <Sparkles size={11} />
-            </span>
-          </span>
-          <span className="brand-wordmark">
-            AfroCouture <span>AI</span>
-            <small>THE MODERN ATELIER</small>
-          </span>
+          <Image
+            src="/img/logo.png"
+            alt="IPILE"
+            width={398}
+            height={135}
+            loading="eager"
+            className="brand-logo"
+          />
         </Link>
         <nav
           className={`site-nav ${menuOpen ? "is-open" : ""}`}

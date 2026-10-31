@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { LogOut, Sparkles } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { Icon } from '@/components/ui/Icon';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { SUPPORT } from '@/lib/support';
@@ -58,7 +59,7 @@ function AccountMenu() {
     return (
       <Link
         href="/signin"
-        className="rounded-xl border border-white/[0.12] px-3 py-1.5 text-xs font-semibold text-[#F8FAFC] hover:border-[#00A3FF]/40"
+        className="rounded-xl border border-[#171717]/15 px-3 py-1.5 text-xs font-semibold text-[#171717] hover:border-[#B8734E]/40"
       >
         Sign in
       </Link>
@@ -79,19 +80,19 @@ function AccountMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Your account"
-        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#00A3FF]/40 bg-[#1E293B] text-xs font-bold text-[#F8FAFC] hover:border-[#00A3FF]"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-[#B8734E]/40 bg-[#FFFFFF] text-xs font-bold text-[#171717] hover:border-[#B8734E]"
       >
         {initials(user.fullName, user.email)}
       </button>
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-11 z-50 w-64 rounded-2xl border border-[#00A3FF]/25 bg-[#1E293B]/95 p-2 shadow-[0_12px_32px_-4px_rgba(0,0,0,0.6)] backdrop-blur-xl"
+          className="absolute right-0 top-11 z-50 w-64 rounded-2xl border border-[#B8734E]/25 bg-[#FFFFFF]/95 p-2 shadow-[0_12px_32px_-4px_rgba(23,23,23,0.14)] backdrop-blur-xl"
         >
-          <div className="border-b border-white/[0.08] px-3 py-2.5">
-            <p className="truncate text-sm font-semibold text-[#F8FAFC]">{user.fullName || 'Your account'}</p>
-            <p className="truncate text-xs text-[#94A3B8]">{user.email}</p>
-            <span className="mt-2 inline-block rounded-full bg-[#00A3FF]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#38BDF8]">
+          <div className="border-b border-[#171717]/10 px-3 py-2.5">
+            <p className="truncate text-sm font-semibold text-[#171717]">{user.fullName || 'Your account'}</p>
+            <p className="truncate text-xs text-[#6B655C]">{user.email}</p>
+            <span className="mt-2 inline-block rounded-full bg-[#B8734E]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#7A4429]">
               {ROLE_LABEL[user.role] ?? user.role}
             </span>
           </div>
@@ -100,7 +101,7 @@ function AccountMenu() {
             role="menuitem"
             onClick={handleSignOut}
             disabled={signingOut}
-            className="mt-1 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-[#F8FAFC] hover:bg-white/5 disabled:opacity-60"
+            className="mt-1 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-[#171717] hover:bg-[#171717]/5 disabled:opacity-60"
           >
             <LogOut size={16} aria-hidden="true" /> {signingOut ? 'Signing out…' : 'Sign out'}
           </button>
@@ -112,28 +113,26 @@ function AccountMenu() {
 
 export function PortalHeader({ portal, current, links = defaultLinks }: PortalHeaderProps) {
   return (
-    <header className="fixed top-0 w-full z-50 bg-[#090D16]/85 backdrop-blur-xl border-b border-white/[0.08]">
+    <header className="fixed top-0 w-full z-50 bg-[#F5F0E8]/85 backdrop-blur-xl border-b border-[#171717]/10">
       <div className="h-16 md:h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between gap-4">
-        <Link href="/marketplace" className="flex items-center gap-3 shrink-0" aria-label="AfroCouture AI home">
-          <span className="relative w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-[#00A3FF] to-[#0284C7] flex items-center justify-center text-[#090D16] font-display font-extrabold text-lg shadow-[0_4px_14px_rgba(0,163,255,0.35)]">
-            A
-            <Sparkles size={11} className="absolute -top-1.5 -right-1.5 text-[#22D3EE]" aria-hidden="true" />
-          </span>
-          <span className="flex flex-col">
-            <span className="font-display font-extrabold text-sm md:text-base tracking-tight text-[#F8FAFC] whitespace-nowrap">
-              AfroCouture{' '}
-              <span className="bg-gradient-to-br from-[#00A3FF] via-[#8B5CF6] to-[#EC4899] bg-clip-text text-transparent">AI</span>
-            </span>
-            <span className="hidden text-[10px] text-[#94A3B8] uppercase tracking-wider font-semibold whitespace-nowrap sm:block">
-              {portal}
-            </span>
+        <Link href="/marketplace" className="flex items-center gap-3 shrink-0" aria-label="IPILE — home">
+          <Image
+            src="/img/logo-ink-trim.png"
+            alt="IPILE"
+            width={398}
+            height={135}
+            loading="eager"
+            className="h-8 w-auto md:h-9"
+          />
+          <span className="hidden border-l border-[#171717]/15 pl-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6B655C] sm:block">
+            {portal}
           </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-1" aria-label="Portal navigation">
           <span
             aria-current="page"
-            className="bg-[#00A3FF] text-[#090D16] font-semibold text-xs rounded-full px-3.5 py-1.5 whitespace-nowrap shadow-[0_4px_14px_rgba(0,163,255,0.3)]"
+            className="bg-[#9E5B37] text-[#FFFDF8] font-semibold text-xs rounded-full px-3.5 py-1.5 whitespace-nowrap shadow-[0_4px_14px_rgba(184,115,78,0.3)]"
           >
             {current}
           </span>
@@ -141,7 +140,7 @@ export function PortalHeader({ portal, current, links = defaultLinks }: PortalHe
             <Link
               key={link.href}
               href={link.href}
-              className="text-xs font-semibold text-[#94A3B8] hover:text-[#F8FAFC] px-3 py-1.5 whitespace-nowrap transition-colors"
+              className="text-xs font-semibold text-[#6B655C] hover:text-[#171717] px-3 py-1.5 whitespace-nowrap transition-colors"
             >
               {link.label}
             </Link>
@@ -151,7 +150,7 @@ export function PortalHeader({ portal, current, links = defaultLinks }: PortalHe
         <div className="flex items-center gap-3 shrink-0">
           <Link
             href="/onboarding"
-            className="hidden lg:inline-flex items-center gap-1.5 text-xs text-[#94A3B8] hover:text-[#00A3FF] whitespace-nowrap transition-colors"
+            className="hidden lg:inline-flex items-center gap-1.5 text-xs text-[#6B655C] hover:text-[#B8734E] whitespace-nowrap transition-colors"
           >
             <Icon name="switch_account" className="text-[16px]" />
             <span>Switch role</span>
@@ -162,7 +161,7 @@ export function PortalHeader({ portal, current, links = defaultLinks }: PortalHe
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Support on WhatsApp"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0F172A] border border-white/[0.12] text-[#94A3B8] hover:border-[#00A3FF]/40 hover:text-[#F8FAFC] transition-all text-xs whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FFFFFF] border border-[#171717]/15 text-[#6B655C] hover:border-[#B8734E]/40 hover:text-[#171717] transition-all text-xs whitespace-nowrap"
             >
               <Icon name="support_agent" className="text-[16px]" />
               <span className="hidden md:inline">Support</span>

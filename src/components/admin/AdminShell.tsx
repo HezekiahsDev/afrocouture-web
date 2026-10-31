@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { LucideIcon } from 'lucide-react';
@@ -135,7 +136,7 @@ function Shell({ children }: { children: ReactNode }) {
     <nav aria-label="Admin" className="flex flex-col gap-6">
       {NAV.map((group) => (
         <div key={group.heading} className="flex flex-col gap-1">
-          <p className="px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#64748B]">{group.heading}</p>
+          <p className="px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#6B655C]">{group.heading}</p>
           {group.items.map((item) => {
             const isActive = item.active ? item.active(pathname, status) : pathname.startsWith(item.href);
             const count = queues ? (item.badge?.(queues, notifications.unread) ?? 0) : item.label === 'Notifications' ? notifications.unread : 0;
@@ -148,16 +149,16 @@ function Shell({ children }: { children: ReactNode }) {
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors',
-                  isActive ? 'bg-[#00A3FF]/15 text-[#F8FAFC]' : 'text-[#94A3B8] hover:bg-white/[0.04] hover:text-[#F8FAFC]',
+                  isActive ? 'bg-[#B8734E]/15 text-[#171717]' : 'text-[#6B655C] hover:bg-[#171717]/5 hover:text-[#171717]',
                 )}
               >
-                <Icon size={18} aria-hidden="true" className={isActive ? 'text-[#38BDF8]' : undefined} />
+                <Icon size={18} aria-hidden="true" className={isActive ? 'text-[#8F5637]' : undefined} />
                 <span className="flex-1">{item.label}</span>
                 {count > 0 && (
                   <span
                     className={cn(
                       'min-w-[22px] rounded-full px-1.5 py-0.5 text-center text-[11px] font-bold tabular-nums',
-                      item.label === 'Disputes' || item.label === 'Payouts' ? 'bg-[#93000a]/60 text-[#ffdad6]' : 'bg-[#00A3FF] text-[#090D16]',
+                      item.label === 'Disputes' || item.label === 'Payouts' ? 'bg-[#F6E3E0]/60 text-[#7A1F1A]' : 'bg-[#9E5B37] text-[#FFFDF8]',
                     )}
                   >
                     {count > 99 ? '99+' : count}
@@ -173,34 +174,38 @@ function Shell({ children }: { children: ReactNode }) {
   );
 
   const account = user && (
-    <div className="flex flex-col gap-2 border-t border-white/[0.06] pt-4">
+    <div className="flex flex-col gap-2 border-t border-[#171717]/8 pt-4">
       <div className="px-3">
-        <p className="truncate text-sm font-semibold text-[#F8FAFC]">{user.fullName ?? 'Admin'}</p>
-        <p className="truncate text-xs text-[#64748B]">{user.email}</p>
+        <p className="truncate text-sm font-semibold text-[#171717]">{user.fullName ?? 'Admin'}</p>
+        <p className="truncate text-xs text-[#6B655C]">{user.email}</p>
       </div>
-      <Link href="/marketplace" className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-[#94A3B8] hover:text-[#F8FAFC]">
+      <Link href="/marketplace" className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-[#6B655C] hover:text-[#171717]">
         <Store size={16} aria-hidden="true" /> View marketplace
       </Link>
-      <button type="button" onClick={handleSignOut} className="flex items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-[#94A3B8] hover:text-[#F8FAFC]">
+      <button type="button" onClick={handleSignOut} className="flex items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-[#6B655C] hover:text-[#171717]">
         <LogOut size={16} aria-hidden="true" /> Sign out
       </button>
     </div>
   );
 
   const brand = (
-    <Link href="/admin" className="flex items-center gap-2.5 px-3">
-      <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#00A3FF] text-base font-black text-[#090D16]">A</span>
-      <span className="leading-tight">
-        <span className="block text-sm font-extrabold text-[#F8FAFC]">AfroCouture</span>
-        <span className="block text-[10px] font-bold uppercase tracking-[0.2em] text-[#38BDF8]">Admin</span>
-      </span>
+    <Link href="/admin" className="flex flex-col gap-1 px-3" aria-label="IPILE admin — dashboard">
+      <Image
+        src="/img/logo-ink-trim.png"
+        alt="IPILE"
+        width={398}
+        height={135}
+        loading="eager"
+        className="h-7 w-auto self-start"
+      />
+      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#8F5637]">Admin</span>
     </Link>
   );
 
   return (
     <AdminContext.Provider value={{ queues, refreshQueues }}>
-      <div className="min-h-screen bg-[#090D16] text-[#DFE2EF] lg:grid lg:grid-cols-[256px_minmax(0,1fr)]">
-        <aside className="sticky top-0 hidden h-screen flex-col justify-between overflow-y-auto border-r border-white/[0.06] bg-[#0B1120] px-3 py-6 lg:flex">
+      <div className="min-h-screen bg-[#F5F0E8] text-[#171717] lg:grid lg:grid-cols-[256px_minmax(0,1fr)]">
+        <aside className="sticky top-0 hidden h-screen flex-col justify-between overflow-y-auto border-r border-[#171717]/8 bg-[#EFE7DA] px-3 py-6 lg:flex">
           <div className="flex flex-col gap-8">
             {brand}
             {nav}
@@ -208,13 +213,13 @@ function Shell({ children }: { children: ReactNode }) {
           {account}
         </aside>
 
-        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/[0.06] bg-[#0B1120]/95 px-4 py-3 backdrop-blur lg:hidden">
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[#171717]/8 bg-[#EFE7DA]/95 px-4 py-3 backdrop-blur lg:hidden">
           {brand}
           <div className="flex items-center gap-2">
             <NotificationBell unread={notifications.unread} latest={notifications.latest} active={false} allHref="/admin/notifications" />
             <button
               type="button"
-              className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-[#CBD5E1]"
+              className="grid h-10 w-10 place-items-center rounded-xl border border-[#171717]/12 text-[#4B453E]"
               aria-label="Open admin menu"
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen(true)}
@@ -226,12 +231,12 @@ function Shell({ children }: { children: ReactNode }) {
 
         {menuOpen && (
           <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true" aria-label="Admin menu">
-            <button type="button" className="absolute inset-0 bg-black/60" aria-label="Close menu" onClick={() => setMenuOpen(false)} />
-            <div className="absolute inset-y-0 left-0 flex w-[280px] max-w-[85vw] flex-col justify-between overflow-y-auto bg-[#0B1120] px-3 py-5">
+            <button type="button" className="absolute inset-0 bg-[#171717]/50" aria-label="Close menu" onClick={() => setMenuOpen(false)} />
+            <div className="absolute inset-y-0 left-0 flex w-[280px] max-w-[85vw] flex-col justify-between overflow-y-auto bg-[#EFE7DA] px-3 py-5">
               <div className="flex flex-col gap-6">
                 <div className="flex items-center justify-between">
                   {brand}
-                  <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="p-2 text-[#94A3B8]">
+                  <button type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu" className="p-2 text-[#6B655C]">
                     <X size={20} />
                   </button>
                 </div>
@@ -243,7 +248,7 @@ function Shell({ children }: { children: ReactNode }) {
         )}
 
         <main className="min-w-0">
-          <div className="hidden items-center justify-end gap-3 border-b border-white/[0.06] px-8 py-3 lg:flex">
+          <div className="hidden items-center justify-end gap-3 border-b border-[#171717]/8 px-8 py-3 lg:flex">
             <NotificationBell unread={notifications.unread} latest={notifications.latest} active={pathname === '/admin/notifications'} allHref="/admin/notifications" />
           </div>
           <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</div>
@@ -258,8 +263,8 @@ export function AdminHeading({ kicker, title, children }: { kicker: string; titl
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-[#38BDF8]">{kicker}</p>
-        <h1 className="mt-1 text-2xl font-extrabold text-[#F8FAFC] sm:text-3xl">{title}</h1>
+        <p className="text-[11px] font-bold uppercase tracking-wider text-[#8F5637]">{kicker}</p>
+        <h1 className="mt-1 text-2xl font-extrabold text-[#171717] sm:text-3xl">{title}</h1>
       </div>
       {children}
     </div>

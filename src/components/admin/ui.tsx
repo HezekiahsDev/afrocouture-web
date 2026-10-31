@@ -14,11 +14,11 @@ const isPdf = (url: string) => /\.pdf($|\?)/i.test(url);
 
 export function Pill({ tone = 'neutral', children }: { tone?: 'neutral' | 'blue' | 'green' | 'amber' | 'red'; children: ReactNode }) {
   const tones = {
-    neutral: 'border-white/10 bg-white/5 text-[#CBD5E1]',
-    blue: 'border-[#00A3FF]/30 bg-[#00A3FF]/15 text-[#38BDF8]',
-    green: 'border-[#10B981]/30 bg-[#10B981]/15 text-[#34d399]',
-    amber: 'border-[#FBBF24]/30 bg-[#FBBF24]/15 text-[#fbbf24]',
-    red: 'border-[#ffb4ab]/30 bg-[#93000a]/30 text-[#ffb4ab]',
+    neutral: 'border-[#171717]/12 bg-[#171717]/5 text-[#4B453E]',
+    blue: 'border-[#B8734E]/30 bg-[#B8734E]/15 text-[#7A4429]',
+    green: 'border-[#2F6B4F]/30 bg-[#2F6B4F]/15 text-[#2F6B4F]',
+    amber: 'border-[#B8734E]/30 bg-[#B8734E]/15 text-[#7A4429]',
+    red: 'border-[#9B2C24]/30 bg-[#F6E3E0]/30 text-[#9B2C24]',
   };
   return (
     <span className={cn('inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider', tones[tone])}>
@@ -49,8 +49,8 @@ export function Chips<T extends string>({
           className={cn(
             'rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors',
             value === o.value
-              ? 'border-[#00A3FF] bg-[#00A3FF] text-[#090D16]'
-              : 'border-white/10 text-[#94A3B8] hover:border-white/25 hover:text-[#F8FAFC]',
+              ? 'border-[#B8734E] bg-[#9E5B37] text-[#FFFDF8]'
+              : 'border-[#171717]/12 text-[#6B655C] hover:border-[#B8734E]/50 hover:text-[#171717]',
           )}
         >
           {o.label}
@@ -66,8 +66,8 @@ export function Facts({ rows }: { rows: [string, ReactNode][] }) {
     <dl className="grid gap-x-4 gap-y-2 text-sm sm:grid-cols-[160px_minmax(0,1fr)]">
       {rows.map(([label, value]) => (
         <div key={label} className="contents">
-          <dt className="text-xs font-semibold text-[#94A3B8] sm:pt-0.5">{label}</dt>
-          <dd className="mb-1 min-w-0 break-words text-[#F8FAFC] sm:mb-0">{value === null || value === undefined || value === '' ? '—' : value}</dd>
+          <dt className="text-xs font-semibold text-[#6B655C] sm:pt-0.5">{label}</dt>
+          <dd className="mb-1 min-w-0 break-words text-[#171717] sm:mb-0">{value === null || value === undefined || value === '' ? '—' : value}</dd>
         </div>
       ))}
     </dl>
@@ -78,7 +78,7 @@ export function Facts({ rows }: { rows: [string, ReactNode][] }) {
 export function DocumentPreview({ url, label }: { url: string | null | undefined; label: string }) {
   if (!url) {
     return (
-      <div className="flex h-36 items-center justify-center rounded-xl border border-dashed border-white/10 text-xs text-[#64748B]">
+      <div className="flex h-36 items-center justify-center rounded-xl border border-dashed border-[#171717]/12 text-xs text-[#6B655C]">
         No {label.toLowerCase()} provided
       </div>
     );
@@ -89,7 +89,7 @@ export function DocumentPreview({ url, label }: { url: string | null | undefined
         href={url}
         target="_blank"
         rel="noreferrer"
-        className="flex h-36 flex-col items-center justify-center gap-2 rounded-xl border border-white/10 bg-[#1E293B] text-sm font-semibold text-[#38BDF8] hover:border-[#00A3FF]/50"
+        className="flex h-36 flex-col items-center justify-center gap-2 rounded-xl border border-[#171717]/12 bg-[#FFFFFF] text-sm font-semibold text-[#8F5637] hover:border-[#B8734E]/50"
       >
         <FileText size={28} aria-hidden="true" />
         Open document <span className="sr-only">({label})</span>
@@ -97,9 +97,9 @@ export function DocumentPreview({ url, label }: { url: string | null | undefined
     );
   }
   return (
-    <a href={url} target="_blank" rel="noreferrer" className="group relative block h-36 overflow-hidden rounded-xl border border-white/10 bg-[#1E293B]">
+    <a href={url} target="_blank" rel="noreferrer" className="group relative block h-36 overflow-hidden rounded-xl border border-[#171717]/12 bg-[#FFFFFF]">
       <Image src={url} alt={label} fill sizes="(max-width: 640px) 100vw, 320px" className="object-cover transition group-hover:scale-[1.02]" />
-      <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-lg bg-[#090D16]/80 px-2 py-1 text-[11px] font-semibold text-[#F8FAFC]">
+      <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-lg bg-[#F5F0E8]/80 px-2 py-1 text-[11px] font-semibold text-[#171717]">
         <ExternalLink size={12} aria-hidden="true" /> Full size
       </span>
     </a>
@@ -108,9 +108,9 @@ export function DocumentPreview({ url, label }: { url: string | null | undefined
 
 export function Panel({ title, children, actions }: { title: string; children: ReactNode; actions?: ReactNode }) {
   return (
-    <section className="rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4 sm:p-5">
+    <section className="rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-4 sm:p-5">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-[#94A3B8]">{title}</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wider text-[#6B655C]">{title}</h2>
         {actions}
       </div>
       {children}
@@ -124,7 +124,7 @@ export function Alert({ tone = 'error', children }: { tone?: 'error' | 'success'
       role={tone === 'error' ? 'alert' : 'status'}
       className={cn(
         'rounded-xl border px-4 py-3 text-sm',
-        tone === 'error' ? 'border-[#ffb4ab]/30 bg-[#93000a]/20 text-[#ffdad6]' : 'border-[#10B981]/30 bg-[#10B981]/10 text-[#a7f3d0]',
+        tone === 'error' ? 'border-[#9B2C24]/30 bg-[#F6E3E0]/20 text-[#7A1F1A]' : 'border-[#2F6B4F]/30 bg-[#2F6B4F]/10 text-[#2F6B4F]',
       )}
     >
       {children}
@@ -136,7 +136,7 @@ export function Pager({ page, limit, total, onPage }: { page: number; limit: num
   const pages = Math.max(1, Math.ceil(total / limit));
   if (total <= limit) return null;
   return (
-    <nav className="flex items-center justify-between gap-3 text-sm text-[#94A3B8]" aria-label="Pages">
+    <nav className="flex items-center justify-between gap-3 text-sm text-[#6B655C]" aria-label="Pages">
       <span>
         {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
       </span>
@@ -163,13 +163,13 @@ export function SearchBox({ value, onChange, placeholder, label }: { value: stri
   return (
     <label className="relative flex min-w-[220px] flex-1 items-center sm:max-w-sm">
       <span className="sr-only">{label}</span>
-      <Search size={15} className="pointer-events-none absolute left-3 text-[#64748B]" aria-hidden="true" />
+      <Search size={15} className="pointer-events-none absolute left-3 text-[#6B655C]" aria-hidden="true" />
       <input
         type="search"
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-white/10 bg-[#0F172A]/80 py-2 pl-9 pr-3 text-sm text-[#F8FAFC] outline-none placeholder:text-[#64748B] focus:border-[#00A3FF]"
+        className="w-full rounded-xl border border-[#171717]/12 bg-[#FFFFFF]/80 py-2 pl-9 pr-3 text-sm text-[#171717] outline-none placeholder:text-[#6B655C] focus:border-[#B8734E]"
       />
     </label>
   );
@@ -177,12 +177,12 @@ export function SearchBox({ value, onChange, placeholder, label }: { value: stri
 
 export function Loading({ label }: { label: string }) {
   return (
-    <div className="flex justify-center py-12 text-[#94A3B8]" role="status">
+    <div className="flex justify-center py-12 text-[#6B655C]" role="status">
       <LoaderCircle className="animate-spin" size={24} aria-label={label} />
     </div>
   );
 }
 
 export function Empty({ children }: { children: ReactNode }) {
-  return <p className="rounded-2xl border border-dashed border-white/15 py-12 text-center text-sm text-[#94A3B8]">{children}</p>;
+  return <p className="rounded-2xl border border-dashed border-[#171717]/15 py-12 text-center text-sm text-[#6B655C]">{children}</p>;
 }

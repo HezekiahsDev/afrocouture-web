@@ -1,7 +1,7 @@
 /**
  * Who may open which page. Shared by the proxy (server, before any HTML is sent) and the
  * client guards, so the two never disagree. The API enforces the same rules on every
- * request (see afrocouture-api/docs/rbac.md); these checks keep people off pages whose
+ * request (see IPILE-api/docs/rbac.md); these checks keep people off pages whose
  * data they could never load, and send admins to their dashboard.
  */
 export type AppRole = 'customer' | 'tailor' | 'merchant' | 'admin';
@@ -77,7 +77,7 @@ export function decideAccess(pathname: string, role: AppRole | null, knownAccoun
 
 /**
  * Where to go after signing in or verifying: an account that never chose how it will use
- * AfroCouture goes back to that step (unless it was heading somewhere specific), so an
+ * IPILE goes back to that step (unless it was heading somewhere specific), so an
  * abandoned sign-up resumes where it stopped.
  */
 export function landingAfterAuth(

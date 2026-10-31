@@ -25,7 +25,7 @@ const STATUS_LABEL: Record<OrderStatus, string> = {
   cancelled: 'Cancelled',
 };
 const ROLE_LABEL = { customer: 'Customers', tailor: 'Artisans', merchant: 'Merchants', admin: 'Admins' } as const;
-const card = 'rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-5';
+const card = 'rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-5';
 
 export function OverviewDashboard() {
   const { result, retry } = useRemote(getOverview, []);
@@ -33,7 +33,7 @@ export function OverviewDashboard() {
     <>
       <AdminHeading kicker="Admin" title="Overview" />
       {result.state === 'loading' && (
-        <div className="flex justify-center py-24 text-[#94A3B8]" role="status">
+        <div className="flex justify-center py-24 text-[#6B655C]" role="status">
           <Spinner label="Loading overview" />
         </div>
       )}
@@ -65,23 +65,23 @@ function Dashboard({ data }: { data: AdminOverview }) {
               href={href}
               className={cn(
                 card,
-                'group flex items-center gap-4 transition-colors hover:border-[#00A3FF]/40',
-                urgent && value > 0 && 'border-[#ffb4ab]/30',
+                'group flex items-center gap-4 transition-colors hover:border-[#B8734E]/40',
+                urgent && value > 0 && 'border-[#9B2C24]/30',
               )}
             >
               <span
                 className={cn(
                   'grid h-11 w-11 place-items-center rounded-xl',
-                  urgent && value > 0 ? 'bg-[#93000a]/30 text-[#ffb4ab]' : 'bg-[#00A3FF]/10 text-[#38BDF8]',
+                  urgent && value > 0 ? 'bg-[#F6E3E0]/30 text-[#9B2C24]' : 'bg-[#B8734E]/10 text-[#7A4429]',
                 )}
               >
                 <Icon size={20} aria-hidden="true" />
               </span>
               <span className="flex-1">
-                <span className="block text-2xl font-extrabold tabular-nums text-[#F8FAFC]">{value}</span>
-                <span className="block text-xs text-[#94A3B8]">{label}</span>
+                <span className="block text-2xl font-extrabold tabular-nums text-[#171717]">{value}</span>
+                <span className="block text-xs text-[#6B655C]">{label}</span>
               </span>
-              <ArrowRight size={16} className="text-[#64748B] transition group-hover:translate-x-0.5 group-hover:text-[#38BDF8]" aria-hidden="true" />
+              <ArrowRight size={16} className="text-[#6B655C] transition group-hover:translate-x-0.5 group-hover:text-[#8F5637]" aria-hidden="true" />
             </Link>
           ))}
         </div>
@@ -103,18 +103,18 @@ function Dashboard({ data }: { data: AdminOverview }) {
 
       <div className="grid gap-6 xl:grid-cols-3">
         <section className={card} aria-labelledby="status-heading">
-          <h2 id="status-heading" className="mb-4 text-sm font-bold uppercase tracking-wider text-[#94A3B8]">
-            Orders by status <span className="ml-1 font-normal normal-case tracking-normal text-[#64748B]">· {orders.total} total</span>
+          <h2 id="status-heading" className="mb-4 text-sm font-bold uppercase tracking-wider text-[#6B655C]">
+            Orders by status <span className="ml-1 font-normal normal-case tracking-normal text-[#6B655C]">· {orders.total} total</span>
           </h2>
           <ul className="flex flex-col gap-2">
             {statusRows.map(({ status, count }) => (
               <li key={status}>
-                <Link href={`/admin/orders?status=${status}`} className="grid grid-cols-[110px_minmax(0,1fr)_36px] items-center gap-3 text-xs hover:text-[#F8FAFC]">
-                  <span className="text-[#CBD5E1]">{STATUS_LABEL[status]}</span>
-                  <span className="h-2 overflow-hidden rounded-full bg-white/[0.05]">
-                    <span className="block h-full rounded-full bg-[#00A3FF]" style={{ width: `${(count / maxStatus) * 100}%` }} />
+                <Link href={`/admin/orders?status=${status}`} className="grid grid-cols-[110px_minmax(0,1fr)_36px] items-center gap-3 text-xs hover:text-[#171717]">
+                  <span className="text-[#4B453E]">{STATUS_LABEL[status]}</span>
+                  <span className="h-2 overflow-hidden rounded-full bg-[#171717]/5">
+                    <span className="block h-full rounded-full bg-[#B8734E]" style={{ width: `${(count / maxStatus) * 100}%` }} />
                   </span>
-                  <span className="text-right tabular-nums text-[#F8FAFC]">{count}</span>
+                  <span className="text-right tabular-nums text-[#171717]">{count}</span>
                 </Link>
               </li>
             ))}
@@ -122,38 +122,38 @@ function Dashboard({ data }: { data: AdminOverview }) {
         </section>
 
         <section className={card} aria-labelledby="users-heading">
-          <h2 id="users-heading" className="mb-4 text-sm font-bold uppercase tracking-wider text-[#94A3B8]">People</h2>
-          <p className="text-3xl font-extrabold tabular-nums text-[#F8FAFC]">{users.total}</p>
-          <p className="mb-4 text-xs text-[#94A3B8]">
+          <h2 id="users-heading" className="mb-4 text-sm font-bold uppercase tracking-wider text-[#6B655C]">People</h2>
+          <p className="text-3xl font-extrabold tabular-nums text-[#171717]">{users.total}</p>
+          <p className="mb-4 text-xs text-[#6B655C]">
             {users.newLast7d} joined in the last 7 days · {users.suspended} suspended
           </p>
           <dl className="grid grid-cols-2 gap-3">
             {(Object.keys(ROLE_LABEL) as (keyof typeof ROLE_LABEL)[]).map((role) => (
-              <Link key={role} href={`/admin/users?role=${role}`} className="rounded-xl bg-white/[0.03] p-3 hover:bg-white/[0.06]">
-                <dt className="text-xs text-[#94A3B8]">{ROLE_LABEL[role]}</dt>
-                <dd className="text-lg font-bold tabular-nums text-[#F8FAFC]">{users.byRole[role] ?? 0}</dd>
+              <Link key={role} href={`/admin/users?role=${role}`} className="rounded-xl bg-[#171717]/3 p-3 hover:bg-[#171717]/6">
+                <dt className="text-xs text-[#6B655C]">{ROLE_LABEL[role]}</dt>
+                <dd className="text-lg font-bold tabular-nums text-[#171717]">{users.byRole[role] ?? 0}</dd>
               </Link>
             ))}
           </dl>
-          <div className="mt-4 border-t border-white/[0.06] pt-4">
-            <p className="text-xs text-[#94A3B8]">Reviews</p>
-            <p className="text-sm text-[#F8FAFC]">
+          <div className="mt-4 border-t border-[#171717]/8 pt-4">
+            <p className="text-xs text-[#6B655C]">Reviews</p>
+            <p className="text-sm text-[#171717]">
               {reviews.count} visible · average {reviews.average?.toFixed(1) ?? '—'} · {reviews.last7d} this week
             </p>
           </div>
         </section>
 
         <section className={card} aria-labelledby="activity-heading">
-          <h2 id="activity-heading" className="mb-4 text-sm font-bold uppercase tracking-wider text-[#94A3B8]">Recent activity</h2>
+          <h2 id="activity-heading" className="mb-4 text-sm font-bold uppercase tracking-wider text-[#6B655C]">Recent activity</h2>
           {data.recentActivity.length === 0 ? (
-            <p className="text-sm text-[#64748B]">No order activity yet.</p>
+            <p className="text-sm text-[#6B655C]">No order activity yet.</p>
           ) : (
             <ol className="flex flex-col gap-3">
               {data.recentActivity.map((e) => (
                 <li key={e.id}>
-                  <Link href={`/admin/orders/${e.orderId}`} className="block rounded-lg hover:bg-white/[0.03]">
-                    <span className="block text-sm text-[#E2E8F0]">{e.label}</span>
-                    <span className="block text-[11px] text-[#64748B]">
+                  <Link href={`/admin/orders/${e.orderId}`} className="block rounded-lg hover:bg-[#171717]/3">
+                    <span className="block text-sm text-[#2A2622]">{e.label}</span>
+                    <span className="block text-[11px] text-[#6B655C]">
                       <span className="font-mono">{e.reference}</span> ·{' '}
                       {new Date(e.createdAt).toLocaleString('en-NG', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                     </span>
@@ -171,9 +171,9 @@ function Dashboard({ data }: { data: AdminOverview }) {
 function Stat({ label, value, hint }: { label: string; value: string; hint: string }) {
   return (
     <div className={card}>
-      <p className="text-xs text-[#94A3B8]">{label}</p>
-      <p className="mt-1 text-2xl font-extrabold tabular-nums text-[#F8FAFC]">{value}</p>
-      <p className="mt-1 text-[11px] text-[#64748B]">{hint}</p>
+      <p className="text-xs text-[#6B655C]">{label}</p>
+      <p className="mt-1 text-2xl font-extrabold tabular-nums text-[#171717]">{value}</p>
+      <p className="mt-1 text-[11px] text-[#6B655C]">{hint}</p>
     </div>
   );
 }
@@ -195,12 +195,12 @@ function TrendChart({ days }: { days: AdminOverview['orders']['last30d'] }) {
     <section className={card} aria-labelledby="trend-heading">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 id="trend-heading" className="text-sm font-bold uppercase tracking-wider text-[#94A3B8]">
+          <h2 id="trend-heading" className="text-sm font-bold uppercase tracking-wider text-[#6B655C]">
             {measure === 'gmv' ? 'Paid order value' : 'New orders'}, last 30 days
           </h2>
-          <p className="mt-1 text-xl font-extrabold tabular-nums text-[#F8FAFC]">
+          <p className="mt-1 text-xl font-extrabold tabular-nums text-[#171717]">
             {shown === null ? fmt(total) : fmt(values[shown])}
-            <span className="ml-2 text-xs font-normal text-[#64748B]">{shown === null ? '30-day total' : dayLabel(days[shown].date)}</span>
+            <span className="ml-2 text-xs font-normal text-[#6B655C]">{shown === null ? '30-day total' : dayLabel(days[shown].date)}</span>
           </p>
         </div>
         <Chips
@@ -229,21 +229,21 @@ function TrendChart({ days }: { days: AdminOverview['orders']['last30d'] }) {
             <g key={d.date} onMouseEnter={() => setHover(i)}>
               {/* Hit target taller than the bar. */}
               <rect x={x} y={0} width={barW + gap} height={H} fill="transparent" />
-              {h > 0 && <rect x={x} y={H - h} width={barW} height={h} rx={3} fill={hover === i ? '#38BDF8' : '#00A3FF'} />}
+              {h > 0 && <rect x={x} y={H - h} width={barW} height={h} rx={3} fill={hover === i ? '#8F5637' : '#B8734E'} />}
               <title>{`${dayLabel(d.date)}: ${fmt(values[i])}`}</title>
             </g>
           );
         })}
       </svg>
-      <div className="mt-1 flex justify-between text-[11px] text-[#64748B]">
+      <div className="mt-1 flex justify-between text-[11px] text-[#6B655C]">
         <span>{dayLabel(days[0]?.date ?? '')}</span>
         <span>{dayLabel(days[days.length - 1]?.date ?? '')}</span>
       </div>
-      <details className="mt-3 text-xs text-[#94A3B8]">
+      <details className="mt-3 text-xs text-[#6B655C]">
         <summary className="cursor-pointer select-none">Show as table</summary>
         <table className="mt-2 w-full text-left">
           <thead>
-            <tr className="text-[#64748B]">
+            <tr className="text-[#6B655C]">
               <th className="py-1 font-semibold">Day</th>
               <th className="py-1 text-right font-semibold">Orders</th>
               <th className="py-1 text-right font-semibold">Paid value</th>
@@ -251,7 +251,7 @@ function TrendChart({ days }: { days: AdminOverview['orders']['last30d'] }) {
           </thead>
           <tbody>
             {days.map((d) => (
-              <tr key={d.date} className="border-t border-white/[0.04]">
+              <tr key={d.date} className="border-t border-[#171717]/6">
                 <td className="py-1">{dayLabel(d.date)}</td>
                 <td className="py-1 text-right tabular-nums">{d.count}</td>
                 <td className="py-1 text-right tabular-nums">{naira(d.gmv)}</td>

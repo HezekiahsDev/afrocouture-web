@@ -5,8 +5,8 @@ import Footer from "@/components/layout/Footer";
 import RoleSelection from "@/components/onboarding/RoleSelection";
 
 export const metadata: Metadata = {
-  title: "Join the atelier | AfroCouture",
-  description: "Choose your place in the AfroCouture atelier.",
+  title: "Join the atelier | IPILE",
+  description: "Choose your place in the IPILE atelier.",
 };
 
 async function RoleSelectionContent({

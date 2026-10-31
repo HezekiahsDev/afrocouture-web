@@ -53,7 +53,7 @@ export function DisputeDetail({ id }: { id: string }) {
   }
   if (!order) {
     return (
-      <div className="flex justify-center py-20 text-[#94A3B8]">
+      <div className="flex justify-center py-20 text-[#6B655C]">
         <LoaderCircle className="animate-spin" size={26} aria-label="Loading order" />
       </div>
     );
@@ -64,20 +64,20 @@ export function DisputeDetail({ id }: { id: string }) {
     <div className="flex flex-col gap-5">
       <Link
         href={order.status === 'disputed' ? '/admin/orders?status=disputed' : '/admin/orders'}
-        className="inline-flex w-fit items-center gap-2 text-xs font-bold text-[#94A3B8] hover:text-[#00A3FF]"
+        className="inline-flex w-fit items-center gap-2 text-xs font-bold text-[#6B655C] hover:text-[#B8734E]"
       >
         <ArrowLeft size={15} aria-hidden="true" /> {order.status === 'disputed' ? 'Back to disputes' : 'All orders'}
       </Link>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="font-mono text-xs font-bold text-[#38BDF8]">{order.reference}</p>
-          <h1 className="mt-1 text-2xl font-extrabold text-[#F8FAFC]">{order.garmentType}</h1>
-          <p className="mt-1 text-sm text-[#94A3B8]">
-            <Link href={`/admin/users/${order.customerId}`} className="text-[#CBD5E1] hover:text-[#38BDF8]">
+          <p className="font-mono text-xs font-bold text-[#8F5637]">{order.reference}</p>
+          <h1 className="mt-1 text-2xl font-extrabold text-[#171717]">{order.garmentType}</h1>
+          <p className="mt-1 text-sm text-[#6B655C]">
+            <Link href={`/admin/users/${order.customerId}`} className="text-[#4B453E] hover:text-[#8F5637]">
               {order.customer.fullName ?? 'Customer'}
             </Link>{' '}
             commissioned{' '}
-            <Link href={`/admin/users/${order.tailorUserId}`} className="text-[#CBD5E1] hover:text-[#38BDF8]">
+            <Link href={`/admin/users/${order.tailorUserId}`} className="text-[#4B453E] hover:text-[#8F5637]">
               {tailorName}
             </Link>{' '}
             · {fmtDate(order.createdAt)}
@@ -89,9 +89,9 @@ export function DisputeDetail({ id }: { id: string }) {
       </div>
 
       {order.disputeReason && (
-        <div className="rounded-2xl border border-[#ffb4ab]/30 bg-[#93000a]/15 p-4">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-[#ffb4ab]">Customer’s dispute · {fmtDate(order.disputedAt)}</p>
-          <p className="mt-1.5 text-sm text-[#F8FAFC]">{order.disputeReason}</p>
+        <div className="rounded-2xl border border-[#9B2C24]/30 bg-[#F6E3E0]/15 p-4">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-[#9B2C24]">Customer’s dispute · {fmtDate(order.disputedAt)}</p>
+          <p className="mt-1.5 text-sm text-[#171717]">{order.disputeReason}</p>
         </div>
       )}
       {order.resolutionNote && order.status !== 'disputed' && (
@@ -116,7 +116,7 @@ export function DisputeDetail({ id }: { id: string }) {
             {order.referenceImageUrls.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {order.referenceImageUrls.map((url) => (
-                  <a key={url} href={url} target="_blank" rel="noreferrer" className="relative h-20 w-20 overflow-hidden rounded-lg bg-[#1E293B]">
+                  <a key={url} href={url} target="_blank" rel="noreferrer" className="relative h-20 w-20 overflow-hidden rounded-lg bg-[#FFFFFF]">
                     <Image src={url} alt="Reference" fill sizes="80px" className="object-cover" />
                   </a>
                 ))}
@@ -129,12 +129,12 @@ export function DisputeDetail({ id }: { id: string }) {
               <ul className="divide-y divide-white/[0.06]">
                 {order.items.map((item) => (
                   <li key={item.id} className="flex items-center gap-3 py-2.5 text-sm">
-                    <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#1E293B]">
+                    <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-[#FFFFFF]">
                       <Image src={item.imageUrl} alt="" fill sizes="40px" className="object-cover" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[#F8FAFC]">{item.fabricName}</span>
-                      <span className="block text-xs text-[#94A3B8]">
+                      <span className="block truncate text-[#171717]">{item.fabricName}</span>
+                      <span className="block text-xs text-[#6B655C]">
                         {item.quantity} {item.unit}s × {naira(item.unitPrice)} · {item.fulfilment}
                       </span>
                     </span>
@@ -146,12 +146,12 @@ export function DisputeDetail({ id }: { id: string }) {
           )}
 
           <Panel title="Timeline">
-            <ol className="relative space-y-3 border-l border-white/10 pl-4">
+            <ol className="relative space-y-3 border-l border-[#171717]/12 pl-4">
               {order.events.map((event) => (
                 <li key={event.id} className="text-sm">
-                  <span className="absolute -left-[5px] mt-1.5 h-2.5 w-2.5 rounded-full bg-[#00A3FF]" aria-hidden="true" />
-                  <span className="block text-[#F8FAFC]">{event.label}</span>
-                  <span className="block text-xs text-[#64748B]">{fmtDate(event.createdAt)}</span>
+                  <span className="absolute -left-[5px] mt-1.5 h-2.5 w-2.5 rounded-full bg-[#B8734E]" aria-hidden="true" />
+                  <span className="block text-[#171717]">{event.label}</span>
+                  <span className="block text-xs text-[#6B655C]">{fmtDate(event.createdAt)}</span>
                 </li>
               ))}
             </ol>
@@ -169,9 +169,9 @@ export function DisputeDetail({ id }: { id: string }) {
                   ['Balance', order.escrow.balance],
                 ] as const
               ).map(([label, value]) => (
-                <div key={label} className="rounded-xl bg-[#090D16]/60 p-3">
-                  <p className="text-xs text-[#94A3B8]">{label}</p>
-                  <p className={cn('mt-0.5 font-bold tabular-nums', label === 'Balance' ? 'text-[#38BDF8]' : 'text-[#F8FAFC]')}>{naira(value)}</p>
+                <div key={label} className="rounded-xl bg-[#F5F0E8]/60 p-3">
+                  <p className="text-xs text-[#6B655C]">{label}</p>
+                  <p className={cn('mt-0.5 font-bold tabular-nums', label === 'Balance' ? 'text-[#8F5637]' : 'text-[#171717]')}>{naira(value)}</p>
                 </div>
               ))}
             </div>
@@ -180,11 +180,11 @@ export function DisputeDetail({ id }: { id: string }) {
                 {order.escrowTransactions.map((tx) => (
                   <li key={tx.id} className="flex items-center justify-between gap-2 py-2">
                     <span className="min-w-0">
-                      <span className="block text-[#F8FAFC]">{TX_LABEL[tx.type]}</span>
-                      <span className="block text-[#64748B]">{fmtDate(tx.createdAt)}</span>
+                      <span className="block text-[#171717]">{TX_LABEL[tx.type]}</span>
+                      <span className="block text-[#6B655C]">{fmtDate(tx.createdAt)}</span>
                     </span>
                     <span className="text-right">
-                      <span className="block font-semibold tabular-nums text-[#F8FAFC]">{naira(tx.amount)}</span>
+                      <span className="block font-semibold tabular-nums text-[#171717]">{naira(tx.amount)}</span>
                       <Pill tone={tx.status === 'success' ? 'green' : tx.status === 'failed' ? 'red' : 'amber'}>{tx.status}</Pill>
                     </span>
                   </li>
@@ -275,7 +275,7 @@ function ResolveForm({ order, onResolved }: { order: Order; onResolved: (order: 
               key={value}
               className={cn(
                 'flex cursor-pointer items-start gap-3 rounded-xl border p-3',
-                outcome === value ? 'border-[#00A3FF] bg-[#00A3FF]/10' : 'border-white/10',
+                outcome === value ? 'border-[#B8734E] bg-[#B8734E]/10' : 'border-[#171717]/12',
               )}
             >
               <input
@@ -287,11 +287,11 @@ function ResolveForm({ order, onResolved }: { order: Order; onResolved: (order: 
                   setOutcome(value);
                   setConfirming(false);
                 }}
-                className="mt-0.5 accent-[#00A3FF]"
+                className="mt-0.5 accent-[#B8734E]"
               />
               <span>
-                <span className="block text-sm font-semibold text-[#F8FAFC]">{title}</span>
-                <span className="block text-xs text-[#94A3B8]">{desc}</span>
+                <span className="block text-sm font-semibold text-[#171717]">{title}</span>
+                <span className="block text-xs text-[#6B655C]">{desc}</span>
               </span>
             </label>
           ))}
@@ -299,7 +299,7 @@ function ResolveForm({ order, onResolved }: { order: Order; onResolved: (order: 
 
         {outcome === 'refund' && (
           <label className="flex flex-col gap-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">Refund amount (₦)</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">Refund amount (₦)</span>
             <input
               inputMode="numeric"
               value={amount}
@@ -309,14 +309,14 @@ function ResolveForm({ order, onResolved }: { order: Order; onResolved: (order: 
               }}
               placeholder={`Full balance: ${balance.toLocaleString('en-NG')}`}
               aria-invalid={amountError ? true : undefined}
-              className="rounded-xl border border-white/10 bg-[#090D16] px-3.5 py-2.5 text-sm tabular-nums text-[#F8FAFC] outline-none focus:border-[#00A3FF]"
+              className="rounded-xl border border-[#171717]/12 bg-[#F5F0E8] px-3.5 py-2.5 text-sm tabular-nums text-[#171717] outline-none focus:border-[#B8734E]"
             />
-            <span className="text-[11px] text-[#64748B]">Leave blank to refund everything still in escrow.</span>
+            <span className="text-[11px] text-[#6B655C]">Leave blank to refund everything still in escrow.</span>
           </label>
         )}
 
         <label className="flex flex-col gap-1.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">Decision note (sent to both parties)</span>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">Decision note (sent to both parties)</span>
           <textarea
             value={note}
             onChange={(e) => {
@@ -325,15 +325,15 @@ function ResolveForm({ order, onResolved }: { order: Order; onResolved: (order: 
             }}
             rows={3}
             maxLength={1000}
-            className="rounded-xl border border-white/10 bg-[#090D16] px-3.5 py-2.5 text-sm text-[#F8FAFC] outline-none focus:border-[#00A3FF]"
+            className="rounded-xl border border-[#171717]/12 bg-[#F5F0E8] px-3.5 py-2.5 text-sm text-[#171717] outline-none focus:border-[#B8734E]"
           />
         </label>
 
         {error && <Alert>{error}</Alert>}
 
         {confirming ? (
-          <div className="flex flex-col gap-3 rounded-xl border border-[#FBBF24]/30 bg-[#FBBF24]/10 p-3">
-            <p className="text-sm text-[#fde68a]" data-testid="resolve-summary">
+          <div className="flex flex-col gap-3 rounded-xl border border-[#B8734E]/30 bg-[#B8734E]/10 p-3">
+            <p className="text-sm text-[#8A6A1F]" data-testid="resolve-summary">
               <Scale size={15} className="mr-1.5 inline" aria-hidden="true" />
               {summary} This moves money and can’t be undone.
             </p>
@@ -377,8 +377,8 @@ function ReviewModeration({ order, onChange }: { order: Order; onChange: () => P
     <Panel title="Customer review" actions={hidden ? <Pill tone="amber">Hidden</Pill> : undefined}>
       <div className="flex flex-col gap-2 text-sm">
         <Stars rating={order.rating ?? 0} />
-        <p className="text-[#CBD5E1]">{order.review ? `“${order.review}”` : 'No written review.'}</p>
-        {order.reviewReply && <p className="text-xs text-[#94A3B8]">Artisan replied: “{order.reviewReply}”</p>}
+        <p className="text-[#4B453E]">{order.review ? `“${order.review}”` : 'No written review.'}</p>
+        {order.reviewReply && <p className="text-xs text-[#6B655C]">Artisan replied: “{order.reviewReply}”</p>}
         {error && <Alert>{error}</Alert>}
         <button type="button" className="btn-ghost mt-1 self-start px-3 py-1.5" onClick={toggle} disabled={busy}>
           {hidden ? <Eye size={14} aria-hidden="true" /> : <EyeOff size={14} aria-hidden="true" />}
@@ -400,29 +400,29 @@ function Conversation({ order }: { order: Order }) {
   }, [order.id]);
 
   const who = (m: ChatMessage) =>
-    m.senderId === null ? 'AfroCouture' : m.senderId === order.customerId ? (order.customer.fullName ?? 'Customer') : (order.tailor?.displayName ?? 'Artisan');
+    m.senderId === null ? 'IPILE' : m.senderId === order.customerId ? (order.customer.fullName ?? 'Customer') : (order.tailor?.displayName ?? 'Artisan');
 
   return (
-    <Panel title="Conversation" actions={<span className="text-[11px] text-[#64748B]">Read only</span>}>
+    <Panel title="Conversation" actions={<span className="text-[11px] text-[#6B655C]">Read only</span>}>
       {error && <Alert>{error}</Alert>}
       {!messages && !error && (
-        <div className="flex justify-center py-6 text-[#94A3B8]">
+        <div className="flex justify-center py-6 text-[#6B655C]">
           <LoaderCircle className="animate-spin" size={20} aria-label="Loading conversation" />
         </div>
       )}
-      {messages && messages.length === 0 && <p className="text-sm text-[#64748B]">No messages.</p>}
+      {messages && messages.length === 0 && <p className="text-sm text-[#6B655C]">No messages.</p>}
       {messages && messages.length > 0 && (
         <ol className="flex max-h-[480px] flex-col gap-3 overflow-y-auto pr-1" data-testid="admin-chat">
           {messages.map((m) => (
             <li key={m.id} className={cn('text-sm', m.senderId === null && 'text-center')}>
               {m.senderId === null ? (
-                <span className="inline-block rounded-full bg-white/[0.04] px-3 py-1 text-xs text-[#94A3B8]">{m.content}</span>
+                <span className="inline-block rounded-full bg-[#171717]/4 px-3 py-1 text-xs text-[#6B655C]">{m.content}</span>
               ) : (
-                <div className={cn('rounded-xl p-3', m.senderId === order.customerId ? 'bg-[#1E293B]' : 'bg-[#00A3FF]/10')}>
-                  <p className="mb-1 text-[11px] font-semibold text-[#94A3B8]">
+                <div className={cn('rounded-xl p-3', m.senderId === order.customerId ? 'bg-[#FFFFFF]' : 'bg-[#B8734E]/10')}>
+                  <p className="mb-1 text-[11px] font-semibold text-[#6B655C]">
                     {who(m)} · {fmtDate(m.createdAt)}
                   </p>
-                  {m.content && <p className="whitespace-pre-line text-[#E2E8F0]">{m.content}</p>}
+                  {m.content && <p className="whitespace-pre-line text-[#2A2622]">{m.content}</p>}
                   {m.attachmentUrl && (
                     <a href={m.attachmentUrl} target="_blank" rel="noreferrer" className="relative mt-2 block h-32 w-32 overflow-hidden rounded-lg">
                       <Image src={m.attachmentUrl} alt="Attachment" fill sizes="128px" className="object-cover" />

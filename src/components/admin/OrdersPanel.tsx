@@ -52,17 +52,17 @@ export function OrdersPanel() {
                 <Link
                   href={`/admin/orders/${o.id}`}
                   data-testid="order-row"
-                  className="grid gap-3 rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4 transition-colors hover:border-[#00A3FF]/40 md:grid-cols-[150px_minmax(0,1fr)_120px_130px_20px] md:items-center"
+                  className="grid gap-3 rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-4 transition-colors hover:border-[#B8734E]/40 md:grid-cols-[150px_minmax(0,1fr)_120px_130px_20px] md:items-center"
                 >
                   <span>
-                    <span className="block font-mono text-sm font-bold text-[#F8FAFC]">{o.reference}</span>
-                    <span className="block text-xs text-[#94A3B8]">{o.garmentType}</span>
+                    <span className="block font-mono text-sm font-bold text-[#171717]">{o.reference}</span>
+                    <span className="block text-xs text-[#6B655C]">{o.garmentType}</span>
                   </span>
                   <span className="min-w-0">
-                    <span className="block truncate text-sm text-[#F8FAFC]">
+                    <span className="block truncate text-sm text-[#171717]">
                       {o.customer.fullName ?? 'Customer'} → {o.tailor?.atelierName ?? o.tailor?.displayName ?? 'Artisan'}
                     </span>
-                    <span className="block truncate text-xs text-[#94A3B8]">
+                    <span className="block truncate text-xs text-[#6B655C]">
                       {o.status === 'disputed' && o.disputeReason ? `“${o.disputeReason}”` : (o.resolutionNote ?? o.brief)}
                     </span>
                   </span>
@@ -70,10 +70,10 @@ export function OrdersPanel() {
                     <StatusPill status={o.status} />
                   </span>
                   <span className="text-sm md:text-right">
-                    <span className="block font-semibold tabular-nums text-[#F8FAFC]">{o.totalAmount ? naira(o.totalAmount) : '—'}</span>
-                    <span className="block text-xs text-[#94A3B8]">{fmtDate(o.disputedAt ?? o.createdAt)}</span>
+                    <span className="block font-semibold tabular-nums text-[#171717]">{o.totalAmount ? naira(o.totalAmount) : '—'}</span>
+                    <span className="block text-xs text-[#6B655C]">{fmtDate(o.disputedAt ?? o.createdAt)}</span>
                   </span>
-                  <ChevronRight size={16} className="hidden text-[#64748B] md:block" aria-hidden="true" />
+                  <ChevronRight size={16} className="hidden text-[#6B655C] md:block" aria-hidden="true" />
                 </Link>
               </li>
             ))}

@@ -88,7 +88,7 @@ export default function ForgotPasswordForm({ email: initialEmail }: { email?: st
           "Enter your email and we'll send you a 6-digit code to reset it."
         ) : (
           <>
-            If an account exists for <strong className="text-[#F8FAFC]">{email.trim()}</strong>, a code is on its way.
+            If an account exists for <strong className="text-[#171717]">{email.trim()}</strong>, a code is on its way.
             It expires in 10 minutes.
           </>
         )
@@ -96,7 +96,7 @@ export default function ForgotPasswordForm({ email: initialEmail }: { email?: st
       footer={
         <>
           Remembered it?{' '}
-          <Link href={signInHref} className="font-semibold text-[#38BDF8] hover:underline">
+          <Link href={signInHref} className="font-semibold text-[#8F5637] hover:underline">
             Back to sign in
           </Link>
         </>
@@ -126,7 +126,7 @@ export default function ForgotPasswordForm({ email: initialEmail }: { email?: st
       ) : (
         <form onSubmit={reset} noValidate className="flex flex-col gap-5">
           <div className="flex flex-col gap-1.5">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">Reset code</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">Reset code</span>
             <CodeInput value={code} onChange={setCode} disabled={submitting} />
           </div>
           <AuthField label="New password" hint="At least 8 characters, with a letter and a number.">
@@ -151,7 +151,7 @@ export default function ForgotPasswordForm({ email: initialEmail }: { email?: st
               setCode('');
               setError('');
             }}
-            className="text-sm font-semibold text-[#38BDF8] hover:underline"
+            className="text-sm font-semibold text-[#8F5637] hover:underline"
           >
             Use a different email or resend the code
           </button>

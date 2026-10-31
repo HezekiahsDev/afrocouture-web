@@ -1,13 +1,22 @@
-# AfroCouture AI — Frontend Web Client
+# IPILE — Frontend Web Client
 
-Africa's premier AI-powered bespoke couture & artisan marketplace frontend.
+Contemporary African luxury — **crafted around you**. The IPILE web client is the
+customer, maker, merchant, and admin front end for a bespoke African fashion marketplace.
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router) + React 19
-- **Styling**: Tailwind CSS 4 + Glassmorphic Design System tokens
-- **Typography**: Plus Jakarta Sans & Inter
+- **Styling**: Tailwind CSS 4 + IPILE editorial design tokens
+- **Typography**: Cormorant Garamond (editorial) & Inter (interface)
 - **Networking**: Axios + Socket.IO Client
+
+## Brand
+
+- Warm Ivory `#F5F0E8` canvas, Obsidian Black `#171717` chrome and type
+- Craft Copper `#B8734E` accents, Ink Blue `#1F2A42` depth
+- Logo: `public/img/logo.png` (ivory/copper, for dark surfaces) and
+  `public/img/logo-ink-trim.png` (ink variant for light surfaces)
+- Full design guidance: [`docs/DESIGN.md`](docs/DESIGN.md)
 
 ## Quick Start
 

@@ -235,10 +235,10 @@ function PriceTiers({ fabric, qty }: { fabric: Fabric; qty: number }) {
   const plural = fabric.unit === "bundle" ? "bundles" : "yards";
   return (
     <div className="mt-5" aria-label="Wholesale pricing">
-      <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">
+      <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">
         Buy more, pay less per {fabric.unit}
       </p>
-      <table className="w-full overflow-hidden rounded-xl border border-white/[0.08] text-sm">
+      <table className="w-full overflow-hidden rounded-xl border border-[#171717]/10 text-sm">
         <tbody>
           {rows.map((row) => {
             const active = qty >= row.from && (row.to === null || qty <= row.to);
@@ -248,8 +248,8 @@ function PriceTiers({ fabric, qty }: { fabric: Fabric; qty: number }) {
                 data-active={active ? "true" : undefined}
                 className={
                   active
-                    ? "bg-[#00A3FF]/15 text-[#F8FAFC]"
-                    : "text-[#94A3B8] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-white/[0.06]"
+                    ? "bg-[#B8734E]/15 text-[#171717]"
+                    : "text-[#6B655C] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-[#171717]/8"
                 }
               >
                 <td className="px-3.5 py-2">
@@ -257,7 +257,7 @@ function PriceTiers({ fabric, qty }: { fabric: Fabric; qty: number }) {
                 </td>
                 <td className="px-3.5 py-2 text-right font-semibold tabular-nums">
                   {naira(row.price)} / {fabric.unit}
-                  {active && <Check size={14} className="ml-1.5 inline text-[#00A3FF]" aria-label="Your price" />}
+                  {active && <Check size={14} className="ml-1.5 inline text-[#B8734E]" aria-label="Your price" />}
                 </td>
               </tr>
             );
@@ -390,7 +390,7 @@ function FabricDetail({ fabric }: { fabric: Fabric }) {
           <strong data-testid="fabric-subtotal">{naira(unitPrice * qty)}</strong>
         </div>
         {savings > 0 && (
-          <p className="-mt-2 mb-3 text-right text-xs font-semibold text-[#10B981]" data-testid="fabric-savings">
+          <p className="-mt-2 mb-3 text-right text-xs font-semibold text-[#2F6B4F]" data-testid="fabric-savings">
             You save {naira(savings)} with the wholesale price
           </p>
         )}
@@ -433,7 +433,7 @@ function FabricDetail({ fabric }: { fabric: Fabric }) {
           <span>
             <ShieldCheck size={17} />
             {fabric.merchant.verified
-              ? "Merchant verified by AfroCouture"
+              ? "Merchant verified by IPILE"
               : "Sample listing for this preview"}
           </span>
         </div>

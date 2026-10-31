@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import NewOrderForm from "@/components/orders/NewOrderForm";
 
 export const metadata: Metadata = {
-  title: "Request a commission | AfroCouture",
+  title: "Request a commission | IPILE",
   description: "Ask a verified artisan to make your piece.",
 };
 

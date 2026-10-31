@@ -4,8 +4,8 @@ import Navbar from "@/components/layout/Navbar";
 import SignInForm from "@/components/auth/SignInForm";
 
 export const metadata: Metadata = {
-  title: "Sign in | AfroCouture",
-  description: "Sign in to your AfroCouture account.",
+  title: "Sign in | IPILE",
+  description: "Sign in to your IPILE account.",
 };
 
 type Params = { next?: string; email?: string; reason?: string };

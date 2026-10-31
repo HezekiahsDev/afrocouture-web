@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import FabricExplorer from "@/components/marketplace/FabricExplorer";
 
 export const metadata: Metadata = {
-  title: "Fabric Explorer | AfroCouture",
+  title: "Fabric Explorer | IPILE",
   description: "Explore beautiful African textiles and plan your next garment.",
 };
 

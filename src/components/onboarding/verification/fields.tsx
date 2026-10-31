@@ -8,9 +8,9 @@ import { cn } from '@/lib/utils';
 import type { UploadPurpose } from '@/types';
 
 const inputClass = cn(
-  'w-full rounded-xl border border-white/10 bg-[#0F172A]/80 px-3.5 py-2.5 text-sm text-[#F8FAFC]',
-  'placeholder:text-[#64748B] outline-none transition-[border-color,box-shadow]',
-  'focus:border-[#00A3FF] focus:shadow-[0_0_0_3px_rgba(0,163,255,0.15)]',
+  'w-full rounded-xl border border-[#171717]/12 bg-[#FFFFFF]/80 px-3.5 py-2.5 text-sm text-[#171717]',
+  'placeholder:text-[#6B655C] outline-none transition-[border-color,box-shadow]',
+  'focus:border-[#B8734E] focus:shadow-[0_0_0_3px_rgba(184,115,78,0.15)]',
   'disabled:cursor-not-allowed disabled:opacity-60',
 );
 
@@ -27,18 +27,18 @@ interface FieldShellProps {
 export function FieldShell({ id, label, required, error, hint, className, children }: FieldShellProps) {
   return (
     <div className={cn('flex min-w-0 flex-col gap-1.5', className)} data-field-error={error ? 'true' : undefined}>
-      <label htmlFor={id} className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">
+      <label htmlFor={id} className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">
         {label}
-        {required && <span className="text-[#00A3FF]"> *</span>}
+        {required && <span className="text-[#B8734E]"> *</span>}
       </label>
       {children}
       {error ? (
-        <p id={`${id}-error`} className="text-xs text-[#ffb4ab]" role="alert">
+        <p id={`${id}-error`} className="text-xs text-[#9B2C24]" role="alert">
           {error}
         </p>
       ) : (
         hint && (
-          <p id={`${id}-hint`} className="text-[11px] leading-relaxed text-[#64748B]">
+          <p id={`${id}-hint`} className="text-[11px] leading-relaxed text-[#6B655C]">
             {hint}
           </p>
         )
@@ -71,7 +71,7 @@ export function TextInput({ label, value, onChange, required, error, hint, prefi
     <FieldShell id={id} label={label} required={required} error={error} hint={hint} className={className}>
       <div className="relative">
         {prefix && (
-          <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-[#94A3B8]">
+          <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-[#6B655C]">
             {prefix}
           </span>
         )}
@@ -81,7 +81,7 @@ export function TextInput({ label, value, onChange, required, error, hint, prefi
           onChange={(event) => onChange(event.target.value)}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
-          className={cn(inputClass, prefix && 'pl-8', error && 'border-[#ffb4ab]/60')}
+          className={cn(inputClass, prefix && 'pl-8', error && 'border-[#9B2C24]/60')}
           {...rest}
         />
       </div>
@@ -121,7 +121,7 @@ export function TextArea({ label, value, onChange, required, error, hint, maxLen
         maxLength={maxLength}
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={error ? true : undefined}
-        className={cn(inputClass, 'resize-y', error && 'border-[#ffb4ab]/60')}
+        className={cn(inputClass, 'resize-y', error && 'border-[#9B2C24]/60')}
         {...rest}
       />
     </FieldShell>
@@ -153,7 +153,7 @@ export function SelectInput({ label, value, onChange, options, placeholder = 'Se
         disabled={disabled}
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={error ? true : undefined}
-        className={cn(inputClass, 'appearance-none bg-no-repeat pr-9', error && 'border-[#ffb4ab]/60', !value && 'text-[#64748B]')}
+        className={cn(inputClass, 'appearance-none bg-no-repeat pr-9', error && 'border-[#9B2C24]/60', !value && 'text-[#6B655C]')}
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2394A3B8' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
@@ -162,7 +162,7 @@ export function SelectInput({ label, value, onChange, options, placeholder = 'Se
       >
         <option value="">{placeholder}</option>
         {list.map((option) => (
-          <option key={option} value={option} className="bg-[#0F172A] text-[#F8FAFC]">
+          <option key={option} value={option} className="bg-[#FFFFFF] text-[#171717]">
             {option}
           </option>
         ))}
@@ -237,8 +237,8 @@ export function TagInput({
               className={cn(
                 'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors',
                 active
-                  ? 'border-[#00A3FF] bg-[#00A3FF]/15 text-[#38BDF8]'
-                  : 'border-white/10 bg-[#0F172A]/60 text-[#94A3B8] hover:border-[#00A3FF]/40 hover:text-[#F8FAFC]',
+                  ? 'border-[#B8734E] bg-[#B8734E]/15 text-[#7A4429]'
+                  : 'border-[#171717]/12 bg-[#FFFFFF]/60 text-[#6B655C] hover:border-[#B8734E]/40 hover:text-[#171717]',
                 'disabled:cursor-not-allowed disabled:opacity-50',
               )}
             >
@@ -269,7 +269,7 @@ export function TagInput({
             type="button"
             onClick={addDraft}
             disabled={!draft.trim()}
-            className="shrink-0 rounded-xl border border-white/10 bg-[#1E293B] px-3.5 text-xs font-semibold text-[#F8FAFC] transition-colors hover:border-[#00A3FF]/40 disabled:opacity-50"
+            className="shrink-0 rounded-xl border border-[#171717]/12 bg-[#FFFFFF] px-3.5 text-xs font-semibold text-[#171717] transition-colors hover:border-[#B8734E]/40 disabled:opacity-50"
           >
             Add
           </button>
@@ -293,9 +293,9 @@ export function ChoiceCards<T extends string>({ label, value, onChange, options,
   const name = useId();
   return (
     <fieldset className="flex min-w-0 flex-col gap-1.5" data-field-error={error ? 'true' : undefined}>
-      <legend className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">
+      <legend className="mb-1.5 text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">
         {label}
-        {required && <span className="text-[#00A3FF]"> *</span>}
+        {required && <span className="text-[#B8734E]"> *</span>}
       </legend>
       <div className="grid gap-3 sm:grid-cols-2">
         {options.map((option) => {
@@ -305,7 +305,7 @@ export function ChoiceCards<T extends string>({ label, value, onChange, options,
               key={option.value}
               className={cn(
                 'flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 transition-colors',
-                active ? 'border-[#00A3FF] bg-[#00A3FF]/10' : 'border-white/10 bg-[#0F172A]/60 hover:border-[#00A3FF]/40',
+                active ? 'border-[#B8734E] bg-[#B8734E]/10' : 'border-[#171717]/12 bg-[#FFFFFF]/60 hover:border-[#B8734E]/40',
                 disabled && 'cursor-not-allowed opacity-60',
               )}
             >
@@ -316,18 +316,18 @@ export function ChoiceCards<T extends string>({ label, value, onChange, options,
                 checked={active}
                 disabled={disabled}
                 onChange={() => onChange(option.value)}
-                className="mt-0.5 h-4 w-4 accent-[#00A3FF]"
+                className="mt-0.5 h-4 w-4 accent-[#B8734E]"
               />
               <span>
-                <span className="block text-sm font-semibold text-[#F8FAFC]">{option.title}</span>
-                <span className="mt-0.5 block text-xs leading-relaxed text-[#94A3B8]">{option.description}</span>
+                <span className="block text-sm font-semibold text-[#171717]">{option.title}</span>
+                <span className="mt-0.5 block text-xs leading-relaxed text-[#6B655C]">{option.description}</span>
               </span>
             </label>
           );
         })}
       </div>
       {error && (
-        <p className="text-xs text-[#ffb4ab]" role="alert">
+        <p className="text-xs text-[#9B2C24]" role="alert">
           {error}
         </p>
       )}
@@ -350,19 +350,19 @@ export function GalleryUpload({ label, hint, purpose, urls, onChange, max, disab
   return (
     <div className="flex flex-col gap-3">
       {urls.length > 0 && (
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[#94A3B8]">{label}</span>
+        <span className="text-[11px] font-bold uppercase tracking-wider text-[#6B655C]">{label}</span>
       )}
       {urls.length > 0 && (
         <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">
           {urls.map((url, index) => (
-            <li key={url} className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-[#1E293B]">
+            <li key={url} className="group relative aspect-square overflow-hidden rounded-xl border border-[#171717]/12 bg-[#FFFFFF]">
               <Image src={url} alt={`${label} ${index + 1}`} fill sizes="(max-width: 640px) 33vw, 160px" className="object-cover" />
               {!disabled && (
                 <button
                   type="button"
                   onClick={() => onChange(urls.filter((u) => u !== url))}
                   aria-label={`Remove photo ${index + 1}`}
-                  className="absolute right-1.5 top-1.5 rounded-lg bg-[#090D16]/80 p-1.5 text-[#F8FAFC] backdrop-blur hover:text-[#ffb4ab]"
+                  className="absolute right-1.5 top-1.5 rounded-lg bg-[#F5F0E8]/80 p-1.5 text-[#171717] backdrop-blur hover:text-[#9B2C24]"
                 >
                   <Trash2 size={14} />
                 </button>
@@ -394,21 +394,21 @@ interface SectionCardProps {
 
 export function SectionCard({ number, title, description, optional, children }: SectionCardProps) {
   return (
-    <section className="relative rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-5 backdrop-blur-xl sm:p-6">
-      <div className="mb-5 flex items-start gap-3 border-b border-white/[0.06] pb-4">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#1E293B] text-xs font-bold text-[#00A3FF]">
+    <section className="relative rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-5 backdrop-blur-xl sm:p-6">
+      <div className="mb-5 flex items-start gap-3 border-b border-[#171717]/8 pb-4">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#FFFFFF] text-xs font-bold text-[#7A4429]">
           {number}
         </span>
         <div className="min-w-0 flex-1">
-          <h2 className="flex flex-wrap items-center gap-2 text-base font-bold text-[#F8FAFC]">
+          <h2 className="flex flex-wrap items-center gap-2 text-base font-bold text-[#171717]">
             {title}
             {optional && (
-              <span className="rounded-full border border-white/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#94A3B8]">
+              <span className="rounded-full border border-[#171717]/12 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#6B655C]">
                 Optional
               </span>
             )}
           </h2>
-          {description && <p className="mt-1 text-xs leading-relaxed text-[#94A3B8]">{description}</p>}
+          {description && <p className="mt-1 text-xs leading-relaxed text-[#6B655C]">{description}</p>}
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">{children}</div>

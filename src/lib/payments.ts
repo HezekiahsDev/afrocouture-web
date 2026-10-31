@@ -23,7 +23,7 @@ export async function resolveAccount(accountNumber: string, bankCode: string): P
   return data.accountName;
 }
 
-/** Mirrors afrocouture-api/src/fabrics/pricing.ts so the explorer shows the price the order will charge. */
+/** Mirrors IPILE-api/src/fabrics/pricing.ts so the explorer shows the price the order will charge. */
 export function unitPriceFor(fabric: { price: number; priceTiers?: PriceTier[] | null }, quantity: number): number {
   let unit = fabric.price;
   for (const tier of fabric.priceTiers ?? []) {

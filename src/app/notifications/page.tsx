@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import NotificationsCentre from "@/components/notifications/NotificationsCentre";
 
 export const metadata: Metadata = {
-  title: "Notifications | AfroCouture",
+  title: "Notifications | IPILE",
   description: "Order updates, messages, payouts and reviews.",
 };
 

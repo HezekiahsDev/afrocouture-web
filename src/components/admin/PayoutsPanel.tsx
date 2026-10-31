@@ -74,12 +74,12 @@ export function PayoutsPanel() {
       {notice && <Alert tone="success">{notice}</Alert>}
       {error && <Alert>{error}</Alert>}
       {!items && !error && (
-        <div className="flex justify-center py-12 text-[#94A3B8]">
+        <div className="flex justify-center py-12 text-[#6B655C]">
           <LoaderCircle className="animate-spin" size={24} aria-label="Loading payouts" />
         </div>
       )}
       {items?.length === 0 && (
-        <p className="rounded-2xl border border-dashed border-white/15 py-12 text-center text-sm text-[#94A3B8]">
+        <p className="rounded-2xl border border-dashed border-[#171717]/15 py-12 text-center text-sm text-[#6B655C]">
           {status === 'failed' ? 'No failed payouts.' : 'No payouts in progress.'}
         </p>
       )}
@@ -89,17 +89,17 @@ export function PayoutsPanel() {
             <li
               key={tx.id}
               data-testid="payout-row"
-              className="grid gap-3 rounded-2xl border border-white/[0.08] bg-[#0F172A]/80 p-4 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_auto] md:items-center"
+              className="grid gap-3 rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-4 md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_auto] md:items-center"
             >
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-base font-bold tabular-nums text-[#F8FAFC]">{naira(tx.amount)}</span>
+                  <span className="text-base font-bold tabular-nums text-[#171717]">{naira(tx.amount)}</span>
                   <Pill tone={tx.status === 'failed' ? 'red' : 'amber'}>{tx.status}</Pill>
-                  <span className="text-xs text-[#94A3B8]">{TYPE_LABEL[tx.type]}</span>
+                  <span className="text-xs text-[#6B655C]">{TYPE_LABEL[tx.type]}</span>
                 </div>
-                <p className="mt-1 text-xs text-[#94A3B8]">
+                <p className="mt-1 text-xs text-[#6B655C]">
                   {tx.order ? (
-                    <Link href={`/admin/orders/${tx.order.id}`} className="font-mono text-[#38BDF8] hover:underline">
+                    <Link href={`/admin/orders/${tx.order.id}`} className="font-mono text-[#8F5637] hover:underline">
                       {tx.order.reference}
                     </Link>
                   ) : (
@@ -107,22 +107,22 @@ export function PayoutsPanel() {
                   )}{' '}
                   · {fmtDate(tx.updatedAt)}
                 </p>
-                {tx.failureReason && <p className="mt-1.5 text-xs text-[#ffb4ab]">{tx.failureReason}</p>}
+                {tx.failureReason && <p className="mt-1.5 text-xs text-[#9B2C24]">{tx.failureReason}</p>}
               </div>
               <div className="min-w-0 text-sm">
-                <p className="truncate font-semibold text-[#F8FAFC]">{tx.payee.name ?? '—'}</p>
-                <p className="truncate text-xs text-[#94A3B8]">
+                <p className="truncate font-semibold text-[#171717]">{tx.payee.name ?? '—'}</p>
+                <p className="truncate text-xs text-[#6B655C]">
                   {tx.payee.bankName ?? 'No bank'} · {tx.payee.accountNumber ?? 'no account'}
                   {tx.payee.accountName && ` · ${tx.payee.accountName}`}
                 </p>
                 <p className="mt-1 inline-flex items-center gap-1 text-xs">
                   {tx.payee.payoutReady ? (
                     <>
-                      <CircleCheck size={13} className="text-[#10B981]" aria-hidden="true" /> Payout details complete
+                      <CircleCheck size={13} className="text-[#2F6B4F]" aria-hidden="true" /> Payout details complete
                     </>
                   ) : (
                     <>
-                      <CircleAlert size={13} className="text-[#fbbf24]" aria-hidden="true" /> Payee must add a bank account first
+                      <CircleAlert size={13} className="text-[#B8734E]" aria-hidden="true" /> Payee must add a bank account first
                     </>
                   )}
                 </p>
