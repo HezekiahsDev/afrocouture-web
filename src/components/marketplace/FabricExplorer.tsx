@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,6 +16,7 @@ import {
   Plus,
   Ruler,
   ShieldCheck,
+  X,
 } from "lucide-react";
 import { getFabrics, naira } from "@/lib/catalog";
 import { unitPriceFor } from "@/lib/payments";
@@ -33,8 +34,26 @@ import {
 const ALL = "All";
 const MAX_QTY = 200;
 
+/** Matches the breakpoint in atelier.css where the detail panel stops sitting beside the grid. */
+const SHEET_QUERY = "(max-width: 1100px)";
+
 const unitLabel = (unit: Fabric["unit"], qty: number) =>
   `${unit}${qty === 1 ? "" : "s"}`;
+
+const isNarrow = () => window.matchMedia(SHEET_QUERY).matches;
+
+/** True while the detail panel should open as a sheet instead of beside the grid. */
+function useSheetLayout() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const media = window.matchMedia(SHEET_QUERY);
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    },
+    isNarrow,
+    () => false,
+  );
+}
 
 export default function FabricExplorer({
   initialFabric,
@@ -42,11 +61,14 @@ export default function FabricExplorer({
   initialFabric?: string;
 }) {
   const { result, retry } = useRemote(() => getFabrics(), []);
+  // Selecting a fabric updates the URL shallowly, so the server-provided value
+  // goes stale (e.g. coming back from /saved). The live URL wins.
+  const requested = useSearchParams().get("fabric") ?? initialFabric;
   const fabrics = result.state === "ready" ? result.data : [];
   const missing =
     result.state === "ready" &&
-    Boolean(initialFabric) &&
-    !fabrics.some((item) => item.id === initialFabric);
+    Boolean(requested) &&
+    !fabrics.some((item) => item.id === requested);
 
   return (
     <div className="catalog-page">
@@ -91,7 +113,7 @@ export default function FabricExplorer({
       ) : fabrics.length ? (
         <Explorer
           fabrics={fabrics}
-          initialId={missing ? undefined : initialFabric}
+          initialId={missing ? undefined : requested}
         />
       ) : (
         <EmptyState
@@ -115,10 +137,15 @@ function Explorer({
   fabrics: Fabric[];
   initialId?: string;
 }) {
-  const router = useRouter();
   const saved = useSavedItems();
   const [selectedId, setSelectedId] = useState(initialId ?? fabrics[0].id);
   const [filter, setFilter] = useState(ALL);
+  const sheetLayout = useSheetLayout();
+  // Explorer only mounts on the client once fabrics load, so reading the
+  // viewport here is safe. A deep link to a fabric opens its sheet on mobile.
+  const [sheetOpen, setSheetOpen] = useState(
+    () => Boolean(initialId) && isNarrow(),
+  );
   const selected = fabrics.find((item) => item.id === selectedId) ?? fabrics[0];
   const categories = uniqueValues(fabrics.map((item) => item.category));
   const filtered = fabrics.filter(
@@ -127,7 +154,10 @@ function Explorer({
 
   function choose(id: string) {
     setSelectedId(id);
-    router.replace(`/fabric-explorer?fabric=${id}`, { scroll: false });
+    setSheetOpen(sheetLayout);
+    // A shallow URL update: router.replace would re-render the page, whose
+    // `fabric`-keyed explorer would then remount and refetch the catalogue.
+    window.history.replaceState(null, "", `/fabric-explorer?fabric=${id}`);
   }
 
   return (
@@ -210,8 +240,77 @@ function Explorer({
         </div>
       </div>
       {/* Keyed so the yardage resets when another fabric is chosen. */}
-      <FabricDetail key={selected.id} fabric={selected} />
+      {sheetLayout ? (
+        sheetOpen && (
+          <FabricSheet
+            key={selected.id}
+            fabric={selected}
+            onClose={() => setSheetOpen(false)}
+          />
+        )
+      ) : (
+        <FabricDetail key={selected.id} fabric={selected} />
+      )}
     </div>
+  );
+}
+
+/**
+ * On narrower screens the detail panel would land below the whole grid, so it
+ * opens as a bottom sheet over the list instead. The native modal dialog gives
+ * focus trapping, Escape to close, and an inert page behind it.
+ *
+ * Opening the sheet adds a history entry, so the phone's back button closes
+ * the sheet rather than leaving the page.
+ */
+function FabricSheet({
+  fabric,
+  onClose,
+}: {
+  fabric: Fabric;
+  onClose: () => void;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = ref.current;
+    if (dialog && !dialog.open) dialog.showModal();
+    // Already set when returning to this entry, e.g. back from /saved.
+    if (!window.history.state?.fabricSheet) {
+      window.history.pushState({ fabricSheet: true }, "");
+    }
+    const onPopState = (event: PopStateEvent) => {
+      if (!event.state?.fabricSheet) ref.current?.close();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  return (
+    <dialog
+      ref={ref}
+      className="fabric-sheet"
+      aria-label={`${fabric.name} details`}
+      onClose={() => {
+        // Closed with ✕, Escape or the backdrop: drop the sheet's history entry.
+        if (window.history.state?.fabricSheet) window.history.back();
+        onClose();
+      }}
+      onClick={(event) => {
+        // A click on the dialog itself (not its content) is a click on the backdrop.
+        if (event.target === event.currentTarget) event.currentTarget.close();
+      }}
+    >
+      <button
+        type="button"
+        className="fabric-sheet-close"
+        aria-label="Close fabric details"
+        onClick={() => ref.current?.close()}
+      >
+        <X size={18} />
+      </button>
+      <FabricDetail fabric={fabric} />
+    </dialog>
   );
 }
 
