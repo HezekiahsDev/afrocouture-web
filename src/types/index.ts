@@ -134,6 +134,9 @@ export interface DeliveryAddress {
   state: string;
   landmark?: string;
   phone?: string;
+  /** Pinned coordinates for rider delivery (Dali quotes and books by coordinate). */
+  lat?: number;
+  lng?: number;
 }
 
 export interface FitProfile {
@@ -444,4 +447,93 @@ export interface NotificationPage {
   items: AppNotification[];
   hasMore: boolean;
   unreadCount: number;
+}
+
+// ── Rider delivery (Dali Logistics) ──
+
+export type LogisticsStatus =
+  | 'pending'
+  | 'assigned'
+  | 'picked_up'
+  | 'in_transit'
+  | 'delivered'
+  | 'completed'
+  | 'cancelled'
+  | 'failed'
+  | 'disputed';
+
+export interface LogisticsRunner {
+  name: string;
+  phone: string;
+  vehicle: string;
+  rating: number | null;
+}
+
+/** A stop as stored on the delivery view (the API's snake_case contact fields). */
+export interface LogisticsStop {
+  lat: number;
+  lng: number;
+  label?: string;
+  address: string;
+  contact_name: string;
+  contact_phone: string;
+}
+
+export interface LogisticsDelivery {
+  id: string;
+  orderId: string;
+  daliId: string | null;
+  externalReference: string;
+  status: LogisticsStatus;
+  livemode: boolean;
+  fee: number;
+  currency: string;
+  distanceM: number | null;
+  /** Customer/admin only — the tailor never sees the handover PIN. */
+  deliveryPin: string | null;
+  runner: LogisticsRunner | null;
+  pickup: LogisticsStop;
+  dropoff: LogisticsStop;
+  packageCount: number;
+  notes: string | null;
+  cancelReason: string | null;
+  lastError: string | null;
+  timestamps: {
+    assignedAt: string | null;
+    pickedUpAt: string | null;
+    deliveredAt: string | null;
+    completedAt: string | null;
+    cancelledAt: string | null;
+    failedAt: string | null;
+    lastSyncedAt: string | null;
+  };
+  createdAt: string;
+  updatedAt: string;
+  canCancel: boolean;
+}
+
+/** POST /orders/:id/delivery/quote — Dali's price before booking. */
+export interface DaliQuote {
+  fee: number;
+  currency: string;
+  distanceM: number;
+  zoneId: string | null;
+  zoneName: string | null;
+  expiresAt: string;
+}
+
+/** Dali account status shown in the admin console. */
+export interface DaliAccount {
+  id: string;
+  name: string;
+  slug: string;
+  status: string;
+  billing_mode: string;
+  webhook_url: string | null;
+  daily_job_cap: number;
+  environment: string;
+  scopes: string[];
+  balance: number;
+  currency: string;
+  jobs_last_24h: number;
 }

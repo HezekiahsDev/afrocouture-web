@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { safeNext } from '@/lib/auth';
-import { ArrowRight, CircleCheck, LoaderCircle, Minus, Plus, Ruler, Shirt, Truck, UserRound } from 'lucide-react';
+import { ArrowRight, CircleCheck, LoaderCircle, MapPin, Minus, Plus, Ruler, Shirt, Truck, UserRound } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { FileUpload } from '@/components/ui/FileUpload';
 import { apiErrorMessage } from '@/lib/api';
@@ -34,13 +34,23 @@ interface AddressValues {
   state: string;
   landmark: string;
   phone: string;
+  lat: string;
+  lng: string;
 }
 
-const emptyAddress = (): AddressValues => ({ line1: '', city: '', state: '', landmark: '', phone: '' });
+const emptyAddress = (): AddressValues => ({ line1: '', city: '', state: '', landmark: '', phone: '', lat: '', lng: '' });
 
 function addressFrom(a: DeliveryAddress | null | undefined): AddressValues {
   return a
-    ? { line1: a.line1, city: a.city, state: a.state, landmark: a.landmark ?? '', phone: a.phone ?? '' }
+    ? {
+        line1: a.line1,
+        city: a.city,
+        state: a.state,
+        landmark: a.landmark ?? '',
+        phone: a.phone ?? '',
+        lat: a.lat != null ? String(a.lat) : '',
+        lng: a.lng != null ? String(a.lng) : '',
+      }
     : emptyAddress();
 }
 
@@ -72,6 +82,17 @@ function addressErrors(a: AddressValues): Partial<Record<keyof AddressValues, st
   if (a.city.trim().length < 2) errors.city = 'Enter the city or town.';
   if (!a.state) errors.state = 'Choose a state.';
   if (a.phone.trim() && !PHONE_PATTERN.test(a.phone.trim())) errors.phone = 'Enter a valid phone number.';
+  if (a.lat.trim() || a.lng.trim()) {
+    const lat = Number(a.lat);
+    const lng = Number(a.lng);
+    if (!a.lat.trim() || !a.lng.trim() || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+      errors.lat = 'Pin your location again, or enter both coordinates.';
+    } else if (lat < -90 || lat > 90) {
+      errors.lat = 'Latitude must be between -90 and 90.';
+    } else if (lng < -180 || lng > 180) {
+      errors.lng = 'Longitude must be between -180 and 180.';
+    }
+  }
   return errors;
 }
 
@@ -93,6 +114,8 @@ export function FitProfileForm() {
   const [saveError, setSaveError] = useState('');
   const [showErrors, setShowErrors] = useState(false);
   const [justSaved, setJustSaved] = useState(false);
+  const [locating, setLocating] = useState(false);
+  const [geoError, setGeoError] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -160,6 +183,33 @@ export function FitProfileForm() {
     update({ address: { ...form.address, ...patch } });
   }
 
+  function useMyLocation() {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setGeoError('This browser can’t share your location. Enter the coordinates instead.');
+      return;
+    }
+    setLocating(true);
+    setGeoError('');
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setAddress({
+          lat: position.coords.latitude.toFixed(6),
+          lng: position.coords.longitude.toFixed(6),
+        });
+        setLocating(false);
+      },
+      (err) => {
+        setGeoError(
+          err.code === err.PERMISSION_DENIED
+            ? 'Location permission was denied. Allow it in your browser settings, or enter the coordinates.'
+            : 'We could not get your location. Try again, or enter the coordinates.',
+        );
+        setLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 },
+    );
+  }
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     setShowErrors(true);
@@ -171,6 +221,9 @@ export function FitProfileForm() {
 
     const a = form.address;
     const addressFilled = Object.values(a).some((v) => v.trim() !== '');
+    const pinned = a.lat.trim() !== '' && a.lng.trim() !== '';
+    const lat = pinned ? Math.round(Number(a.lat) * 1e6) / 1e6 : 0;
+    const lng = pinned ? Math.round(Number(a.lng) * 1e6) / 1e6 : 0;
     const payload: Parameters<typeof saveMyFitProfile>[0] = {
       unit: form.unit,
       drapeSilhouette: form.silhouette,
@@ -183,6 +236,7 @@ export function FitProfileForm() {
             state: a.state,
             ...(a.landmark.trim() ? { landmark: a.landmark.trim() } : {}),
             ...(a.phone.trim() ? { phone: a.phone.trim() } : {}),
+            ...(pinned ? { lat, lng } : {}),
           }
         : null,
     };
@@ -500,6 +554,54 @@ export function FitProfileForm() {
               />
             )}
           </AddressField>
+
+          <div className="md:col-span-2 rounded-xl border border-dashed border-[#B8734E]/35 bg-[#FFFFFF]/50 p-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className={fieldLabel}>Pin for rider delivery</p>
+                <p className="mt-1 max-w-xl text-xs leading-5 text-[#6B655C]">
+                  Dali riders navigate to coordinates, not just a street address. Pin your location while you&apos;re at
+                  the delivery address — your artisan can then book a rider straight to you.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={useMyLocation}
+                disabled={locating}
+                className="inline-flex items-center gap-2 rounded-xl border border-[#171717]/15 bg-[#FFFFFF] px-3.5 py-2 text-xs font-semibold text-[#171717] transition hover:border-[#B8734E]/40 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {locating ? <LoaderCircle size={14} className="animate-spin" aria-hidden="true" /> : <MapPin size={14} aria-hidden="true" />}
+                {locating ? 'Finding you…' : 'Use my current location'}
+              </button>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <label className="flex flex-col gap-1.5">
+                <span className={fieldLabel}>Latitude</span>
+                <input
+                  value={form.address.lat}
+                  onChange={(e) => setAddress({ lat: e.target.value })}
+                  placeholder="12.002180"
+                  inputMode="decimal"
+                  className={input}
+                />
+              </label>
+              <label className="flex flex-col gap-1.5">
+                <span className={fieldLabel}>Longitude</span>
+                <input
+                  value={form.address.lng}
+                  onChange={(e) => setAddress({ lng: e.target.value })}
+                  placeholder="8.591956"
+                  inputMode="decimal"
+                  className={input}
+                />
+              </label>
+            </div>
+            {geoError && <p className="mt-2 text-xs text-[#9B2C24]">{geoError}</p>}
+            {showErrors && (addrErrors.lat || addrErrors.lng) && (
+              <p className="mt-2 text-xs text-[#9B2C24]">{addrErrors.lat ?? addrErrors.lng}</p>
+            )}
+            <p className="mt-2 text-[11px] text-[#6B655C]">Optional, but rider delivery can&apos;t be booked without it.</p>
+          </div>
         </div>
         <p className="mt-3 text-[11px] text-[#6B655C]">Fields marked * are needed only if you add an address.</p>
       </section>
