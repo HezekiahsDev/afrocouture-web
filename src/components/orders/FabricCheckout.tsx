@@ -439,8 +439,10 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
             {fee > 0 && <MoneyRow label="Platform fee" amount={fee} />}
             {quoteLoading ? (
               <p className="text-xs text-[#6B655C]">Calculating delivery…</p>
-            ) : (
+            ) : quote ? (
               <MoneyRow label="Delivery (IPILE logistics)" amount={deliveryFee} />
+            ) : (
+              <p className="text-xs text-[#6B655C]">Delivery — add delivery details</p>
             )}
             <MoneyRow label="Total" amount={total} strong />
           </div>
@@ -455,11 +457,15 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
           {error && <InlineAlert>{error}</InlineAlert>}
           {quoteError && <InlineAlert>{quoteError}</InlineAlert>}
           {touched && blocker && <p className="text-xs leading-5 text-[#9B2C24]">{blocker}</p>}
-          <button type="submit" className={primaryButton} disabled={submitting || quoteLoading || !quote}>
+          <button type="submit" className={primaryButton} disabled={submitting || Boolean(blocker) || quoteLoading || !quote}>
             {submitting ? (
               <>
                 <Spinner /> Starting payment…
               </>
+            ) : blocker ? (
+              <>Complete delivery details</>
+            ) : quoteError ? (
+              <>Delivery unavailable</>
             ) : quoteLoading || !quote ? (
               <>
                 <Spinner /> Calculating delivery…
