@@ -65,6 +65,7 @@ stitch_design_iteration_workspace/
 | `/tailors`                                                | Artisan directory with city filter and saving                                         | Done, with commission CTA                          |
 | `/fabric-explorer`                                        | Fabric catalogue + detail, quantity stepper, add to selection                         | Done, with wholesale tier pricing                  |
 | `/saved`                                                  | Your selection: saved fabrics (quantities, estimated total) and artisans              | Done                                               |
+| `/orders/checkout`                                        | Fabric checkout: buy from vendors, deliver to yourself or send to an artisan          | Done (customers and verified artisans)             |
 | `/onboarding`                                             | Choose customer / artisan / merchant                                                  | Done                                               |
 | `/onboarding/fit-profile`                                 | Measurements (in/cm), fit preference, reference photos, delivery address              | Done                                               |
 | `/onboarding/tailor-kyc`                                  | Artisan profile, identity, guild (optional), payout account; submit for review        | Done, with Paystack bank list + account-name check |
@@ -117,6 +118,7 @@ Deployed: web on Vercel, API on the VPS behind nginx/HTTPS.
 - [x] Web: Paystack bank picker + automatic account-name check in KYC and merchant forms
 - [x] Admin web: verification review, disputes, failed payouts (`/admin`)
 - [x] Rate limiting (Redis) on auth, uploads and AI
+- [x] Fabric checkout (pay now, no commission): `/orders/checkout` — pay for the saved selection, deliver to your own address or send it to a verified artisan's workshop. The merchant is told the workshop address plus the artisan's phone and WhatsApp number; the recipient (you or the artisan) confirms each line, which releases that merchant's payment. Artisans can also buy fabric for their own workshop. Artisan KYC collects a workshop phone and WhatsApp number, and only artisans with both can be chosen as a fabric destination.
 
 ### Phase 5 — AI Design Studio ⏸ (built; deferred until Vertex credentials are ready)
 
@@ -164,4 +166,3 @@ React Native app reusing the API; designs from the original Stitch mobile export
 2. `afrocouture-web`: `npx tsc --noEmit`, `pnpm lint`, `pnpm build`; browser checks at 1440 px and 390 px (no horizontal scroll, pages scroll).
 3. Flows: sign up as each role → onboarding → admin approval → browse → save → commission → pay (Paystack test mode) → milestones → chat → deliver → approve → payouts; dispute → admin resolution.
 4. Copy review against the content principle above.
-

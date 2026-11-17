@@ -1,8 +1,10 @@
 import api from './api';
 import type {
   ChatMessage,
+  DeliveryAddress,
   EscrowQueueItem,
   Fabric,
+  FabricDestination,
   KycStatus,
   MerchantOrderView,
   MerchantProfile,
@@ -31,6 +33,25 @@ export interface CreateOrderInput {
 
 export async function createOrder(input: CreateOrderInput): Promise<Order> {
   return (await api.post<Order>('/orders', input)).data;
+}
+
+// ── Fabric checkout (pay now, no commission) ──
+
+export const MAX_CHECKOUT_FABRICS = 20;
+
+export interface FabricCheckoutInput {
+  fabrics: { fabricId: string; quantity: number }[];
+  destination: FabricDestination;
+  deliveryAddress?: DeliveryAddress;
+  tailorId?: string;
+}
+
+export async function createFabricCheckout(input: FabricCheckoutInput): Promise<Order> {
+  return (await api.post<Order>('/orders/fabric-checkout', input)).data;
+}
+
+export async function getCheckoutConfig(): Promise<{ platformFeePercent: number }> {
+  return (await api.get<{ platformFeePercent: number }>('/orders/checkout-config')).data;
 }
 
 export async function listOrders(

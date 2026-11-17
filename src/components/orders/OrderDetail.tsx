@@ -129,11 +129,9 @@ function OrderLoader({ id }: { id: string }) {
       </div>
     );
   }
-  return isMerchantView(order) ? (
-    <MerchantOrder order={order} reload={reload} />
-  ) : (
-    <FullOrder order={order} reload={reload} onUpdate={setOrder} />
-  );
+  if (isMerchantView(order)) return <MerchantOrder order={order} reload={reload} />;
+  if (order.type === 'fabric') return <FabricOrder order={order} onUpdate={setOrder} />;
+  return <FullOrder order={order} reload={reload} onUpdate={setOrder} />;
 }
 
 /* ───────────────────────── Shared layout ───────────────────────── */
@@ -141,12 +139,14 @@ function OrderLoader({ id }: { id: string }) {
 function OrderHeader({
   reference,
   status,
+  type,
   garmentType,
   createdAt,
   estimatedDeliveryDate,
 }: {
   reference: string;
   status: Order['status'];
+  type: Order['type'];
   garmentType: string;
   createdAt: string;
   estimatedDeliveryDate?: string | null;
@@ -160,11 +160,13 @@ function OrderHeader({
         <span className="font-[family-name:var(--font-inter)] text-sm font-semibold tracking-wide text-[#6B655C]">
           {reference}
         </span>
-        <StatusPill status={status} />
+        <StatusPill status={status} type={type} />
       </div>
       <h1 className="text-[28px] font-extrabold leading-9 text-[#171717] sm:text-[36px] sm:leading-[44px]">{garmentType}</h1>
       <p className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-[#6B655C]">
-        <span>Requested {formatDate(createdAt)}</span>
+        <span>
+          {type === 'fabric' ? 'Ordered' : 'Requested'} {formatDate(createdAt)}
+        </span>
         {estimatedDeliveryDate && (
           <span className="flex items-center gap-1.5">
             <CalendarDays size={14} aria-hidden="true" /> Ready by {formatDate(estimatedDeliveryDate)}
@@ -198,9 +200,11 @@ function Timeline({ events }: { events: Order['events'] }) {
 function FabricLines({
   items,
   action,
+  receivedBy = 'the artisan',
 }: {
   items: OrderItem[];
   action?: (item: OrderItem) => ReactNode;
+  receivedBy?: string;
 }) {
   return (
     <ul className="flex flex-col gap-3">
@@ -217,7 +221,7 @@ function FabricLines({
               <strong className="text-[#171717]">{naira(item.lineTotal)}</strong>
             </span>
             <span className="mt-1 flex items-center gap-1.5 text-xs">
-              <FulfilmentTag item={item} />
+              <FulfilmentTag item={item} receivedBy={receivedBy} />
             </span>
             {item.shippingNote && <span className="mt-1 block text-xs text-[#6B655C]">Shipping note: {item.shippingNote}</span>}
           </span>
@@ -228,11 +232,11 @@ function FabricLines({
   );
 }
 
-function FulfilmentTag({ item }: { item: OrderItem }) {
+function FulfilmentTag({ item, receivedBy }: { item: OrderItem; receivedBy: string }) {
   if (item.fulfilment === 'received')
     return (
       <span className="flex items-center gap-1 text-[#2F6B4F]">
-        <CheckCircle2 size={13} aria-hidden="true" /> Received by the artisan {formatDate(item.receivedAt)}
+        <CheckCircle2 size={13} aria-hidden="true" /> Received by {receivedBy} {formatDate(item.receivedAt)}
       </span>
     );
   if (item.fulfilment === 'shipped')
@@ -327,6 +331,7 @@ function FullOrder({
       <OrderHeader
         reference={order.reference}
         status={order.status}
+        type={order.type}
         garmentType={order.garmentType}
         createdAt={order.createdAt}
         estimatedDeliveryDate={order.estimatedDeliveryDate}
@@ -459,20 +464,22 @@ function PriceCard({ order }: { order: Order }) {
 
 function EscrowCard({ order }: { order: Order }) {
   const { held, released, refunded, balance } = order.escrow;
+  const fabricOnly = order.type === 'fabric';
   // The platform fee is part of what was paid in but is never paid out, so it isn't "held" for anyone.
   const fee = refunded >= held ? 0 : order.platformFee;
   const stillHeld = Math.max(0, balance - fee);
   return (
     <SectionCard title="Payment protection" kicker="Escrow" action={<Lock size={18} className="text-[#B8734E]" aria-hidden="true" />}>
       <p className="mb-3 text-sm leading-6 text-[#6B655C]">
-        Your payment is held by IPILE and released to the artisan when you approve delivery; fabric payments go to
-        merchants when the artisan confirms the fabric arrived.
+        {fabricOnly
+          ? 'Your payment is held by IPILE and released to each merchant when their fabric is confirmed as received.'
+          : 'Your payment is held by IPILE and released to the artisan when you approve delivery; fabric payments go to merchants when the artisan confirms the fabric arrived.'}
       </p>
       <MoneyRow label="Paid in" amount={held} />
-      <MoneyRow label="Released to artisan & merchants" amount={released} />
+      <MoneyRow label={fabricOnly ? 'Released to merchants' : 'Released to artisan & merchants'} amount={released} />
       {refunded > 0 && <MoneyRow label="Refunded" amount={refunded} />}
       {fee > 0 && <MoneyRow label="Platform fee" amount={fee} />}
-      <MoneyRow label="Still held for the artisan & merchants" amount={stillHeld} strong />
+      <MoneyRow label={fabricOnly ? 'Still held for merchants' : 'Still held for the artisan & merchants'} amount={stillHeld} strong />
     </SectionCard>
   );
 }
@@ -492,11 +499,11 @@ function stopFromAddress(order: Order): StopValues {
   const a = order.deliveryAddress;
   return {
     label: 'Customer',
-    address: [a.line1, a.city, a.state].filter(Boolean).join(', '),
+    address: a ? [a.line1, a.city, a.state].filter(Boolean).join(', ') : '',
     contactName: order.customer.fullName ?? '',
-    contactPhone: a.phone ?? '',
-    lat: a.lat != null ? String(a.lat) : '',
-    lng: a.lng != null ? String(a.lng) : '',
+    contactPhone: a?.phone ?? '',
+    lat: a?.lat != null ? String(a.lat) : '',
+    lng: a?.lng != null ? String(a.lng) : '',
   };
 }
 
@@ -843,7 +850,7 @@ function DeliveryBookingForm({
   const pickupProblem = stopError(pickup);
   const dropoffProblem = stopError(dropoff);
   const coordinatesReady = !pickupCoordsError && !dropoffCoordsError;
-  const missingDropoffPin = order.deliveryAddress.lat == null || order.deliveryAddress.lng == null;
+  const missingDropoffPin = order.deliveryAddress?.lat == null || order.deliveryAddress?.lng == null;
 
   function changePickup(patch: Partial<StopValues>) {
     setPickup((prev) => ({ ...prev, ...patch }));
@@ -1099,7 +1106,7 @@ function BriefCard({ order }: { order: Order }) {
   );
 }
 
-const MEASURES: [keyof Order['fitSnapshot'], string][] = [
+const MEASURES: [keyof NonNullable<Order['fitSnapshot']>, string][] = [
   ['chest', 'Chest'],
   ['shoulderWidth', 'Shoulders'],
   ['sleeveLength', 'Sleeve'],
@@ -1116,6 +1123,7 @@ const SILHOUETTE: Record<string, string> = {
 function FitCard({ order }: { order: Order }) {
   const fit = order.fitSnapshot;
   const address = order.deliveryAddress;
+  if (!fit) return null;
   return (
     <SectionCard title="Measurements & delivery" kicker="Saved when the request was sent">
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -1360,10 +1368,20 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
   );
 }
 
-function CancelConfirm({ busy, onConfirm, onBack }: { busy: boolean; onConfirm: () => void; onBack: () => void }) {
+function CancelConfirm({
+  busy,
+  onConfirm,
+  onBack,
+  message = "Cancel this request? The artisan will be told, and you can't undo it.",
+}: {
+  busy: boolean;
+  onConfirm: () => void;
+  onBack: () => void;
+  message?: string;
+}) {
   return (
     <div className="flex flex-col gap-2 rounded-xl border border-[#9B2C24]/30 bg-[#F6E3E0]/10 p-3">
-      <p className="text-sm text-[#7A1F1A]">Cancel this request? The artisan will be told, and you can&apos;t undo it.</p>
+      <p className="text-sm text-[#7A1F1A]">{message}</p>
       <div className="flex gap-2">
         <button type="button" className={dangerButton} onClick={onConfirm} disabled={busy}>
           {busy && <Spinner />} Yes, cancel
@@ -1620,17 +1638,231 @@ function ReceiveButton({ order, item, onUpdate }: { order: Order; item: OrderIte
   );
 }
 
+/* ───────────────────────── Fabric order ───────────────────────── */
+
+const canConfirmFabric = (order: Order) =>
+  (order.status === 'paid' || order.status === 'in_progress') &&
+  (order.fabricDestination === 'customer' ? order.viewerRole === 'customer' : order.viewerRole === 'tailor');
+
+/** Fabric paid for at checkout: no quote, production stages or chat. */
+function FabricOrder({ order, onUpdate }: { order: Order; onUpdate: (o: Order) => void }) {
+  const toCustomer = order.fabricDestination === 'customer';
+  const atelier = order.tailor?.atelierName ?? order.tailor?.displayName ?? 'the artisan';
+  const address = order.deliveryAddress;
+
+  return (
+    <div className="mx-auto flex max-w-4xl flex-col gap-6 py-8 sm:py-12">
+      <OrderHeader
+        reference={order.reference}
+        status={order.status}
+        type={order.type}
+        garmentType={order.garmentType}
+        createdAt={order.createdAt}
+      />
+
+      {order.viewerRole === 'customer' && <FabricCustomerActions order={order} onUpdate={onUpdate} />}
+      {order.viewerRole === 'tailor' && (
+        <NextStep title="Fabric is on its way to your workshop" tone="success">
+          <p className="text-sm text-[#6B655C]">
+            {order.customer.fullName ?? 'Your customer'} bought this fabric and is having it sent to you. Mark each piece as
+            received when it arrives.
+          </p>
+        </NextStep>
+      )}
+      {order.viewerRole === 'admin' && (
+        <InlineAlert tone="info">
+          You are viewing this order as an admin.{' '}
+          <Link href="/admin" className="font-semibold underline">
+            Open the admin console
+          </Link>{' '}
+          to resolve disputes or retry payouts.
+        </InlineAlert>
+      )}
+
+      <SectionCard title="Fabric" kicker={toCustomer ? 'Delivering to the customer' : `Sending to ${atelier}`}>
+        <FabricLines
+          items={order.items}
+          receivedBy={toCustomer ? 'the customer' : 'the artisan'}
+          action={canConfirmFabric(order) ? (item) => <ReceiveButton order={order} item={item} onUpdate={onUpdate} /> : undefined}
+        />
+      </SectionCard>
+
+      {toCustomer && address && order.viewerRole !== 'tailor' && (
+        <section className={cn(card, 'flex items-start gap-3')}>
+          <MapPin size={18} className="mt-0.5 shrink-0 text-[#B8734E]" aria-hidden="true" />
+          <div className="text-sm text-[#4B453E]">
+            <p className={labelClass}>Deliver to</p>
+            <p className="mt-1">
+              {address.line1}, {address.city}, {address.state}
+            </p>
+            {address.landmark && <p className="text-xs text-[#6B655C]">Landmark: {address.landmark}</p>}
+            {address.phone && <p className="text-xs text-[#6B655C]">Phone: {address.phone}</p>}
+          </div>
+        </section>
+      )}
+
+      <SectionCard title="Payment" kicker="Price">
+        {order.items.map((item) => (
+          <MoneyRow
+            key={item.id}
+            label={`${item.fabricName} (${item.quantity} ${item.unit}${item.quantity === 1 ? '' : 's'})`}
+            hint={`${naira(item.unitPrice)} per ${item.unit}`}
+            amount={item.lineTotal}
+          />
+        ))}
+        {order.platformFee > 0 && <MoneyRow label="Platform fee" amount={order.platformFee} />}
+        <MoneyRow label="Total" amount={order.totalAmount} strong />
+      </SectionCard>
+
+      {order.paidAt && <EscrowCard order={order} />}
+      <Timeline events={order.events} />
+    </div>
+  );
+}
+
+function FabricCustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Order) => void }) {
+  const { busy, error, run } = useAction();
+  const [mode, setMode] = useState<'idle' | 'cancel' | 'dispute'>('idle');
+  const toCustomer = order.fabricDestination === 'customer';
+  const artisan = order.tailor?.displayName ?? order.tailor?.atelierName ?? 'your artisan';
+
+  async function pay() {
+    const res = await run('pay', () => startPayment(order.id));
+    if (res) {
+      sessionStorage.setItem(PAYING_ORDER_KEY, order.id);
+      window.location.assign(res.authorizationUrl);
+    }
+  }
+  const apply = async (name: string, fn: () => Promise<Order>) => {
+    const updated = await run(name, fn);
+    if (updated) {
+      onUpdate(updated);
+      setMode('idle');
+    }
+  };
+  const commissionLink = !toCustomer && order.tailorId && (
+    <Link href={`/orders/new?tailorId=${order.tailorId}`} className={cn(ghostButton, 'self-start')}>
+      Request a piece from {artisan}
+    </Link>
+  );
+
+  let body: ReactNode = null;
+  switch (order.status) {
+    case 'quoted':
+      body = (
+        <NextStep title="Complete your payment">
+          <p className="text-sm text-[#6B655C]">
+            The merchant ships your fabric once you&apos;ve paid. IPILE holds the payment until it arrives.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" className={primaryButton} onClick={pay} disabled={busy !== null}>
+              {busy === 'pay' ? <Spinner /> : <Lock size={16} aria-hidden="true" />} Pay {naira(order.totalAmount)} securely with
+              Paystack
+            </button>
+            {mode !== 'cancel' && (
+              <button type="button" className={ghostButton} onClick={() => setMode('cancel')}>
+                Cancel
+              </button>
+            )}
+          </div>
+          {mode === 'cancel' && (
+            <CancelConfirm
+              message="Cancel this fabric order? You can't undo it, but nothing has been charged."
+              busy={busy === 'cancel'}
+              onConfirm={() => apply('cancel', () => cancelOrder(order.id))}
+              onBack={() => setMode('idle')}
+            />
+          )}
+        </NextStep>
+      );
+      break;
+    case 'paid':
+    case 'in_progress':
+      body = (
+        <NextStep title={toCustomer ? 'Paid — your fabric is being prepared' : `Paid — your fabric is going to ${artisan}`} tone="success">
+          <p className="text-sm text-[#6B655C]">
+            {toCustomer
+              ? 'Mark each piece as received when it reaches you. That releases payment to the merchant.'
+              : `${artisan} confirms when it arrives, which releases payment to the merchant.`}{' '}
+            If nobody confirms, payment is released automatically some days after shipping, so report any problem before then.
+          </p>
+          {commissionLink}
+          {mode === 'dispute' ? (
+            <ReasonForm
+              label="What went wrong?"
+              placeholder="Explain the problem. An IPILE admin reviews it and the payment stays held until it's resolved."
+              submitLabel="Open a dispute"
+              busy={busy === 'dispute'}
+              danger
+              onSubmit={(reason) => apply('dispute', () => disputeOrder(order.id, reason))}
+              onCancel={() => setMode('idle')}
+            />
+          ) : (
+            <button type="button" className={cn(ghostButton, 'self-start')} onClick={() => setMode('dispute')}>
+              <CircleAlert size={15} aria-hidden="true" /> Report a problem
+            </button>
+          )}
+        </NextStep>
+      );
+      break;
+    case 'completed':
+      body = (
+        <NextStep title="Completed" tone="success">
+          <p className="text-sm text-[#6B655C]">Your fabric arrived and payment has been released to the merchant.</p>
+          {order.resolutionNote && <p className="text-sm text-[#4B453E]">Admin decision: {order.resolutionNote}</p>}
+          {commissionLink}
+        </NextStep>
+      );
+      break;
+    case 'disputed':
+      body = (
+        <NextStep title="Dispute open" tone="warn">
+          <p className="text-sm text-[#6B655C]">
+            You raised: “{order.disputeReason}”. The payment stays held while an IPILE admin reviews the order. You&apos;ll get
+            an email with the decision.
+          </p>
+        </NextStep>
+      );
+      break;
+    case 'refunded':
+      body = (
+        <NextStep title="Refunded" tone="warn">
+          <p className="text-sm text-[#6B655C]">
+            {naira(order.escrow.refunded)} was refunded to your payment method. Refunds can take a few working days to appear.
+          </p>
+          {order.resolutionNote && <p className="text-sm text-[#4B453E]">Admin decision: {order.resolutionNote}</p>}
+        </NextStep>
+      );
+      break;
+    case 'cancelled':
+      body = (
+        <NextStep title="You cancelled this order" tone="warn">
+          <p className="text-sm text-[#6B655C]">Nothing was charged.</p>
+        </NextStep>
+      );
+      break;
+  }
+
+  return (
+    <>
+      {body}
+      {error && <InlineAlert>{error}</InlineAlert>}
+    </>
+  );
+}
+
 /* ───────────────────────── Merchant view ───────────────────────── */
 
 function MerchantOrder({ order, reload }: { order: MerchantOrderView; reload: () => Promise<void> }) {
   const allReceived = order.items.every((i) => i.fulfilment === 'received');
+  const recipient = order.fabricDestination === 'customer' ? 'customer' : 'artisan';
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-6 py-8 sm:py-12">
-      <OrderHeader reference={order.reference} status={order.status} garmentType={order.garmentType} createdAt={order.createdAt} />
+      <OrderHeader reference={order.reference} status={order.status} type={order.type} garmentType={order.garmentType} createdAt={order.createdAt} />
 
-      <NextStep title={allReceived ? 'Fabric received' : 'Ship your fabric to the artisan'} tone={allReceived ? 'success' : 'info'}>
+      <NextStep title={allReceived ? 'Fabric received' : `Ship your fabric to the ${recipient}`} tone={allReceived ? 'success' : 'info'}>
         <p className="text-sm text-[#6B655C]">
-          The customer has paid. Your {naira(order.merchantTotal)} is released to your payout account when the artisan
+          The customer has paid. Your {naira(order.merchantTotal)} is released to your payout account when the {recipient}{' '}
           confirms the fabric arrived.
         </p>
         {order.shipTo && (
@@ -1643,20 +1875,27 @@ function MerchantOrder({ order, reload }: { order: MerchantOrderView; reload: ()
                 {order.shipTo.address}
                 {order.shipTo.city && `, ${order.shipTo.city}`}
               </p>
+              {order.shipTo.phone && <p className="text-[#4B453E]">Phone: {order.shipTo.phone}</p>}
+              {order.shipTo.whatsapp && <p className="text-[#4B453E]">WhatsApp: {order.shipTo.whatsapp}</p>}
             </div>
           </div>
         )}
       </NextStep>
 
       <SectionCard title="Your fabric in this order" kicker={`${order.items.length} line${order.items.length === 1 ? '' : 's'} · ${naira(order.merchantTotal)}`}>
-        <FabricLines items={order.items} action={(item) => <ShipControl order={order} item={item} onDone={reload} />} />
+        <FabricLines
+          items={order.items}
+          receivedBy={`the ${recipient}`}
+          action={(item) => <ShipControl order={order} item={item} onDone={reload} />}
+        />
       </SectionCard>
 
       <section className={cn(card, 'flex items-start gap-3')}>
         <ShieldCheck size={20} className="shrink-0 text-[#B8734E]" aria-hidden="true" />
         <p className="text-sm text-[#6B655C]">
-          You only see the fabric lines that are yours and the artisan&apos;s workshop address. The customer&apos;s
-          measurements and address stay private.
+          {recipient === 'customer'
+            ? "You only see the fabric lines that are yours. Use the customer's address and phone number only to deliver this order."
+            : "You only see the fabric lines that are yours and the artisan's workshop address and contact numbers. The customer's measurements and address stay private."}
         </p>
       </section>
 

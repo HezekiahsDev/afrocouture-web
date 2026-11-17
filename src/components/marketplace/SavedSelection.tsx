@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
   ArrowRight,
+  CreditCard,
   LoaderCircle,
   MapPin,
   Minus,
   Plus,
+  Scissors,
   Trash2,
 } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
@@ -269,12 +271,22 @@ function Selection() {
             </div>
             <p className="selection-note">
               Prices are per unit, with bulk prices applied where the merchant
-              offers them. Next, choose an artisan and describe your piece.
-              Nothing is charged until they send a quote and you accept it.
+              offers them.
             </p>
-            <Link href="/orders/new?useSaved=1" className="detail-action oc-saved-commission">
-              Choose an artisan for these fabrics <ArrowRight size={17} />
-            </Link>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <CheckoutChoice
+                href="/orders/checkout"
+                icon={<CreditCard size={20} aria-hidden="true" />}
+                title="Pay for the fabric now"
+                body="Check out today and have it delivered to you or sent to an artisan."
+              />
+              <CheckoutChoice
+                href="/orders/new?useSaved=1"
+                icon={<Scissors size={20} aria-hidden="true" />}
+                title="Send to an artisan and pay together"
+                body="Describe your piece first. You pay for fabric and workmanship when you accept their quote."
+              />
+            </div>
           </>
         ) : (
           <p className="empty-state">
@@ -364,6 +376,32 @@ function Selection() {
         )}
       </section>
     </div>
+  );
+}
+
+function CheckoutChoice({
+  href,
+  icon,
+  title,
+  body,
+}: {
+  href: string;
+  icon: ReactNode;
+  title: string;
+  body: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="flex flex-col gap-2 rounded-2xl border border-[#171717]/12 bg-[#FFFFFF]/80 p-4 no-underline transition hover:border-[#B8734E]/60"
+    >
+      <span className="text-[#8F5637]">{icon}</span>
+      <strong className="text-sm text-[#171717]">{title}</strong>
+      <span className="text-xs leading-5 text-[#6B655C]">{body}</span>
+      <span className="mt-auto inline-flex items-center gap-1 text-xs font-semibold text-[#8F5637]">
+        Continue <ArrowRight size={14} aria-hidden="true" />
+      </span>
+    </Link>
   );
 }
 

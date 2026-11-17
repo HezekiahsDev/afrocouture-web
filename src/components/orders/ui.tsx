@@ -6,7 +6,7 @@ import { MILESTONES, ORDER_STATUS_LABEL } from '@/lib/orders';
 import { apiErrorMessage } from '@/lib/api';
 import { naira } from '@/lib/catalog';
 import { cn } from '@/lib/utils';
-import type { OrderMilestone, OrderStatus } from '@/types';
+import type { OrderMilestone, OrderStatus, OrderType } from '@/types';
 
 export const card =
   'rounded-2xl border border-[#171717]/10 bg-[#FFFFFF]/80 p-5 backdrop-blur-xl sm:p-6';
@@ -33,7 +33,9 @@ const STATUS_TONE: Record<OrderStatus, string> = {
   refunded: 'border-[#171717]/15 bg-[#171717]/5 text-[#6B655C]',
 };
 
-export function StatusPill({ status, className }: { status: OrderStatus; className?: string }) {
+export function StatusPill({ status, type, className }: { status: OrderStatus; type?: OrderType; className?: string }) {
+  // A fabric order has no quote: "quoted" only means it hasn't been paid for yet.
+  const label = type === 'fabric' && status === 'quoted' ? 'Awaiting payment' : ORDER_STATUS_LABEL[status];
   return (
     <span
       className={cn(
@@ -42,7 +44,7 @@ export function StatusPill({ status, className }: { status: OrderStatus; classNa
         className,
       )}
     >
-      {ORDER_STATUS_LABEL[status]}
+      {label}
     </span>
   );
 }

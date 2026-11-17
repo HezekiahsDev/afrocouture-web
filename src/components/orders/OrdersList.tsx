@@ -15,14 +15,14 @@ import { nextStep, rolesFor, type OrdersRole } from './needsAction';
 import { formatDate, StatusPill } from './ui';
 
 const TAB: Record<OrdersRole, { label: string; icon: typeof ShoppingBag }> = {
-  customer: { label: 'My commissions', icon: ShoppingBag },
+  customer: { label: 'My orders', icon: ShoppingBag },
   tailor: { label: 'Commission requests', icon: Scissors },
   merchant: { label: 'Fabric to ship', icon: Package },
 };
 
 const FILTERS: { id: string; label: string; statuses?: OrderStatus[] }[] = [
   { id: 'all', label: 'All' },
-  { id: 'open', label: 'Awaiting quote', statuses: ['requested', 'quoted'] },
+  { id: 'open', label: 'Not yet paid', statuses: ['requested', 'quoted'] },
   { id: 'active', label: 'In progress', statuses: ['paid', 'in_progress', 'delivered'] },
   { id: 'done', label: 'Completed', statuses: ['completed'] },
   { id: 'closed', label: 'Closed', statuses: ['declined', 'cancelled', 'refunded', 'disputed'] },
@@ -54,9 +54,14 @@ function Orders() {
           </h1>
         </div>
         {role === 'customer' && (
-          <Link href="/tailors" className="btn-primary">
-            New commission <ArrowRight size={16} />
-          </Link>
+          <span className="flex flex-wrap gap-2">
+            <Link href="/tailors" className="btn-primary">
+              New commission <ArrowRight size={16} />
+            </Link>
+            <Link href="/fabric-explorer" className="btn-ghost">
+              Buy fabric
+            </Link>
+          </span>
         )}
       </header>
 
@@ -121,7 +126,7 @@ function Orders() {
           title={filter === 'all' ? 'Nothing here yet' : 'No orders match this filter'}
           body={
             role === 'customer'
-              ? 'Find an artisan you like and request a commission — you only pay once you accept their quote.'
+              ? 'Find an artisan to commission, or buy fabric and have it delivered to you — or straight to their workshop.'
               : role === 'tailor'
                 ? 'Commission requests from customers appear here. Keep your artisan profile complete so customers can find you.'
                 : 'When a customer buys your fabric as part of a commission, it appears here once they have paid.'
@@ -152,10 +157,14 @@ function OrderCard({ order, role }: { order: OrderListItem; role: OrdersRole }) 
   const thumb = order.referenceImageUrls[0] ?? order.items[0]?.imageUrl ?? null;
   const counterpart =
     role === 'customer'
-      ? (order.tailor?.displayName ?? order.tailor?.atelierName ?? 'Artisan')
+      ? order.fabricDestination === 'customer'
+        ? 'Delivering to you'
+        : (order.tailor?.displayName ?? order.tailor?.atelierName ?? 'Artisan')
       : role === 'tailor'
         ? (order.customer.fullName ?? 'Customer')
-        : (order.tailor?.atelierName ?? order.tailor?.displayName ?? 'Artisan');
+        : order.fabricDestination === 'customer'
+          ? 'Delivering to the customer'
+          : (order.tailor?.atelierName ?? order.tailor?.displayName ?? 'Artisan');
   const amount = role === 'merchant' ? order.merchantTotal : order.totalAmount;
 
   return (
@@ -181,7 +190,7 @@ function OrderCard({ order, role }: { order: OrderListItem; role: OrdersRole }) 
             <span className="font-[family-name:var(--font-inter)] text-xs font-semibold tracking-wide text-[#6B655C]">
               {order.reference}
             </span>
-            <StatusPill status={order.status} />
+            <StatusPill status={order.status} type={order.type} />
           </span>
           <span className="text-base font-bold text-[#171717]">
             {order.garmentType}

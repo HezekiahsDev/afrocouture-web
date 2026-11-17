@@ -47,6 +47,8 @@ export interface Tailor {
   reviewCount: number;
   verified: boolean;
   isSample: boolean;
+  /** True when fabric can be delivered here: a verified workshop with an address and contact numbers on file. */
+  canReceiveFabric: boolean;
 }
 
 /** The signed-in artisan's own profile, including private KYC fields. */
@@ -55,6 +57,10 @@ export interface TailorProfile extends Omit<Tailor, 'verified' | 'rating'> {
   rating: string | null;
   legalName: string | null;
   workshopAddress: string | null;
+  /** Phone the fabric merchant's courier calls about a delivery to the workshop. */
+  contactPhone: string | null;
+  /** WhatsApp number for the same purpose; many couriers and merchants prefer it. */
+  whatsappNumber: string | null;
   idType: string | null;
   idDocumentUrl: string | null;
   workshopPhotoUrl: string | null;
@@ -188,6 +194,8 @@ export type OrderStatus =
 export type OrderMilestone = 'placed' | 'cutting' | 'fitting' | 'delivery';
 export type FabricFulfilment = 'pending' | 'shipped' | 'received';
 export type OrderViewerRole = 'customer' | 'tailor' | 'merchant' | 'admin';
+export type OrderType = 'commission' | 'fabric';
+export type FabricDestination = 'customer' | 'tailor';
 
 export interface PriceTier {
   minQuantity: number;
@@ -253,6 +261,8 @@ export interface FitSnapshot {
 export interface OrderListItem {
   id: string;
   reference: string;
+  type: OrderType;
+  fabricDestination: FabricDestination | null;
   status: OrderStatus;
   milestone: OrderMilestone;
   garmentType: string;
@@ -274,8 +284,12 @@ export interface Order {
   id: string;
   reference: string;
   customerId: string;
-  tailorId: string;
-  tailorUserId: string;
+  type: OrderType;
+  /** Who a fabric order ships to; null on commissions. */
+  fabricDestination: FabricDestination | null;
+  /** Null only on a fabric order delivered to the customer. */
+  tailorId: string | null;
+  tailorUserId: string | null;
   status: OrderStatus;
   milestone: OrderMilestone;
   garmentType: string;
@@ -283,8 +297,8 @@ export interface Order {
   styleId: string | null;
   aiDesignId: string | null;
   referenceImageUrls: string[];
-  fitSnapshot: FitSnapshot;
-  deliveryAddress: DeliveryAddress;
+  fitSnapshot: FitSnapshot | null;
+  deliveryAddress: DeliveryAddress | null;
   desiredDate: string | null;
   workmanshipPrice: number | null;
   deliveryFee: number | null;
@@ -327,6 +341,8 @@ export interface MerchantOrderView {
   viewerRole: 'merchant';
   id: string;
   reference: string;
+  type: OrderType;
+  fabricDestination: FabricDestination | null;
   status: OrderStatus;
   milestone: OrderMilestone;
   garmentType: string;
@@ -335,7 +351,7 @@ export interface MerchantOrderView {
   tailor: TailorSummary | null;
   items: OrderItem[];
   merchantTotal: number;
-  shipTo: { name: string | null; address: string | null; city: string | null } | null;
+  shipTo: { name: string | null; address: string | null; city: string | null; phone: string | null; whatsapp: string | null } | null;
   events: OrderEvent[];
 }
 

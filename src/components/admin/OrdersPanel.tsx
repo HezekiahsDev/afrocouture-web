@@ -60,7 +60,8 @@ export function OrdersPanel() {
                   </span>
                   <span className="min-w-0">
                     <span className="block truncate text-sm text-[#171717]">
-                      {o.customer.fullName ?? 'Customer'} → {o.tailor?.atelierName ?? o.tailor?.displayName ?? 'Artisan'}
+                      {o.customer.fullName ?? 'Customer'} →{' '}
+                      {o.fabricDestination === 'customer' ? 'Direct delivery' : (o.tailor?.atelierName ?? o.tailor?.displayName ?? 'Artisan')}
                     </span>
                     <span className="block truncate text-xs text-[#6B655C]">
                       {o.status === 'disputed' && o.disputeReason ? `“${o.disputeReason}”` : (o.resolutionNote ?? o.brief)}

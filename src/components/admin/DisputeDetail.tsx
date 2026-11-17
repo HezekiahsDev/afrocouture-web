@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Eye, EyeOff, LoaderCircle, Scale } from 'lucide-react';
@@ -76,10 +76,15 @@ export function DisputeDetail({ id }: { id: string }) {
             <Link href={`/admin/users/${order.customerId}`} className="text-[#4B453E] hover:text-[#8F5637]">
               {order.customer.fullName ?? 'Customer'}
             </Link>{' '}
-            commissioned{' '}
-            <Link href={`/admin/users/${order.tailorUserId}`} className="text-[#4B453E] hover:text-[#8F5637]">
-              {tailorName}
-            </Link>{' '}
+            {order.type === 'fabric' ? 'bought fabric' : 'commissioned'}{' '}
+            {order.tailorUserId && (
+              <>
+                {order.type === 'fabric' && 'for '}
+                <Link href={`/admin/users/${order.tailorUserId}`} className="text-[#4B453E] hover:text-[#8F5637]">
+                  {tailorName}
+                </Link>{' '}
+              </>
+            )}
             · {fmtDate(order.createdAt)}
           </p>
         </div>
@@ -100,17 +105,21 @@ export function DisputeDetail({ id }: { id: string }) {
 
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div className="flex min-w-0 flex-col gap-5">
-          <Panel title="The commission">
+          <Panel title={order.type === 'fabric' ? 'The fabric order' : 'The commission'}>
             <Facts
               rows={[
-                ['Brief', <span key="b" className="whitespace-pre-line">{order.brief}</span>],
-                ['Artisan quote', `${naira(order.workmanshipPrice)} workmanship + ${naira(order.deliveryFee)} delivery`],
+                ...(order.type === 'fabric'
+                  ? []
+                  : ([
+                      ['Brief', <span key="b" className="whitespace-pre-line">{order.brief}</span>],
+                      ['Artisan quote', `${naira(order.workmanshipPrice)} workmanship + ${naira(order.deliveryFee)} delivery`],
+                    ] as [string, ReactNode][])),
                 ['Fabrics', naira(order.fabricTotal)],
                 ['Platform fee', naira(order.platformFee)],
                 ['Total paid', <strong key="t">{naira(order.totalAmount)}</strong>],
                 ['Estimated delivery', order.estimatedDeliveryDate],
                 ['Delivered', fmtDate(order.deliveredAt)],
-                ['Deliver to', `${order.deliveryAddress.line1}, ${order.deliveryAddress.city}, ${order.deliveryAddress.state}`],
+                ['Deliver to', order.deliveryAddress ? `${order.deliveryAddress.line1}, ${order.deliveryAddress.city}, ${order.deliveryAddress.state}` : `${tailorName}'s workshop`],
               ]}
             />
             {order.referenceImageUrls.length > 0 && (

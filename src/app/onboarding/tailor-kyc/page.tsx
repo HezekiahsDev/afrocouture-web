@@ -46,6 +46,8 @@ interface TailorForm {
   portfolioUrls: string[];
   legalName: string;
   workshopAddress: string;
+  contactPhone: string;
+  whatsappNumber: string;
   idType: string;
   idDocumentUrl: string;
   workshopPhotoUrl: string;
@@ -77,6 +79,8 @@ function toState(profile: TailorProfile | null, fullName: string | null | undefi
     portfolioUrls: profile?.portfolioUrls ?? [],
     legalName: text(profile?.legalName),
     workshopAddress: text(profile?.workshopAddress),
+    contactPhone: text(profile?.contactPhone),
+    whatsappNumber: text(profile?.whatsappNumber),
     idType: text(profile?.idType),
     idDocumentUrl: text(profile?.idDocumentUrl),
     workshopPhotoUrl: text(profile?.workshopPhotoUrl),
@@ -104,6 +108,8 @@ function toPayload(form: TailorForm) {
     portfolioUrls: form.portfolioUrls,
     legalName: orNull(form.legalName),
     workshopAddress: orNull(form.workshopAddress),
+    contactPhone: orNull(form.contactPhone),
+    whatsappNumber: orNull(form.whatsappNumber),
     idType: orNull(form.idType),
     idDocumentUrl: orNull(form.idDocumentUrl),
     workshopPhotoUrl: orNull(form.workshopPhotoUrl),
@@ -124,6 +130,9 @@ function lengthError(value: string, min: number, max: number, what: string) {
   return undefined;
 }
 
+const PHONE = /^\+?[0-9 ]{7,16}$/;
+const phoneError = (value: string) => (value.trim() && !PHONE.test(value.trim()) ? 'Enter a valid phone number.' : undefined);
+
 function validate(form: TailorForm): FieldErrors<TailorForm> {
   const years = form.yearsExperience.trim();
   const price = form.startingPrice.trim();
@@ -140,6 +149,8 @@ function validate(form: TailorForm): FieldErrors<TailorForm> {
         : undefined,
     legalName: lengthError(form.legalName, 2, 120, 'Legal name'),
     workshopAddress: lengthError(form.workshopAddress, 1, 300, 'Address'),
+    contactPhone: phoneError(form.contactPhone),
+    whatsappNumber: phoneError(form.whatsappNumber),
     guildChapter: lengthError(form.guildChapter, 1, 120, 'Guild or association'),
     guildMembershipId: lengthError(form.guildMembershipId, 1, 60, 'Membership ID'),
     accountNumber: form.accountNumber && !/^\d{10}$/.test(form.accountNumber) ? 'Account number must be a 10-digit NUBAN.' : undefined,
@@ -172,6 +183,8 @@ function TailorKyc() {
       { label: 'Portrait photo', done: Boolean(f.portraitUrl) },
       { label: 'Legal name', done: Boolean(f.legalName.trim()) },
       { label: 'Workshop address', done: Boolean(f.workshopAddress.trim()) },
+      { label: 'Workshop phone', done: Boolean(f.contactPhone.trim()) },
+      { label: 'WhatsApp number', done: Boolean(f.whatsappNumber.trim()) },
       { label: 'ID type', done: Boolean(f.idType) },
       { label: 'Photo of your ID', done: Boolean(f.idDocumentUrl) },
       { label: 'Payout bank account', done: Boolean(f.bankCode && f.accountNumber && f.accountName.trim()) },
@@ -220,6 +233,8 @@ function TailorKyc() {
               rows: [
                 ['Legal name', f.legalName],
                 ['Workshop address', f.workshopAddress],
+                ['Workshop phone', f.contactPhone],
+                ['WhatsApp number', f.whatsappNumber],
                 ['ID', <DocumentLink key="id" url={f.idDocumentUrl} label={f.idType || 'View ID'} />],
                 ['Guild', [f.guildChapter, f.guildMembershipId].filter(Boolean).join(' · ')],
                 ['Bank', f.bankName],
@@ -339,13 +354,46 @@ function TailorKyc() {
           </SectionCard>
 
           {approved && (
-            <SectionCard
-              number="02"
-              title="Payout account"
-              description="Where we send your earnings. For your security, we email you whenever these details change."
-            >
-              {payout}
-            </SectionCard>
+            <>
+              <SectionCard
+                number="02"
+                title="Contact for fabric deliveries"
+                description="The numbers a merchant's courier uses when a customer sends fabric to your workshop. Customers can only choose artisans with both on file."
+              >
+                <TextInput
+                  label="Workshop phone"
+                  value={f.contactPhone}
+                  onChange={(v) => set('contactPhone', v)}
+                  type="tel"
+                  inputMode="tel"
+                  maxLength={20}
+                  error={e.contactPhone}
+                  placeholder="+234 801 234 5678"
+                />
+                <TextInput
+                  label="WhatsApp number"
+                  value={f.whatsappNumber}
+                  onChange={(v) => set('whatsappNumber', v)}
+                  type="tel"
+                  inputMode="tel"
+                  maxLength={20}
+                  error={e.whatsappNumber}
+                  placeholder="+234 801 234 5678"
+                />
+                {!f.contactPhone.trim() || !f.whatsappNumber.trim() ? (
+                  <p className="text-xs leading-5 text-[#8A6A1F] sm:col-span-2">
+                    Add both numbers so customers can have fabric delivered to your workshop.
+                  </p>
+                ) : null}
+              </SectionCard>
+              <SectionCard
+                number="03"
+                title="Payout account"
+                description="Where we send your earnings. For your security, we email you whenever these details change."
+              >
+                {payout}
+              </SectionCard>
+            </>
           )}
 
           {!approved && (
@@ -366,6 +414,30 @@ function TailorKyc() {
                   required
                   error={e.workshopAddress}
                   className="sm:col-span-2"
+                />
+                <TextInput
+                  label="Workshop phone"
+                  value={f.contactPhone}
+                  onChange={(v) => set('contactPhone', v)}
+                  type="tel"
+                  inputMode="tel"
+                  maxLength={20}
+                  required
+                  error={e.contactPhone}
+                  placeholder="+234 801 234 5678"
+                  hint="The number a merchant's courier calls when fabric is on its way to you."
+                />
+                <TextInput
+                  label="WhatsApp number"
+                  value={f.whatsappNumber}
+                  onChange={(v) => set('whatsappNumber', v)}
+                  type="tel"
+                  inputMode="tel"
+                  maxLength={20}
+                  required
+                  error={e.whatsappNumber}
+                  placeholder="+234 801 234 5678"
+                  hint="Many couriers prefer WhatsApp. It can be the same number."
                 />
                 <FileUpload
                   label="Photo of your ID"

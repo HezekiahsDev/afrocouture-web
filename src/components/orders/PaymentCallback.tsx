@@ -84,8 +84,9 @@ function Verify({ reference, cancelled }: { reference?: string; cancelled?: bool
             <CheckCircle2 size={40} className="text-[#2F6B4F]" aria-hidden="true" />
             <h1 className="text-2xl font-bold text-[#171717]">Payment received</h1>
             <p className="text-sm text-[#6B655C]">
-              {naira(state.order.totalAmount)} is held by IPILE until you approve the finished piece. Your artisan
-              has been told to start.
+              {state.order.type === 'fabric'
+                ? `${naira(state.order.totalAmount)} is held by IPILE until the fabric arrives. The merchant has been told to ship it.`
+                : `${naira(state.order.totalAmount)} is held by IPILE until you approve the finished piece. Your artisan has been told to start.`}
             </p>
             <Link href={`/orders/${state.order.id}`} className={primaryButton}>
               View your order
