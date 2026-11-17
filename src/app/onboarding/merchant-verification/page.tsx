@@ -46,6 +46,7 @@ const SOURCING: { value: SourcingType; title: string; description: string }[] = 
 interface MerchantForm {
   businessName: string;
   city: string;
+  state: string;
   marketHub: string;
   sourcingType: SourcingType | '';
   specialtyFabrics: string[];
@@ -66,6 +67,7 @@ function toState(profile: MerchantProfile | null): MerchantForm {
   return {
     businessName: text(profile?.businessName),
     city: text(profile?.city),
+    state: text(profile?.state),
     marketHub: text(profile?.marketHub),
     sourcingType: profile?.sourcingType ?? '',
     specialtyFabrics: profile?.specialtyFabrics ?? [],
@@ -84,6 +86,7 @@ function toPayload(form: MerchantForm) {
   return {
     businessName: orNull(form.businessName),
     city: orNull(form.city),
+    state: orNull(form.state),
     marketHub: orNull(form.marketHub),
     sourcingType: form.sourcingType || null,
     specialtyFabrics: form.specialtyFabrics,
@@ -110,6 +113,7 @@ function validate(form: MerchantForm): FieldErrors<MerchantForm> {
   return {
     businessName: lengthError(form.businessName, 2, 120, 'Business name'),
     city: lengthError(form.city, 2, 60, 'City'),
+    state: lengthError(form.state, 2, 60, 'State'),
     marketHub: lengthError(form.marketHub, 1, 160, 'Location'),
     cacNumber:
       form.cacNumber.trim() && !CAC_PATTERN.test(form.cacNumber.trim())
@@ -135,6 +139,7 @@ function MerchantVerification() {
     () => [
       { label: 'Registered business name', done: Boolean(f.businessName.trim()) },
       { label: 'City', done: Boolean(f.city.trim()) },
+      { label: 'State', done: Boolean(f.state.trim()) },
       { label: 'Market or warehouse location', done: Boolean(f.marketHub.trim()) },
       { label: 'How you source fabric', done: Boolean(f.sourcingType) },
       { label: 'CAC number', done: Boolean(f.cacNumber.trim()) },
@@ -173,6 +178,7 @@ function MerchantVerification() {
               rows: [
                 ['Business name', f.businessName],
                 ['City', f.city],
+                ['State', f.state],
                 ['Market or warehouse', f.marketHub],
                 ['Sourcing', SOURCING.find((s) => s.value === f.sourcingType)?.title],
                 ['Fabrics', f.specialtyFabrics.join(', ')],
@@ -220,6 +226,7 @@ function MerchantVerification() {
           <SectionCard number="01" title="Your business" description="Shown alongside every fabric you list.">
             <TextInput label="Registered business name" value={f.businessName} onChange={(v) => set('businessName', v)} maxLength={120} required disabled={approved} error={e.businessName} hint="As it appears on your CAC certificate." />
             <TextInput label="City" value={f.city} onChange={(v) => set('city', v)} maxLength={60} required disabled={approved} error={e.city} placeholder="e.g. Kano" />
+            <TextInput label="State" value={f.state} onChange={(v) => set('state', v)} maxLength={60} required disabled={approved} error={e.state} placeholder="e.g. Kano" hint="Used to calculate delivery for fabric orders." />
             <TextInput
               label="Market or warehouse location"
               value={f.marketHub}

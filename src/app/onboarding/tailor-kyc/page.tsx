@@ -36,6 +36,7 @@ interface TailorForm {
   displayName: string;
   atelierName: string;
   city: string;
+  state: string;
   craft: string;
   bio: string;
   yearsExperience: string;
@@ -69,6 +70,7 @@ function toState(profile: TailorProfile | null, fullName: string | null | undefi
     displayName: text(profile ? profile.displayName : fullName),
     atelierName: text(profile?.atelierName),
     city: text(profile?.city),
+    state: text(profile?.state),
     craft: text(profile?.craft),
     bio: text(profile?.bio),
     yearsExperience: text(profile?.yearsExperience),
@@ -98,6 +100,7 @@ function toPayload(form: TailorForm) {
     displayName: orNull(form.displayName),
     atelierName: orNull(form.atelierName),
     city: orNull(form.city),
+    state: orNull(form.state),
     craft: orNull(form.craft),
     bio: orNull(form.bio),
     yearsExperience: intOrNull(form.yearsExperience),
@@ -140,6 +143,7 @@ function validate(form: TailorForm): FieldErrors<TailorForm> {
     displayName: lengthError(form.displayName, 2, 80, 'Display name'),
     atelierName: lengthError(form.atelierName, 2, 120, 'Atelier name'),
     city: lengthError(form.city, 2, 60, 'City'),
+    state: lengthError(form.state, 2, 60, 'State'),
     craft: lengthError(form.craft, 1, 120, 'This line'),
     bio: lengthError(form.bio, 1, 1200, 'Your story'),
     yearsExperience: years && !(/^\d+$/.test(years) && Number(years) <= 70) ? 'Enter a whole number of years (0–70).' : undefined,
@@ -178,6 +182,7 @@ function TailorKyc() {
       { label: 'Display name', done: Boolean(f.displayName.trim()) },
       { label: 'Atelier name', done: Boolean(f.atelierName.trim()) },
       { label: 'City', done: Boolean(f.city.trim()) },
+      { label: 'State', done: Boolean(f.state.trim()) },
       { label: 'Your craft in one line', done: Boolean(f.craft.trim()) },
       { label: 'Starting price', done: Boolean(f.startingPrice.trim()) },
       { label: 'Portrait photo', done: Boolean(f.portraitUrl) },
@@ -222,6 +227,7 @@ function TailorKyc() {
                 ['Display name', f.displayName],
                 ['Atelier', f.atelierName],
                 ['City', f.city],
+                ['State', f.state],
                 ['Craft', f.craft],
                 ['Starting price', f.startingPrice ? naira(Number(f.startingPrice)) : null],
                 ['Specialties', f.specialtyTags.join(', ')],
@@ -278,6 +284,7 @@ function TailorKyc() {
             <TextInput label="Display name" value={f.displayName} onChange={(v) => set('displayName', v)} maxLength={80} required disabled={approved} error={e.displayName} placeholder="e.g. Amaka Obi" />
             <TextInput label="Atelier name" value={f.atelierName} onChange={(v) => set('atelierName', v)} maxLength={120} required disabled={approved} error={e.atelierName} placeholder="e.g. Obi Couture House" />
             <TextInput label="City" value={f.city} onChange={(v) => set('city', v)} maxLength={60} required disabled={approved} error={e.city} placeholder="e.g. Lagos" />
+            <TextInput label="State" value={f.state} onChange={(v) => set('state', v)} maxLength={60} required disabled={approved} error={e.state} placeholder="e.g. Lagos" hint="Used to calculate fabric delivery from merchants to your workshop." />
             <TextInput
               label="Years of experience"
               value={f.yearsExperience}

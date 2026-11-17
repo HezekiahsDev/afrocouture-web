@@ -4,6 +4,8 @@ import type {
   DeliveryAddress,
   EscrowQueueItem,
   Fabric,
+  FabricCheckoutQuote,
+  FabricDeliveryRules,
   FabricDestination,
   KycStatus,
   MerchantOrderView,
@@ -50,8 +52,12 @@ export async function createFabricCheckout(input: FabricCheckoutInput): Promise<
   return (await api.post<Order>('/orders/fabric-checkout', input)).data;
 }
 
-export async function getCheckoutConfig(): Promise<{ platformFeePercent: number }> {
-  return (await api.get<{ platformFeePercent: number }>('/orders/checkout-config')).data;
+export async function quoteFabricCheckout(input: FabricCheckoutInput): Promise<FabricCheckoutQuote> {
+  return (await api.post<FabricCheckoutQuote>('/orders/fabric-quote', input)).data;
+}
+
+export async function getCheckoutConfig(): Promise<{ platformFeePercent: number; deliveryFees: FabricDeliveryRules }> {
+  return (await api.get<{ platformFeePercent: number; deliveryFees: FabricDeliveryRules }>('/orders/checkout-config')).data;
 }
 
 export async function listOrders(

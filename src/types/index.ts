@@ -35,6 +35,7 @@ export interface Tailor {
   displayName: string | null;
   atelierName: string | null;
   city: string | null;
+  state: string | null;
   craft: string | null;
   bio: string | null;
   yearsExperience: number | null;
@@ -82,6 +83,7 @@ export interface MerchantProfile {
   userId: string;
   businessName: string | null;
   city: string | null;
+  state: string | null;
   marketHub: string | null;
   sourcingType: SourcingType | null;
   specialtyFabrics: string[];
@@ -113,7 +115,7 @@ export interface Fabric {
   priceTiers: PriceTier[];
   imageUrl: string;
   isSample: boolean;
-  merchant: { id: string; businessName: string | null; city: string | null; verified: boolean };
+  merchant: { id: string; businessName: string | null; city: string | null; state: string | null; verified: boolean };
 }
 
 export interface Style {
@@ -143,6 +145,34 @@ export interface DeliveryAddress {
   /** Pinned coordinates for rider delivery (Dali quotes and books by coordinate). */
   lat?: number;
   lng?: number;
+}
+
+/** Rules returned by GET /orders/checkout-config. */
+export interface FabricDeliveryRules {
+  currency: 'NGN';
+  intraStateFee: number;
+  interStateBaseFee: number;
+  farDistanceKm: number;
+  farDistanceSurcharge: number;
+  valueTiers: { above: number; surcharge: number }[];
+}
+
+/** Server-authoritative totals from POST /orders/fabric-quote. */
+export interface FabricCheckoutQuote {
+  fabricTotal: number;
+  platformFee: number;
+  deliveryFee: number;
+  totalAmount: number;
+  currency: 'NGN';
+  shipments: {
+    merchantId: string;
+    subtotal: number;
+    band: 'intra_state' | 'inter_state';
+    amount: number;
+    distanceKm: number | null;
+    far: boolean;
+    valueSurcharge: number;
+  }[];
 }
 
 export interface FitProfile {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,10 +10,26 @@ import { useAuth } from '@/components/auth/AuthProvider';
 import { EmptyState, ErrorState, Portrait, useRemote } from '@/components/marketplace/shared';
 import { apiErrorMessage } from '@/lib/api';
 import { getFabrics, getMyFitProfile, getMyTailorProfile, getSaved, getTailors, naira } from '@/lib/catalog';
-import { createFabricCheckout, getCheckoutConfig, MAX_CHECKOUT_FABRICS, startPayment } from '@/lib/orders';
+import {
+  createFabricCheckout,
+  getCheckoutConfig,
+  MAX_CHECKOUT_FABRICS,
+  quoteFabricCheckout,
+  startPayment,
+  type FabricCheckoutInput,
+} from '@/lib/orders';
 import { unitPriceFor } from '@/lib/payments';
 import { cn } from '@/lib/utils';
-import type { DeliveryAddress, Fabric, FabricDestination, FitProfile, Tailor, TailorProfile } from '@/types';
+import type {
+  DeliveryAddress,
+  Fabric,
+  FabricCheckoutQuote,
+  FabricDeliveryRules,
+  FabricDestination,
+  FitProfile,
+  Tailor,
+  TailorProfile,
+} from '@/types';
 import { PAYING_ORDER_KEY } from './OrderDetail';
 import { card, fieldClass, InlineAlert, labelClass, MoneyRow, primaryButton, Spinner } from './ui';
 
@@ -38,6 +54,15 @@ interface CheckoutData {
   myTailorProfile: TailorProfile | null;
   buyer: Buyer;
   feePercent: number;
+  deliveryRules: FabricDeliveryRules;
+}
+
+/** The debounced quote is only displayed while its key matches the current checkout payload. */
+interface QuoteState {
+  key: string;
+  loading: boolean;
+  quote?: FabricCheckoutQuote;
+  error?: string;
 }
 
 async function loadCheckout(buyer: Buyer): Promise<CheckoutData> {
@@ -68,6 +93,7 @@ async function loadCheckout(buyer: Buyer): Promise<CheckoutData> {
     myTailorProfile,
     buyer,
     feePercent: config.platformFeePercent,
+    deliveryRules: config.deliveryFees,
   };
 }
 
@@ -157,6 +183,29 @@ function addressProblem(a: DeliveryAddress): string | null {
   return null;
 }
 
+/** The same payload is used for the price preview and the final order, so they cannot drift. */
+function checkoutPayload(
+  data: CheckoutData,
+  destination: FabricDestination,
+  address: DeliveryAddress,
+  tailorId: string,
+): FabricCheckoutInput | null {
+  const fabrics = data.lines.map(({ fabric, quantity }) => ({ fabricId: fabric.id, quantity }));
+  if (destination === 'tailor') return tailorId ? { fabrics, destination, tailorId } : null;
+  if (addressProblem(address)) return null;
+  return {
+    fabrics,
+    destination,
+    deliveryAddress: {
+      line1: address.line1.trim(),
+      city: address.city.trim(),
+      state: address.state.trim(),
+      phone: address.phone?.trim(),
+      ...(address.landmark?.trim() ? { landmark: address.landmark.trim() } : {}),
+    },
+  };
+}
+
 function CheckoutForm({ data }: { data: CheckoutData }) {
   const router = useRouter();
   const artisan = data.buyer === 'tailor';
@@ -168,7 +217,7 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
           // An artisan buying for themselves checks out to their own workshop.
           line1: data.myTailorProfile?.workshopAddress ?? '',
           city: data.myTailorProfile?.city ?? '',
-          state: '',
+          state: data.myTailorProfile?.state ?? '',
           landmark: '',
           phone: data.myTailorProfile?.contactPhone ?? data.myTailorProfile?.whatsappNumber ?? '',
         }
@@ -184,6 +233,7 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
   const [touched, setTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [quoteState, setQuoteState] = useState<QuoteState | null>(null);
 
   const tailors = [...data.tailors]
     // An artisan can't send fabric to their own workshop.
@@ -191,8 +241,10 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
     .sort((a, b) => Number(data.savedTailorIds.has(b.id)) - Number(data.savedTailorIds.has(a.id)));
   const chosen = tailors.find((t) => t.id === tailorId) ?? null;
   const subtotal = data.lines.reduce((sum, { fabric, quantity }) => sum + unitPriceFor(fabric, quantity) * quantity, 0);
-  const fee = Math.round((subtotal * data.feePercent) / 100);
-  const total = subtotal + fee;
+  const payload = useMemo(
+    () => checkoutPayload(data, destination, address, tailorId),
+    [data, destination, address, tailorId],
+  );
 
   const tooMany = data.lines.length > MAX_CHECKOUT_FABRICS;
   const destinationProblem = destination === 'customer' ? addressProblem(address) : tailorId ? null : 'Choose an artisan.';
@@ -200,32 +252,47 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
     ? `You can check out ${MAX_CHECKOUT_FABRICS} fabrics at a time. Remove some from your selection.`
     : destinationProblem;
 
+  // Keep the quote tied to the exact payload that produced it; stale quotes are ignored.
+  const quoteKey = payload && !tooMany ? JSON.stringify(payload) : '';
+  const activeQuote = quoteKey && quoteState?.key === quoteKey ? quoteState : null;
+  const quote = activeQuote?.quote ?? null;
+  const quoteLoading = Boolean(payload && !tooMany && (!activeQuote || activeQuote.loading));
+  const quoteError = activeQuote?.error ?? '';
+  const fee = quote?.platformFee ?? Math.round((subtotal * data.feePercent) / 100);
+  const deliveryFee = quote?.deliveryFee ?? 0;
+  const total = quote?.totalAmount ?? subtotal + fee;
+
+  useEffect(() => {
+    if (!payload || !quoteKey || tooMany) return;
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      if (cancelled) return;
+      setQuoteState({ key: quoteKey, loading: true });
+      try {
+        const result = await quoteFabricCheckout(payload);
+        if (!cancelled) setQuoteState({ key: quoteKey, loading: false, quote: result });
+      } catch (err) {
+        if (!cancelled) setQuoteState({ key: quoteKey, loading: false, error: apiErrorMessage(err) });
+      }
+    }, 250);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [payload, quoteKey, tooMany]);
+
   const setField = (key: keyof DeliveryAddress) => (value: string) => setAddress((prev) => ({ ...prev, [key]: value }));
 
   async function submit(event: FormEvent) {
     event.preventDefault();
     setTouched(true);
     setError('');
-    if (blocker) return;
+    if (blocker || !payload || !quote) return;
     setSubmitting(true);
 
     let orderId: string;
     try {
-      const order = await createFabricCheckout({
-        fabrics: data.lines.map(({ fabric, quantity }) => ({ fabricId: fabric.id, quantity })),
-        destination,
-        ...(destination === 'tailor'
-          ? { tailorId }
-          : {
-              deliveryAddress: {
-                line1: address.line1.trim(),
-                city: address.city.trim(),
-                state: address.state.trim(),
-                phone: address.phone?.trim(),
-                ...(address.landmark?.trim() ? { landmark: address.landmark.trim() } : {}),
-              },
-            }),
-      });
+      const order = await createFabricCheckout(payload);
       orderId = order.id;
     } catch (err) {
       setError(apiErrorMessage(err));
@@ -334,7 +401,7 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-semibold text-[#171717]">{t.displayName ?? t.atelierName}</span>
                       <span className="block truncate text-xs text-[#6B655C]">
-                        {t.city ?? t.craft}
+                        {[t.city, t.state].filter(Boolean).join(', ') || t.craft}
                         {data.savedTailorIds.has(t.id) && ' · Saved'}
                       </span>
                     </span>
@@ -370,17 +437,32 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
           <div>
             <MoneyRow label="Fabric" amount={subtotal} />
             {fee > 0 && <MoneyRow label="Platform fee" amount={fee} />}
+            {quoteLoading ? (
+              <p className="text-xs text-[#6B655C]">Calculating delivery…</p>
+            ) : (
+              <MoneyRow label="Delivery (IPILE logistics)" amount={deliveryFee} />
+            )}
             <MoneyRow label="Total" amount={total} strong />
           </div>
           <p className="text-xs leading-5 text-[#6B655C]">
-            IPILE holds your payment until the fabric arrives. Fabrics from different merchants ship separately.
+            Delivery is ₦{data.deliveryRules.intraStateFee.toLocaleString('en-NG')} within a state. Interstate starts at
+            ₦{data.deliveryRules.interStateBaseFee.toLocaleString('en-NG')}, plus ₦
+            {data.deliveryRules.farDistanceSurcharge.toLocaleString('en-NG')} for distant states and up to ₦
+            {data.deliveryRules.valueTiers.reduce((sum, tier) => sum + tier.surcharge, 0).toLocaleString('en-NG')} for
+            high-value shipments. Fabrics from different merchants ship separately; IPILE keeps this fee and holds your
+            payment until the fabric arrives.
           </p>
           {error && <InlineAlert>{error}</InlineAlert>}
+          {quoteError && <InlineAlert>{quoteError}</InlineAlert>}
           {touched && blocker && <p className="text-xs leading-5 text-[#9B2C24]">{blocker}</p>}
-          <button type="submit" className={primaryButton} disabled={submitting}>
+          <button type="submit" className={primaryButton} disabled={submitting || quoteLoading || !quote}>
             {submitting ? (
               <>
                 <Spinner /> Starting payment…
+              </>
+            ) : quoteLoading || !quote ? (
+              <>
+                <Spinner /> Calculating delivery…
               </>
             ) : (
               <>
