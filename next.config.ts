@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  // Security-policy upgrades: `next upgrade --agent=security` keeps this app on the
+  // latest safe release within its current major.
+  experimental: {
+    agentUpgrade: "security",
+  },
   images: {
     // Uploaded portraits, documents and fabric photos are served from Cloudinary.
     remotePatterns: [
