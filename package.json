@@ -1,12 +1,12 @@
 {
   "name": "afrocouture-web",
   "version": "0.1.0",
-  "description": "IPILE — Contemporary African Luxury Fashion Marketplace Frontend (Next.js)",
+  "description": "IPILE \u2014 Contemporary African Luxury Fashion Marketplace Frontend (Next.js)",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "node init && next dev",
+    "build": "node init && next build",
+    "start": "node init && next start",
     "lint": "eslint"
   },
   "dependencies": {
