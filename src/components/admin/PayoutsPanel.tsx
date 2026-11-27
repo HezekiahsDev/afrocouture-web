@@ -94,8 +94,10 @@ export function PayoutsPanel() {
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-base font-bold tabular-nums text-[#171717]">{naira(tx.amount)}</span>
+                  {tx.assetAmount && <span className="text-xs font-semibold tabular-nums text-[#6B655C]">≈ {Number(tx.assetAmount)} USDC</span>}
                   <Pill tone={tx.status === 'failed' ? 'red' : 'amber'}>{tx.status}</Pill>
                   <span className="text-xs text-[#6B655C]">{TYPE_LABEL[tx.type]}</span>
+                  {tx.provider === 'stellar' && <span className="text-xs font-semibold text-[#1F2A42]">Stellar</span>}
                 </div>
                 <p className="mt-1 text-xs text-[#6B655C]">
                   {tx.order ? (
@@ -108,13 +110,25 @@ export function PayoutsPanel() {
                   · {fmtDate(tx.updatedAt)}
                 </p>
                 {tx.failureReason && <p className="mt-1.5 text-xs text-[#9B2C24]">{tx.failureReason}</p>}
+                {tx.explorerUrl && (
+                  <a href={tx.explorerUrl} target="_blank" rel="noreferrer" className="mt-1 inline-block text-xs text-[#8F5637] hover:underline">
+                    View on Stellar explorer
+                  </a>
+                )}
               </div>
               <div className="min-w-0 text-sm">
                 <p className="truncate font-semibold text-[#171717]">{tx.payee.name ?? '—'}</p>
-                <p className="truncate text-xs text-[#6B655C]">
-                  {tx.payee.bankName ?? 'No bank'} · {tx.payee.accountNumber ?? 'no account'}
-                  {tx.payee.accountName && ` · ${tx.payee.accountName}`}
-                </p>
+                {tx.provider === 'stellar' ? (
+                  <p className="truncate font-mono text-xs text-[#6B655C]" title={tx.destination ?? tx.payee.stellarAddress ?? ''}>
+                    {tx.destination ?? tx.payee.stellarAddress ?? 'No Stellar address'}
+                    {tx.payee.stellarMemo && ` · memo ${tx.payee.stellarMemo}`}
+                  </p>
+                ) : (
+                  <p className="truncate text-xs text-[#6B655C]">
+                    {tx.payee.bankName ?? 'No bank'} · {tx.payee.accountNumber ?? 'no account'}
+                    {tx.payee.accountName && ` · ${tx.payee.accountName}`}
+                  </p>
+                )}
                 <p className="mt-1 inline-flex items-center gap-1 text-xs">
                   {tx.payee.payoutReady ? (
                     <>
@@ -122,7 +136,7 @@ export function PayoutsPanel() {
                     </>
                   ) : (
                     <>
-                      <CircleAlert size={13} className="text-[#B8734E]" aria-hidden="true" /> Payee must add a bank account first
+                      <CircleAlert size={13} className="text-[#B8734E]" aria-hidden="true" /> {tx.provider === 'stellar' ? 'Payee must add a Stellar address first' : 'Payee must add a bank account first'}
                     </>
                   )}
                 </p>

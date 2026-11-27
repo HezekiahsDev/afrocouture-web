@@ -13,6 +13,7 @@ import {
   TextInput,
 } from '@/components/onboarding/verification/fields';
 import { BankFields, type PayoutAccountValue } from '@/components/onboarding/verification/bank';
+import { StellarPayoutFields, type StellarPayoutValue } from '@/components/onboarding/verification/stellar-payout';
 import {
   ActionBar,
   DocumentLink,
@@ -27,7 +28,7 @@ import {
 } from '@/components/onboarding/verification/layout';
 import { useVerificationForm, type FieldErrors } from '@/components/onboarding/verification/useVerificationForm';
 import { getMyTailorProfile, naira, saveMyTailorProfile, submitMyTailorProfile } from '@/lib/catalog';
-import type { TailorProfile } from '@/types';
+import type { PayoutMethod, TailorProfile } from '@/types';
 
 const SPECIALTIES = ['Kaftan', 'Agbada', 'Aso Ebi', 'Bridal', 'Senator wear', 'Suits', 'Embroidery', "Children's wear"];
 const ID_TYPES = ['National Identity Number (NIN) slip', 'International passport', "Driver's licence", "Voter's card (PVC)"];
@@ -58,6 +59,9 @@ interface TailorForm {
   bankCode: string;
   accountNumber: string;
   accountName: string;
+  payoutMethod: PayoutMethod;
+  stellarAddress: string;
+  stellarMemo: string;
 }
 
 const text = (value: string | number | null | undefined) => (value === null || value === undefined ? '' : String(value));
@@ -92,6 +96,9 @@ function toState(profile: TailorProfile | null, fullName: string | null | undefi
     bankCode: text(profile?.bankCode),
     accountNumber: text(profile?.accountNumber),
     accountName: text(profile?.accountName),
+    payoutMethod: profile?.payoutMethod ?? 'bank',
+    stellarAddress: text(profile?.stellarAddress),
+    stellarMemo: text(profile?.stellarMemo),
   };
 }
 
@@ -122,6 +129,9 @@ function toPayload(form: TailorForm) {
     bankCode: orNull(form.bankCode),
     accountNumber: orNull(form.accountNumber),
     accountName: orNull(form.accountName),
+    payoutMethod: form.payoutMethod,
+    stellarAddress: orNull(form.stellarAddress),
+    stellarMemo: orNull(form.stellarMemo),
   } as unknown as Partial<TailorProfile>;
 }
 
@@ -255,6 +265,7 @@ function TailorKyc() {
 
   const approved = status === 'approved';
   const payout = (
+    <>
     <BankFields
       value={{ bankName: f.bankName, bankCode: f.bankCode, accountNumber: f.accountNumber, accountName: f.accountName }}
       onChange={(patch) =>
@@ -263,6 +274,13 @@ function TailorKyc() {
       errors={e}
       accountNameHint="It should match your legal name or your atelier's registered name."
     />
+    <StellarPayoutFields
+      value={{ payoutMethod: f.payoutMethod, stellarAddress: f.stellarAddress, stellarMemo: f.stellarMemo }}
+      onChange={(patch) =>
+        (Object.entries(patch) as [keyof StellarPayoutValue, string][]).forEach(([field, value]) => set(field, value as never))
+      }
+    />
+    </>
   );
 
   return (
