@@ -31,6 +31,7 @@ import type {
   TailorProfile,
 } from '@/types';
 import { PAYING_ORDER_KEY } from './OrderDetail';
+import { usePaymentMethods } from '@/components/payments/StellarPay';
 import { card, fieldClass, InlineAlert, labelClass, MoneyRow, primaryButton, Spinner } from './ui';
 
 interface Line {
@@ -234,6 +235,8 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [quoteState, setQuoteState] = useState<QuoteState | null>(null);
+  const methods = usePaymentMethods();
+  const [payWith, setPayWith] = useState<'paystack' | 'stellar'>('paystack');
 
   const tailors = [...data.tailors]
     // An artisan can't send fabric to their own workshop.
@@ -297,6 +300,12 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
     } catch (err) {
       setError(apiErrorMessage(err));
       setSubmitting(false);
+      return;
+    }
+
+    if (payWith === 'stellar') {
+      // The order page shows the USDC amount, address and memo, and waits for the payment.
+      router.push(`/orders/${orderId}?pay=stellar`);
       return;
     }
 
@@ -454,6 +463,22 @@ function CheckoutForm({ data }: { data: CheckoutData }) {
             high-value shipments. Fabrics from different merchants ship separately; IPILE keeps this fee and holds your
             payment until the fabric arrives.
           </p>
+          {methods?.stellar && (
+            <fieldset className="flex flex-col gap-2">
+              <legend className={cn(labelClass, 'mb-1')}>Pay with</legend>
+              {(
+                [
+                  ['paystack', 'Card or bank transfer (Paystack)'],
+                  ['stellar', 'USDC on Stellar'],
+                ] as const
+              ).map(([value, label]) => (
+                <label key={value} className="flex items-center gap-2 text-sm text-[#171717]">
+                  <input type="radio" name="payWith" value={value} checked={payWith === value} onChange={() => setPayWith(value)} />
+                  {label}
+                </label>
+              ))}
+            </fieldset>
+          )}
           {error && <InlineAlert>{error}</InlineAlert>}
           {quoteError && <InlineAlert>{quoteError}</InlineAlert>}
           {touched && blocker && <p className="text-xs leading-5 text-[#9B2C24]">{blocker}</p>}

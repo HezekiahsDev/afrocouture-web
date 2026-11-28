@@ -21,6 +21,7 @@ import {
   Store,
   Users,
   X,
+  Wallet,
 } from 'lucide-react';
 import { RequireAuth } from '@/components/auth/RequireAuth';
 import { useAuth } from '@/components/auth/AuthProvider';
@@ -69,6 +70,7 @@ const NAV: { heading: string; items: NavItem[] }[] = [
         active: (p, s) => p === '/admin/orders' && s === 'disputed',
       },
       { label: 'Payouts', href: '/admin/payouts', icon: Banknote, badge: (q) => q.failedPayouts },
+      { label: 'Stellar', href: '/admin/stellar', icon: Wallet },
     ],
   },
   {

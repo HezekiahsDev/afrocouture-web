@@ -72,6 +72,10 @@ export interface TailorProfile extends Omit<Tailor, 'verified' | 'rating'> {
   bankCode: string | null;
   accountNumber: string | null;
   accountName: string | null;
+  /** 'bank' (Paystack, default) or 'stellar' (USDC to stellarAddress). */
+  payoutMethod: PayoutMethod;
+  stellarAddress: string | null;
+  stellarMemo: string | null;
   kycStatus: KycStatus;
   reviewNote: string | null;
   submittedAt: string | null;
@@ -96,6 +100,9 @@ export interface MerchantProfile {
   bankCode: string | null;
   accountNumber: string | null;
   accountName: string | null;
+  payoutMethod: PayoutMethod;
+  stellarAddress: string | null;
+  stellarMemo: string | null;
   verificationStatus: KycStatus;
   reviewNote: string | null;
   submittedAt: string | null;
@@ -387,6 +394,89 @@ export interface MerchantOrderView {
 
 export type EscrowTransactionType = 'hold' | 'release_tailor' | 'release_merchant' | 'refund';
 export type EscrowTransactionStatus = 'pending' | 'success' | 'failed' | 'reversed';
+export type PaymentProvider = 'paystack' | 'stellar';
+export type PayoutMethod = 'bank' | 'stellar';
+
+/** GET /payments/methods */
+export interface PaymentMethods {
+  paystack: boolean;
+  stellar: boolean;
+  stellarPayouts: boolean;
+  stellarNetwork: 'testnet' | 'public' | null;
+}
+
+export type StellarIntentStatus = 'awaiting' | 'paid' | 'expired' | 'rejected';
+
+/** A USDC checkout on Stellar: send `amount` USDC to `destination` with `memo`. */
+export interface StellarIntent {
+  method: 'stellar';
+  id: string;
+  reference: string;
+  status: StellarIntentStatus;
+  network: 'testnet' | 'public';
+  destination: string;
+  memo: string;
+  memoType: 'text';
+  asset: { code: 'USDC'; issuer: string | null };
+  /** Decimal string, 7 places. */
+  amount: string;
+  nairaAmount: number;
+  expiresAt: string;
+  payerAddress: string | null;
+  refundAddress: string | null;
+  refundMemo: string | null;
+  txHash: string | null;
+  explorerUrl: string | null;
+  /** SEP-7 link that opens a Stellar wallet with the payment filled in. */
+  sep7Uri: string;
+}
+
+export type StellarUnmatchedStatus = 'open' | 'attached' | 'refund_pending' | 'refunded' | 'refund_failed' | 'dismissed';
+
+/** A payment into the operating account that didn't match a checkout (GET /admin/stellar/unmatched). */
+export interface StellarUnmatchedDeposit {
+  id: string;
+  operationId: string;
+  txHash: string;
+  fromAddress: string;
+  amount: string;
+  assetCode: string | null;
+  assetIssuer: string | null;
+  memo: string | null;
+  reason: 'no_memo' | 'unknown_memo' | 'wrong_asset';
+  status: StellarUnmatchedStatus;
+  orderId: string | null;
+  refundAddress: string | null;
+  refundMemo: string | null;
+  refundTxHash: string | null;
+  note: string | null;
+  receivedAt: string;
+  updatedAt: string;
+}
+
+/** GET /admin/stellar/treasury */
+export type StellarTreasury =
+  | { configured: false; checkoutEnabled: false; payoutsEnabled: false }
+  | {
+      configured: true;
+      network: 'testnet' | 'public';
+      checkoutEnabled: boolean;
+      payoutsEnabled: boolean;
+      canSign: boolean;
+      operatingAddress: string | null;
+      usdc: string | null;
+      xlm: string | null;
+      pendingPayoutsUsdc: string;
+      floatMaxUsdc: string | null;
+      minXlm: string;
+      openUnmatched: number;
+      warnings: string[];
+    };
+
+/** GET /payments/stellar/check-address */
+export type StellarAddressCheck =
+  | { ok: true }
+  | { ok: false; reason: 'invalid' | 'not_found' | 'no_trustline' | 'not_authorized' | 'unavailable'; message: string };
 
 export interface EscrowTransaction {
   id: string;
@@ -399,6 +489,12 @@ export interface EscrowTransaction {
   reference: string;
   providerCode: string | null;
   failureReason: string | null;
+  provider: PaymentProvider;
+  /** Stellar: USDC moved, 7 decimals. */
+  assetAmount: string | null;
+  fxRate: string | null;
+  txHash: string | null;
+  destination: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -411,8 +507,13 @@ export interface EscrowQueueItem extends EscrowTransaction {
     bankName: string | null;
     accountNumber: string | null;
     accountName: string | null;
+    payoutMethod: PayoutMethod | null;
+    stellarAddress: string | null;
+    stellarMemo: string | null;
     payoutReady: boolean;
   };
+  /** Stellar transaction on stellar.expert, once sent. */
+  explorerUrl: string | null;
 }
 
 export type ChatMessageType = 'text' | 'image' | 'system';

@@ -19,6 +19,7 @@ import {
   Truck,
 } from 'lucide-react';
 import { RequireAuth } from '@/components/auth/RequireAuth';
+import { PayWithStellar } from '@/components/payments/StellarPay';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { Portrait } from '@/components/marketplace/shared';
 import { apiErrorMessage } from '@/lib/api';
@@ -1244,6 +1245,7 @@ function CustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o: Orde
               {busy === 'pay' ? <Spinner /> : <Lock size={16} aria-hidden="true" />} Pay {naira(order.totalAmount)} securely
               with Paystack
             </button>
+            <PayWithStellar order={order} onUpdate={onUpdate} disabled={busy !== null} />
             {mode !== 'cancel' && (
               <button type="button" className={ghostButton} onClick={() => setMode('cancel')}>
                 Cancel
@@ -1759,6 +1761,7 @@ function FabricCustomerActions({ order, onUpdate }: { order: Order; onUpdate: (o
               {busy === 'pay' ? <Spinner /> : <Lock size={16} aria-hidden="true" />} Pay {naira(order.totalAmount)} securely with
               Paystack
             </button>
+            <PayWithStellar order={order} onUpdate={onUpdate} disabled={busy !== null} />
             {mode !== 'cancel' && (
               <button type="button" className={ghostButton} onClick={() => setMode('cancel')}>
                 Cancel

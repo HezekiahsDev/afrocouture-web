@@ -15,6 +15,10 @@ import type {
   OrderMilestone,
   OrderStatus,
   PriceTier,
+  StellarIntent,
+  StellarTreasury,
+  StellarUnmatchedDeposit,
+  StellarUnmatchedStatus,
   TailorProfile,
   TailorReviewPage,
 } from '@/types';
@@ -97,6 +101,15 @@ export const receiveItem = (id: string, itemId: string) => action(id, `items/${i
 
 /** Starts a Paystack checkout; send the browser to `authorizationUrl`. */
 export const startPayment = (id: string) => action<{ authorizationUrl: string; reference: string }>(id, 'pay');
+/** Starts (or resumes) a USDC checkout on Stellar for a quoted order. */
+export const startStellarPayment = (
+  id: string,
+  options: { payerAddress?: string; refundAddress?: string; refundMemo?: string } = {},
+) => action<StellarIntent>(id, 'pay', { method: 'stellar', ...options });
+/** The order's latest Stellar checkout and the order status; poll it while waiting for the payment. */
+export async function getStellarIntent(id: string): Promise<{ orderStatus: OrderStatus; intent: StellarIntent | null }> {
+  return (await api.get<{ orderStatus: OrderStatus; intent: StellarIntent | null }>(`/orders/${id}/stellar-intent`)).data;
+}
 /** Called from the Paystack callback page with the `reference` query param. */
 export const verifyPayment = (id: string, reference: string) => action(id, 'verify-payment', { reference });
 
@@ -202,3 +215,29 @@ export const MILESTONES: { id: OrderMilestone; label: string }[] = [
 
 export const isMerchantView = (order: Order | MerchantOrderView): order is MerchantOrderView =>
   order.viewerRole === 'merchant';
+
+// ── Admin: Stellar ──
+
+export async function getStellarTreasury(): Promise<StellarTreasury> {
+  return (await api.get<StellarTreasury>('/admin/stellar/treasury')).data;
+}
+
+export async function getUnmatchedDeposits(status: StellarUnmatchedStatus | 'all' = 'open'): Promise<StellarUnmatchedDeposit[]> {
+  return (await api.get<StellarUnmatchedDeposit[]>('/admin/stellar/unmatched', { params: { status } })).data;
+}
+
+export async function attachDeposit(id: string, orderReference: string) {
+  return (
+    await api.post<{ deposit: StellarUnmatchedDeposit; outcome: 'paid' | 'refunded' | 'duplicate' }>(`/admin/stellar/unmatched/${id}/attach`, {
+      orderReference,
+    })
+  ).data;
+}
+
+export async function refundDeposit(id: string, address: string, memo?: string): Promise<StellarUnmatchedDeposit> {
+  return (await api.post<StellarUnmatchedDeposit>(`/admin/stellar/unmatched/${id}/refund`, { address, memo: memo || undefined })).data;
+}
+
+export async function dismissDeposit(id: string, note: string): Promise<StellarUnmatchedDeposit> {
+  return (await api.post<StellarUnmatchedDeposit>(`/admin/stellar/unmatched/${id}/dismiss`, { note })).data;
+}
